@@ -36,10 +36,18 @@ class fileGenerate{
         $file = fopen($x, 'w');
         fwrite($file, $this->fileData);
         fclose($file);
-    }    
+    }
+    function fileAppend(){
+        $x = $this->pathFile."/".$this->fileName;
+        $file = fopen($x, 'a');
+        fwrite($file, $this->fileData);
+        fclose($file);
+    }
+    
 }
 
 $f = new fileGenerate();
-$f->setFileData("00000000");
+$f->setFileData("10001");
 $f->setPathFile("remessa");
-$f->fileGenerate();
+//$f->fileGenerate();
+$f->fileAppend();

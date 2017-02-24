@@ -7,7 +7,7 @@
  */
 
 /**
- * Description of dadosRemessa
+ * Gera remessa txt
  *
  * @author andre
  */
@@ -17,6 +17,8 @@ class dadosRemessa {
     private $posIni;
     private $posEnd;
     private $dataToStr;
+    
+    
     
     
     
