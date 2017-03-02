@@ -31,15 +31,15 @@ class dataSource{
     private $Value;
     private $dataSet;
     private $State="dsInactive";
-    private $Stack=[];
-    
-    
+    private $Line=[];
+        
     public function __construct($params = []){
         if(empty($params)){
             throw new Exception("Informe o dataSet");
         }else{
             $this->dataSet = $params;
         }
+        
     }
     
     public function Append(){
@@ -49,13 +49,36 @@ class dataSource{
             try {                
                 throw new Exception("Insert-mode Dataset");
             } catch (Exception $e) {
-                echo 'Caught exception: ',  $e->getMessage()," <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"\n";
+                echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
             }            
-            
         }        
     }
+    public function addField(){
+        
+    }
+
+
     
     
+//    public function addField($nome, $pos_start, $pos_end, $format, $default, $options)
+//    {
+//        foreach ($this->fields as $key => $field) {
+//            $current_pos_start = $field->pos_start;
+//            $current_pos_end = $field->pos_end;
+//
+//            if (($pos_start >= $current_pos_start && $pos_start <= $current_pos_end) ||
+//                 ($pos_end <= $current_pos_end && $pos_end >= $current_pos_start) ||
+//                 ($current_pos_start >= $pos_start && $current_pos_start <= $pos_end) ||
+//                 ($current_pos_end <= $pos_end && $current_pos_end >= $pos_start)) {
+//                unset($this->fields[$key]);
+//            }
+//        }
+//
+//        $this->fields[$nome] = new Field($this, $nome, $format, $pos_start, $pos_end, $options);
+//        if ($default !== false) {
+//            $this->fields[$nome]->set($default);
+//        }
+//    }    
     
     
     public function teste(){
@@ -68,5 +91,5 @@ class dataSource{
 
 $teste = new dataSource($dataSet);
 print $teste->Append();    
-print $teste->Append();    
+//print $teste->Append();    
 print $teste->teste();    
