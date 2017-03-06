@@ -75,6 +75,8 @@ echo wordMatch($words, $word, 2);
 
 
 
+
+
 exit;
 echo "<pre>\n";
 class teste{

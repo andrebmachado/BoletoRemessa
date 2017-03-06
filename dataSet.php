@@ -26,6 +26,10 @@ class dataSource{
     public function getLine(){
         return $this->lineArray;
     }
+    
+    public function returnMsg($status=True,$msg="success"){
+        return $return = array("status"=>$status,"msg"=>$msg);
+    }
 
     public function __construct($params = []){
         if(empty($params)){
@@ -48,7 +52,10 @@ class dataSource{
                      }            
                  }        
             }
-            
+    /*
+     * Se o campo informado existir sera adicionado ou retornara uma msg 
+     * de erro sugerindo o nome mais proximo conforme funçao. wordMath()
+     */
     private function wordMatch($words, $input, $sensitivity){ 
                 $shortest = -1; 
                 foreach ($words as $word) {             
@@ -70,25 +77,48 @@ class dataSource{
                     return 0; 
                 } 
             } 
-            
-    public function changeType($fieldName,$fieldValue){
-        //return $this->dataSet[$fieldName];
+
+    /*
+     * "nCmp"=>"1.0"
+     * ,"posInicio"=>"1"
+     * ,"posFim"=>"3"
+     * ,"leng"=>"3"
+     * ,"Dec"=>""
+     * ,"type"=>"Num"
+     * ,"Default"=>"001"
+     * ,"value"=>""
+     */
+    public function fixType($fieldName,$fieldValue){       
+        $stringValue="";
+        
+        if($fieldValue>$this->dataSet['leng']){ 
+            return $this->returnMsg('false','Valor informado maior que o campo!');
+        }                
+        //
+        if(empty($fieldValue) || !empty($this->dataSet['Default'])){             
+            $stringValue = $this->dataSet['Default'];
+        }else{
+            return $this->returnMsg('false','Valor informado maior que o campo!');
+        }
+        
         if($this->dataSet[$fieldName]['type']=='Num'){
             $msg = $this->dataSet[$fieldName]['type'];
             return $msg;
         }
     }
-            //Se o campo informado existir sera adicionado ou retornara
-            //uma msg de erro sugerindo o nome mais proximo conforme func. wordMath
-    public  function addField($field,$value){    
-                if(array_key_exists($field, $this->dataSet)){
-                    $this->lineArray[$field]=$value;                    
-                }else{        
-                    $words  = array_keys($this->dataSet);
-                    $msg = "Campo ".$field." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $field, 2);
-                    return $msg;
-                }
-            }        
+    
+    
+    /*Se for valor numerico por padrão prenchera com zeros 
+     * a esquerda para mudar altere o parametro $side*/
+    public  function addField($field,$value,$side="LEFT"){    
+        if(array_key_exists($field, $this->dataSet)){
+            $this->lineArray[$field]=$value;
+        }else{        
+            $words  = array_keys($this->dataSet);
+            $msg = "Campo ".$field." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $field, 2);
+            return $msg;
+        }
+    }        
 }
 
 $teste = new dataSource($dataSet);
@@ -97,13 +127,56 @@ $teste->addField("CodBancoComp_G001", "9999");
 $teste->addField("LoteServico_G002", "0000");
 $teste->addField("TipoRegistro_G003", "0");
 $teste->addField("tpPessoa_G005", "0s");
-
 var_dump($teste->getLine());
 echo "<hr>";
 
+
+
+//var_dump($teste->returnMsg(false,"erro na parada"));
+
+echo $teste->returnMsg(false,"teste")['status'];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exit;
 //echo "<pre>";
-//print_r($teste->changeType("CodBancoComp_G001","321321"));
+//print_r($teste->fixType("CodBancoComp_G001","321321"));
 
-$str = str_pad("", 240, "-");
 
-echo $str;
+//$str = str_pad("", 100, "0");
+$str = "00000000010000000001";
+$sb1 = "bob";
+$sb2 = "99999";
+
+echo "<br>";
+
+$str = substr_replace($str,$sb1,4,strlen($sb1));
+$str = substr_replace($str,$sb2,1,strlen($sb2));
+
+
+echo $str."<br>";
+echo strlen($str);
+
+
