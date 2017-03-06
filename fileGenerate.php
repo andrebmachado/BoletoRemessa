@@ -46,8 +46,8 @@ class fileGenerate{
     
 }
 
-$f = new fileGenerate();
-$f->setFileData("10001");
-$f->setPathFile("remessa");
-//$f->fileGenerate();
-$f->fileAppend();
+//$f = new fileGenerate();
+//$f->setFileData("10001");
+//$f->setPathFile("remessa");
+////$f->fileGenerate();
+//$f->fileAppend();

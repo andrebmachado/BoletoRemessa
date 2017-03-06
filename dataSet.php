@@ -1,5 +1,5 @@
 <?php
-
+include_once 'fileGenerate.php';
 //NomeDoCampo['NumeroCampo','Nome_Codigo','Valor','PosInicial','PosFinal','Tamanho','Decimal','TipoCampo','Default']
 
 $dataSet = 
@@ -19,12 +19,13 @@ class dataSource{
     private $Value;
     private $dataSet;
     private $State="dsInactive";
-    private $Line=[];
+    private $lineArray=[];
+    private $lineString;
+    private $fileGenerate;
     
     public function getLine(){
-        return $this->Line;
+        return $this->lineArray;
     }
-
 
     public function __construct($params = []){
         if(empty($params)){
@@ -32,7 +33,8 @@ class dataSource{
         }else{
             $this->dataSet = $params;
         }
-        
+        $this->fileGenerate = new fileGenerate();
+           
     }
     
     public function Append(){
@@ -46,6 +48,7 @@ class dataSource{
                      }            
                  }        
             }
+            
     private function wordMatch($words, $input, $sensitivity){ 
                 $shortest = -1; 
                 foreach ($words as $word) {             
@@ -66,70 +69,41 @@ class dataSource{
                 } else { 
                     return 0; 
                 } 
-            }
-    
+            } 
+            
+    public function changeType($fieldName,$fieldValue){
+        //return $this->dataSet[$fieldName];
+        if($this->dataSet[$fieldName]['type']=='Num'){
+            $msg = $this->dataSet[$fieldName]['type'];
+            return $msg;
+        }
+    }
             //Se o campo informado existir sera adicionado ou retornara
             //uma msg de erro sugerindo o nome mais proximo conforme func. wordMath
     public  function addField($field,$value){    
                 if(array_key_exists($field, $this->dataSet)){
-                    $this->dataSet[$field]["value"]=$value;
-                    $keyValue = array($field=>$value);
-                    $this->Line= array_push($keyValue,$this->Line);
-                    
-                    return $this->Line;
-                    //return $this->dataSet[$field];
+                    $this->lineArray[$field]=$value;                    
                 }else{        
                     $words  = array_keys($this->dataSet);
                     $msg = "Campo ".$field." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $field, 2);
                     return $msg;
                 }
-            }
-
-    public  function post(){
-        
-        
-    }
-    
-//    public function addField($nome, $pos_start, $pos_end, $format, $default, $options)
-//    {
-//        foreach ($this->fields as $key => $field) {
-//            $current_pos_start = $field->pos_start;
-//            $current_pos_end = $field->pos_end;
-//
-//            if (($pos_start >= $current_pos_start && $pos_start <= $current_pos_end) ||
-//                 ($pos_end <= $current_pos_end && $pos_end >= $current_pos_start) ||
-//                 ($current_pos_start >= $pos_start && $current_pos_start <= $pos_end) ||
-//                 ($current_pos_end <= $pos_end && $current_pos_end >= $pos_start)) {
-//                unset($this->fields[$key]);
-//            }
-//        }
-//
-//        $this->fields[$nome] = new Field($this, $nome, $format, $pos_start, $pos_end, $options);
-//        if ($default !== false) {
-//            $this->fields[$nome]->set($default);
-//        }
-//    }    
-    
-
-        
+            }        
 }
-    
 
 $teste = new dataSource($dataSet);
 print $teste->Append();        
 $teste->addField("CodBancoComp_G001", "9999");
 $teste->addField("LoteServico_G002", "0000");
 $teste->addField("TipoRegistro_G003", "0");
-var_dump($teste->getLine());
-//var_dump($dataSet["CodBancoComp_G001"]);
+$teste->addField("tpPessoa_G005", "0s");
 
+var_dump($teste->getLine());
 echo "<hr>";
 
-// "fruta4"=>"batata");
-$cesta = [ "fruta1"=>"laranja", "fruta2"=>"morango"];
-$cesta = ["fruta3"=>"melancia"];
-//|array_push($cesta,$f);
+//echo "<pre>";
+//print_r($teste->changeType("CodBancoComp_G001","321321"));
 
-var_dump($cesta);
+$str = str_pad("", 240, "-");
 
-//echo addField(, "JURIDICA", $dataSet);
+echo $str;

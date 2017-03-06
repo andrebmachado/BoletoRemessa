@@ -71,3 +71,33 @@ function wordMatch($words, $input, $sensitivity){
 $word = 'CodncoComp_G001'; 
 $words  = array_keys($dataSet);
 echo wordMatch($words, $word, 2);
+
+
+
+
+exit;
+echo "<pre>\n";
+class teste{
+    private $arr=[];
+    public function array_push_assoc($key, $value){
+        //$arr[$key] = $value;
+        $this->arr[$key] = $value;
+        return $this->arr;
+    }    
+    public function getLine(){
+        return $this->arr;
+    }
+}
+$r = new teste();
+$r->array_push_assoc("nome1", "andre");
+$r->array_push_assoc("nome2", "barbosa");
+$r->array_push_assoc("nome3", "machado");
+$r->array_push_assoc("nome4", "teste");
+print_r($r->getLine());
+//
+//$myarray=array();
+//$myarray = array_push_assoc($myarray, 'h', 'hello');
+//$myarray = array_push_assoc($myarray, 'i', 'hi');
+//$myarray = array_push_assoc($myarray, 'j', 'good');
+
+//var_dump($myarray);
