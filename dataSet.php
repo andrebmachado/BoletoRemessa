@@ -102,8 +102,8 @@ class dataSource{
         }
         
         if($this->dataSet[$fieldName]['type']=='Num'){
-            $msg = $this->dataSet[$fieldName]['type'];
-            return $msg;
+            $leng = $this->dataSet[$fieldName]['leng'];
+            return ;
         }
     }
     
