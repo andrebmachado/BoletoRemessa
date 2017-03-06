@@ -14,41 +14,6 @@ $dataSet =
             ,"ConvBanco_G008"=>array("nCmp"=>"7.2.0","posInicio"=>"33","posFim"=>"52","leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>"","value"=>"")
         );  
 
-function wordMatch($words, $input, $sensitivity){ 
-    $shortest = -1; 
-    foreach ($words as $word) {             
-        //verifica a similaridade entre palavras
-        $lev = levenshtein($input, $word); 
-        if ($lev == 0) { 
-            $closest = $word; 
-            $shortest = 0; 
-            break; 
-        } 
-        if ($lev <= $shortest || $shortest < 0) { 
-            $closest  = $word; 
-            $shortest = $lev; 
-        } 
-    } 
-    if($shortest <= $sensitivity){ 
-        return $closest; 
-    } else { 
-        return 0; 
-    } 
-}
-
-function addField($field,$value,$dataSet){    
-    if(array_key_exists($field, $dataSet)){
-        $dataSet[$field]["value"]=$value;
-        return $dataSet[$field];
-    }else{        
-        $words  = array_keys($dataSet);
-        $msg = "Campo ".$field." inexistente, o mais proximo seria o campo ".wordMatch($words, $field, 2);
-        echo $msg;
-    }
-}
-
-addField("ConvBanco_G007", "JURIDICA", $dataSet);
-
 class dataSource{
     private $fieldName;
     private $Value;
@@ -56,6 +21,9 @@ class dataSource{
     private $State="dsInactive";
     private $Line=[];
     
+    public function getLine(){
+        return $this->Line;
+    }
 
 
     public function __construct($params = []){
@@ -68,22 +36,59 @@ class dataSource{
     }
     
     public function Append(){
-        if($this->State == "dsInactive"){
-            $this->State = "dsInsert";
-        }else{                      
-            try {                
-                throw new Exception("Insert-mode Dataset");
-            } catch (Exception $e) {
-                echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
-            }            
-        }        
-    }
-    public function addField($fieldName){
+                if($this->State == "dsInactive"){
+                     $this->State = "dsInsert";
+                }else{                      
+                     try {                
+                         throw new Exception("Insert-mode Dataset");
+                     } catch (Exception $e) {
+                         echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
+                     }            
+                 }        
+            }
+    private function wordMatch($words, $input, $sensitivity){ 
+                $shortest = -1; 
+                foreach ($words as $word) {             
+                    //verifica a similaridade entre palavras
+                    $lev = levenshtein($input, $word); 
+                    if ($lev == 0) { 
+                        $closest = $word; 
+                        $shortest = 0; 
+                        break; 
+                    } 
+                    if ($lev <= $shortest || $shortest < 0) { 
+                        $closest  = $word; 
+                        $shortest = $lev; 
+                    } 
+                } 
+                if($shortest <= $sensitivity){ 
+                    return $closest; 
+                } else { 
+                    return 0; 
+                } 
+            }
+    
+            //Se o campo informado existir sera adicionado ou retornara
+            //uma msg de erro sugerindo o nome mais proximo conforme func. wordMath
+    public  function addField($field,$value){    
+                if(array_key_exists($field, $this->dataSet)){
+                    $this->dataSet[$field]["value"]=$value;
+                    $keyValue = array($field=>$value);
+                    $this->Line= array_push($keyValue,$this->Line);
+                    
+                    return $this->Line;
+                    //return $this->dataSet[$field];
+                }else{        
+                    $words  = array_keys($this->dataSet);
+                    $msg = "Campo ".$field." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $field, 2);
+                    return $msg;
+                }
+            }
+
+    public  function post(){
+        
         
     }
-
-
-    
     
 //    public function addField($nome, $pos_start, $pos_end, $format, $default, $options)
 //    {
@@ -105,16 +110,26 @@ class dataSource{
 //        }
 //    }    
     
-    
-    public function teste(){
-        //var_dump($this->dataSet);
-        //echo $this->State;        
-    }
+
         
 }
     
 
 $teste = new dataSource($dataSet);
-print $teste->Append();    
-//print $teste->Append();    
-print $teste->teste();    
+print $teste->Append();        
+$teste->addField("CodBancoComp_G001", "9999");
+$teste->addField("LoteServico_G002", "0000");
+$teste->addField("TipoRegistro_G003", "0");
+var_dump($teste->getLine());
+//var_dump($dataSet["CodBancoComp_G001"]);
+
+echo "<hr>";
+
+// "fruta4"=>"batata");
+$cesta = [ "fruta1"=>"laranja", "fruta2"=>"morango"];
+$cesta = ["fruta3"=>"melancia"];
+//|array_push($cesta,$f);
+
+var_dump($cesta);
+
+//echo addField(, "JURIDICA", $dataSet);
