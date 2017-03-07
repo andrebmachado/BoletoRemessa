@@ -14,6 +14,60 @@ $dataSet =
             ,"ConvBanco_G008"=>array("nCmp"=>"7.2.0","posInicio"=>"33","posFim"=>"52","leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>"","value"=>"")
         );  
 
+
+class castType{
+    private $aValue;
+    private $aValueResult = array("status"=>false,"retorno"=>null);
+    private $params = [];//array("nCmp"=>"2.0","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"","type"=>"Num","Default"=>"0000","value"=>"");    
+    public function __construct($params=[]){
+        $this->params = $params;
+        var_dump($params);
+    }
+    private function isNumeric(){
+        return str_pad($this->aValue, strlen($this->aValue),"0",STR_PAD_LEFT);
+    }
+    private function isString(){
+        return str_pad($this->aValue, strlen($this->aValue),"A",STR_PAD_RIGHT);
+    }    
+    
+    private function checkType(){                
+        if(strlen($this->aValue)>$this->params['leng']){ 
+            return $this->aValueResult("false","Valor informado maior que o campo!");
+        }
+        
+        if(empty($this->aValue)){
+            $this->aValueResult['status'] = True;
+            $this->aValueResult['retorno']= $this->params['Default'];            
+        }         
+        if(empty($this->params['Default'])){
+            $this->aValueResult['status'] = False;
+            $this->aValueResult['retorno']= "Informe um valor para o campo";                        
+        }
+        var_dump($this->aValueResult);     zica aqui
+    }
+    public function asValue($fieldValue){
+        //var_dump($this->checkType());
+        $this->aValue = $fieldValue;
+        $this->checkType();
+        
+        if($this->params['type']=="Num"){
+          $this->aValueResult['status']=True;
+          $this->aValueResult['retorno']=$this->isNumeric();  
+        }
+        if($this->params['type']=="Alpha"){
+          $this->aValueResult('True', $this->isString());  
+        }        
+            //return $this->aValueResult;
+
+    }
+}
+
+$x = array("nCmp"=>"1.0","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"001","value"=>"");
+$test = new castType($x);
+var_dump($test->asValue("2"));
+
+exit;
+
 class dataSource{
     private $fieldName;
     private $Value;
@@ -21,7 +75,7 @@ class dataSource{
     private $State="dsInactive";
     private $lineArray=[];
     private $lineString;
-    private $fileGenerate;
+    private $fileGenerate;    
     
     public function getLine(){
         return $this->lineArray;
@@ -78,44 +132,20 @@ class dataSource{
                 } 
             } 
 
-    /*
-     * "nCmp"=>"1.0"
-     * ,"posInicio"=>"1"
-     * ,"posFim"=>"3"
-     * ,"leng"=>"3"
-     * ,"Dec"=>""
-     * ,"type"=>"Num"
-     * ,"Default"=>"001"
-     * ,"value"=>""
-     */
-    public function fixType($fieldName,$fieldValue){       
-        $stringValue="";
-        
-        if($fieldValue>$this->dataSet['leng']){ 
-            return $this->returnMsg('false','Valor informado maior que o campo!');
-        }                
-        //
-        if(empty($fieldValue) || !empty($this->dataSet['Default'])){             
-            $stringValue = $this->dataSet['Default'];
-        }else{
-            return $this->returnMsg('false','Valor informado maior que o campo!');
-        }
-        
-        if($this->dataSet[$fieldName]['type']=='Num'){
-            $leng = $this->dataSet[$fieldName]['leng'];
-            return ;
-        }
-    }
-    
-    
+
     /*Se for valor numerico por padrão prenchera com zeros 
-     * a esquerda para mudar altere o parametro $side*/
-    public  function addField($field,$value,$side="LEFT"){    
-        if(array_key_exists($field, $this->dataSet)){
-            $this->lineArray[$field]=$value;
+     * a esquerda para mudar altere o parametro */
+    public  function addField($fieldName,$fieldValue,$side="LEFT"){    
+        if(array_key_exists($fieldName, $this->dataSet)){
+            $this->lineArray[$fieldName]=$fieldValue;
+            if($side<>"LEFT"){
+                $this->fixType($fieldName,$fieldValue,$side);
+            }else{
+                $this->fixType($fieldName,$fieldValue);
+            }
         }else{        
             $words  = array_keys($this->dataSet);
-            $msg = "Campo ".$field." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $field, 2);
+            $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
             return $msg;
         }
     }        
@@ -127,18 +157,19 @@ $teste->addField("CodBancoComp_G001", "9999");
 $teste->addField("LoteServico_G002", "0000");
 $teste->addField("TipoRegistro_G003", "0");
 $teste->addField("tpPessoa_G005", "0s");
-var_dump($teste->getLine());
+
+
+
+echo "<hr>";
+//var_dump($teste->getLine());
+var_dump($teste->fixType("CodBancoComp_G001","11"));
+var_dump($teste->fixType("TipoRegistro_G003","0"));
+
+
 echo "<hr>";
 
-
-
 //var_dump($teste->returnMsg(false,"erro na parada"));
-
-echo $teste->returnMsg(false,"teste")['status'];
-
-
-
-
+//echo $teste->returnMsg(false,"testedasfgasd")['status'];
 
 
 
