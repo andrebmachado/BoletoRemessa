@@ -18,73 +18,67 @@ $dataSet =
 class castType{
     private $aValue;
     private $aValueResult = array("status"=>false,"retorno"=>null);
-    private $params = [];//array("nCmp"=>"2.0","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"","type"=>"Num","Default"=>"0000","value"=>"");    
+    private $params = [];
     public function __construct($params=[]){
         $this->params = $params;
-        var_dump($params);
+        //var_dump($params);
     }
     private function isNumeric(){
-        return str_pad($this->aValue, strlen($this->aValue),"0",STR_PAD_LEFT);
+        return str_pad($this->aValue, $this->params['leng'],"0",STR_PAD_LEFT);
     }
     private function isString(){
-        return str_pad($this->aValue, strlen($this->aValue),"A",STR_PAD_RIGHT);
-    }    
-    
-    private function checkType(){                
-        if(strlen($this->aValue)>$this->params['leng']){ 
-            return $this->aValueResult("false","Valor informado maior que o campo!");
+        return str_pad($this->aValue, $this->params['leng']," ",STR_PAD_RIGHT);
+    }     
+    private function checkType(){
+        try {
+            if(strlen($this->aValue)>$this->params['leng']){ 
+                throw new Exception("Valor informado maior que o campo!");
+            }
+        } catch (Exception $e) {
+            echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
         }
         
-        if(empty($this->aValue)){
+//        if(strlen($this->aValue)>$this->params['leng']){ 
+//            return $this->aValueResult("false","Valor informado maior que o campo!");
+//        }
+        if(empty($this->aValue)||!empty($this->params['Default'])){
             $this->aValueResult['status'] = True;
             $this->aValueResult['retorno']= $this->params['Default'];            
-        }         
-        if(empty($this->params['Default'])){
-            $this->aValueResult['status'] = False;
-            $this->aValueResult['retorno']= "Informe um valor para o campo";                        
         }
-        var_dump($this->aValueResult);     zica aqui
+        if(!empty($this->aValue)){
+            $this->aValueResult['status'] = True;
+            $this->aValueResult['retorno']= $this->aValue;            
+        }
     }
-    public function asValue($fieldValue){
-        //var_dump($this->checkType());
+    public function value($fieldValue){
         $this->aValue = $fieldValue;
         $this->checkType();
-        
-        if($this->params['type']=="Num"){
+        if($this->params['type']==="Num"){
           $this->aValueResult['status']=True;
           $this->aValueResult['retorno']=$this->isNumeric();  
         }
         if($this->params['type']=="Alpha"){
-          $this->aValueResult('True', $this->isString());  
+          $this->aValueResult['status']=True;
+          $this->aValueResult['retorno']=$this->isString();  
         }        
-            //return $this->aValueResult;
-
+        //var_dump($this->aValueResult);
+        return $this->aValueResult;
     }
 }
 
-$x = array("nCmp"=>"1.0","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"001","value"=>"");
-$test = new castType($x);
-var_dump($test->asValue("2"));
-
-exit;
-
+//$x = array("nCmp"=>"4.0","posInicio"=>"9","posFim"=>"17","leng"=>"9","Dec"=>"","type"=>"Alpha","Default"=>"","value"=>"");
+//$test = new castType($x);
+//var_dump($test->value("2"));
 class dataSource{
     private $fieldName;
-    private $Value;
+    //private $Value;
     private $dataSet;
     private $State="dsInactive";
     private $lineArray=[];
     private $lineString;
-    private $fileGenerate;    
+    private $fileGenerate;
+    private $castType;
     
-    public function getLine(){
-        return $this->lineArray;
-    }
-    
-    public function returnMsg($status=True,$msg="success"){
-        return $return = array("status"=>$status,"msg"=>$msg);
-    }
-
     public function __construct($params = []){
         if(empty($params)){
             throw new Exception("Informe o dataSet");
@@ -92,9 +86,13 @@ class dataSource{
             $this->dataSet = $params;
         }
         $this->fileGenerate = new fileGenerate();
-           
     }
-    
+    public function getLine(){
+        return $this->lineArray;
+    }
+    public function returnMsg($status=True,$msg="success"){
+        return $return = array("status"=>$status,"msg"=>$msg);
+    }
     public function Append(){
                 if($this->State == "dsInactive"){
                      $this->State = "dsInsert";
@@ -106,10 +104,7 @@ class dataSource{
                      }            
                  }        
             }
-    /*
-     * Se o campo informado existir sera adicionado ou retornara uma msg 
-     * de erro sugerindo o nome mais proximo conforme funçao. wordMath()
-     */
+    //Sugere um campo se o informado nao corresponder aos index existentes
     private function wordMatch($words, $input, $sensitivity){ 
                 $shortest = -1; 
                 foreach ($words as $word) {             
@@ -131,18 +126,21 @@ class dataSource{
                     return 0; 
                 } 
             } 
-
-
-    /*Se for valor numerico por padrão prenchera com zeros 
-     * a esquerda para mudar altere o parametro */
-    public  function addField($fieldName,$fieldValue,$side="LEFT"){    
+            
+    public  function addField($fieldName,$fieldValue){    
         if(array_key_exists($fieldName, $this->dataSet)){
-            $this->lineArray[$fieldName]=$fieldValue;
-            if($side<>"LEFT"){
-                $this->fixType($fieldName,$fieldValue,$side);
-            }else{
-                $this->fixType($fieldName,$fieldValue);
-            }
+            $this->castType = new castType($this->dataSet[$fieldName]);
+            try {
+                if($this->castType->value($fieldValue)['status']){
+                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
+                }else{
+                     throw new Exception("zica virus"); tratar excecao aqui para informar o campo do erro
+                }
+            } catch (Exception $e) {
+                echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
+            } 
+            
+                      
         }else{        
             $words  = array_keys($this->dataSet);
             $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
@@ -153,42 +151,14 @@ class dataSource{
 
 $teste = new dataSource($dataSet);
 print $teste->Append();        
-$teste->addField("CodBancoComp_G001", "9999");
-$teste->addField("LoteServico_G002", "0000");
-$teste->addField("TipoRegistro_G003", "0");
-$teste->addField("tpPessoa_G005", "0s");
+$teste->addField("CodBancoComp_G001", "2222");
+$teste->addField("LoteServico_G002", "3");
+var_dump($teste->getLine());
 
 
-
-echo "<hr>";
-//var_dump($teste->getLine());
-var_dump($teste->fixType("CodBancoComp_G001","11"));
-var_dump($teste->fixType("TipoRegistro_G003","0"));
-
-
-echo "<hr>";
-
-//var_dump($teste->returnMsg(false,"erro na parada"));
-//echo $teste->returnMsg(false,"testedasfgasd")['status'];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//$teste->addField("LoteServico_G002", "0000");
+//$teste->addField("TipoRegistro_G003", "0");
+//$teste->addField("tpPessoa_G005", "0s");
 
 
 exit;
