@@ -21,7 +21,8 @@ class castType{
             }
         } catch (Exception $e) {
             echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
-        }
+            exit; 
+       } 
         
 //        if(strlen($this->aValue)>$this->params['leng']){ 
 //            return $this->aValueResult("false","Valor informado maior que o campo!");
