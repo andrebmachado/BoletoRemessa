@@ -1,7 +1,6 @@
 <?php
-include_once 'fileGenerate.php';
-//NomeDoCampo['NumeroCampo','Nome_Codigo','Valor','PosInicial','PosFinal','Tamanho','Decimal','TipoCampo','Default']
-
+include_once 'fileGenerate.class.php';
+include_once 'castype.class.php';
 $dataSet = 
         array(
             "CodBancoComp_G001"=>array("nCmp"=>"1.0","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"001","value"=>"")
@@ -14,61 +13,6 @@ $dataSet =
             ,"ConvBanco_G008"=>array("nCmp"=>"7.2.0","posInicio"=>"33","posFim"=>"52","leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>"","value"=>"")
         );  
 
-
-class castType{
-    private $aValue;
-    private $aValueResult = array("status"=>false,"retorno"=>null);
-    private $params = [];
-    public function __construct($params=[]){
-        $this->params = $params;
-        //var_dump($params);
-    }
-    private function isNumeric(){
-        return str_pad($this->aValue, $this->params['leng'],"0",STR_PAD_LEFT);
-    }
-    private function isString(){
-        return str_pad($this->aValue, $this->params['leng']," ",STR_PAD_RIGHT);
-    }     
-    private function checkType(){
-        try {
-            if(strlen($this->aValue)>$this->params['leng']){ 
-                throw new Exception("Valor informado maior que o campo!");
-            }
-        } catch (Exception $e) {
-            echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
-        }
-        
-//        if(strlen($this->aValue)>$this->params['leng']){ 
-//            return $this->aValueResult("false","Valor informado maior que o campo!");
-//        }
-        if(empty($this->aValue)||!empty($this->params['Default'])){
-            $this->aValueResult['status'] = True;
-            $this->aValueResult['retorno']= $this->params['Default'];            
-        }
-        if(!empty($this->aValue)){
-            $this->aValueResult['status'] = True;
-            $this->aValueResult['retorno']= $this->aValue;            
-        }
-    }
-    public function value($fieldValue){
-        $this->aValue = $fieldValue;
-        $this->checkType();
-        if($this->params['type']==="Num"){
-          $this->aValueResult['status']=True;
-          $this->aValueResult['retorno']=$this->isNumeric();  
-        }
-        if($this->params['type']=="Alpha"){
-          $this->aValueResult['status']=True;
-          $this->aValueResult['retorno']=$this->isString();  
-        }        
-        //var_dump($this->aValueResult);
-        return $this->aValueResult;
-    }
-}
-
-//$x = array("nCmp"=>"4.0","posInicio"=>"9","posFim"=>"17","leng"=>"9","Dec"=>"","type"=>"Alpha","Default"=>"","value"=>"");
-//$test = new castType($x);
-//var_dump($test->value("2"));
 class dataSource{
     private $fieldName;
     //private $Value;
@@ -92,7 +36,7 @@ class dataSource{
     }
     public function returnMsg($status=True,$msg="success"){
         return $return = array("status"=>$status,"msg"=>$msg);
-    }
+    }D
     public function Append(){
                 if($this->State == "dsInactive"){
                      $this->State = "dsInsert";
@@ -126,7 +70,6 @@ class dataSource{
                     return 0; 
                 } 
             } 
-            
     public  function addField($fieldName,$fieldValue){    
         if(array_key_exists($fieldName, $this->dataSet)){
             $this->castType = new castType($this->dataSet[$fieldName]);
@@ -134,13 +77,11 @@ class dataSource{
                 if($this->castType->value($fieldValue)['status']){
                     $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
                 }else{
-                     throw new Exception("zica virus"); tratar excecao aqui para informar o campo do erro
+                     throw new Exception("zica virus"); //tratar excecao aqui para informar o campo do erro
                 }
             } catch (Exception $e) {
                 echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
-            } 
-            
-                      
+            }         
         }else{        
             $words  = array_keys($this->dataSet);
             $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
