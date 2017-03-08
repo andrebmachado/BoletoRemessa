@@ -1,5 +1,4 @@
 <?php
-
 class castType{
     private $aValue;
     private $aValueResult = array("status"=>false,"retorno"=>null);
@@ -51,7 +50,6 @@ class castType{
         return $this->aValueResult;
     }
 }
-
 //$x = array("nCmp"=>"4.0","posInicio"=>"9","posFim"=>"17","leng"=>"9","Dec"=>"","type"=>"Alpha","Default"=>"","value"=>"");
 //$test = new castType($x);
 //var_dump($test->value("2"));
