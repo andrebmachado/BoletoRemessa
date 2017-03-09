@@ -9,12 +9,14 @@ class dataSource{
     private $fileGenerate;
     private $castType;
     
-    public function __construct($params = []){
-        if(empty($params)){
-            throw new Exception("Informe o dataSet");
-        }else{
-            $this->dataSet = $params;
-        }
+    private function Exception($aMsg){
+        try {                                
+            throw new Exception($aMsg);                        
+        } catch (Exception $e) {
+            echo '<pre>Exception: ',  $e->getMessage();//," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                                 
+        }           
+    }
+    public function __construct(){
         $this->fileGenerate = new fileGenerate();
     }
     public function getLineArray(){
@@ -23,20 +25,24 @@ class dataSource{
     public function getLineStr(){
         return $this->lineString;
     }
-    public function returnMsg($status=True,$msg="success"){
+    private function returnMsg($status=True,$msg="success"){
         return $return = array("status"=>$status,"msg"=>$msg);
     }
-    public function Append(){
-                if($this->State == "dsInactive"){
-                     $this->State = "dsInsert";
-                }else{                      
-                     try {                
-                         throw new Exception("Insert-mode Dataset");
-                     } catch (Exception $e) {
-                         echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
-                     }            
-                 }        
-            }
+    public function Append($params = []){        
+        //var_dump($params);
+        if(empty($params)){            
+            $this->Exception("Informe o dataset");
+        }else{
+            $this->dataSet = $params;
+        }        
+        
+        if($this->State == "dsInactive"){
+             $this->State = "dsInsert";
+             return True;
+        }else{                      
+            $this->Exception("Dataset em modo de inserção, de um post() antes de iniciar nova linha.");
+        }        
+    }
     //Sugere um campo se o informado nao corresponder aos index existentes
     private function wordMatch($words, $input, $sensitivity){ 
                 $shortest = -1; 
@@ -60,19 +66,43 @@ class dataSource{
                 } 
             } 
     public  function addField($fieldName,$fieldValue){    
-        if(array_key_exists($fieldName, $this->dataSet)){
-            $this->castType = new castType($this->dataSet[$fieldName]);
-            if($this->castType->value($fieldValue)['status']){
-                $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];      
-                $this->lineString .= $this->castType->value($fieldValue)['retorno'];
+        //if($this->Append()){
+            if(array_key_exists($fieldName, $this->dataSet)){
+                $this->castType = new castType($this->dataSet[$fieldName]);
+                if($this->castType->value($fieldValue)['status']){
+                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];      
+                    $this->lineString .= $this->castType->value($fieldValue)['retorno'];
+                }
+            }else{        
+                $words  = array_keys($this->dataSet);
+                $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
+                return $msg;
             }
-        }else{        
-            $words  = array_keys($this->dataSet);
-            $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
-            return $msg;
-        }
+        //}
     }
     public function post(){
         $this->lineString .= "\n";
+        $this->State = "dsInactive";
+        $this->dataSet=array();
+        //var_dump($this->dataSet);
     }
+    public function saveToFile($filename=""){        
+        if($filename===""){
+           $filename = "remessa/".date('Ymd')."txt"; 
+        }        
+        try {                
+            if(($f=fopen($filename, 'w'))){
+                fwrite($f, $this->lineString);
+            }else{
+                throw new Exception("Falha ao gerar o arquivo!");
+            }
+        } catch (Exception $e) {
+            echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                         
+            return False;
+        } finally {            
+            fclose($f);
+            return true;
+        }        
+    }
+    
 }
