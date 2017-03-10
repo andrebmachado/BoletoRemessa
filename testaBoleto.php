@@ -4,6 +4,8 @@ include_once 'class/castType.class.php';
 include_once 'class/dataSet.class.php';
 include_once 'class/dataSource.class.php';
 
+ 
+
 $remessaBB = new dataSource();
 
 //HeaderDoArquivo
@@ -108,7 +110,7 @@ $remessaBB->addField("NumContratoOpCred_C030", "0");
 $remessaBB->addField("FEBRABAN1_G004", "0");
 $remessaBB->post();
 //
-$remessaBB->Append();
+$remessaBB->Append($TrailerLote);
 $remessaBB->addField("CodBancoComp_G001", "0");
 $remessaBB->addField("LoteServico_G002", "0");
 $remessaBB->addField("TipoRegistro_G003", "0");
@@ -117,7 +119,7 @@ $remessaBB->addField("QtdeRegistLote_G057", "0");
 $remessaBB->addField("FEBRABAN2_G004", "0");
 $remessaBB->post();
 //
-$remessaBB->Append($SeguimentoP);
+$remessaBB->Append($TrailerArquivo);
 $remessaBB->addField("CodBancoComp_G001", "0");
 $remessaBB->addField("LoteServico_G002", "0");
 $remessaBB->addField("TipoRegistro_G003", "0");
