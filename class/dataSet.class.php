@@ -123,8 +123,8 @@ $SeguimentoQ =
             ,"NomeSacadorAvalista_G013"=>array("nCmp"=>"19.3","posInicio"=>"170","posFim"=>"209","leng"=>"40","Dec"=>"","type"=>"Alpha","Default"=>"","valueReplace"=>"")/*Tratados21Posicoes default(0) ou (brancos). se informado nao podera utilizar Mensagem1 ou 3 */
             ,"CodBcoCompesacao_C031"=>array("nCmp"=>"20.3","posInicio"=>"210","posFim"=>"212","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"0","valueReplace"=>"0")/* Nao tratato informar 0*/
             ,"NossoNumBancoCorresp_C032"=>array("nCmp"=>"21.3","posInicio"=>"213","posFim"=>"232","leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ")/* Nao tratato informar 0*/
-            ,"FEBRABAN2_G004"=>array("nCmp"=>"22.3","posInicio"=>"233","posFim"=>"240","leng"=>"8","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ")/* espaços em branco*/            
-);
+            ,"FEBRABAN2_G004"=>array("nCmp"=>"22.3","posInicio"=>"233","posFim"=>"240","leng"=>"8","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ")/* espaços em branco*/
+        );
 
 $TrailerLote= array(
             "CodBancoComp_G001"=>array("nCmp"=>"1.5","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"001","valueReplace"=>"0")

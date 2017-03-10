@@ -34,7 +34,8 @@ $remessaBB->addField("DensGravArquivo_G020", "3");
 $remessaBB->addField("ReservBB_G021", "3");
 $remessaBB->addField("ReservEmpresa_G022", "3");
 $remessaBB->addField("FEBRABAN3_G004", "3");
-$remessaBB->post();
+$remessaBB->post(); //Fim do header do arquivo
+
 //HeaderDoLote
 $remessaBB->Append($headerLote);
 $remessaBB->addField("CodBancoComp_G001", "3");
@@ -60,9 +61,9 @@ $remessaBB->addField("NumRemRet_G079", "3");
 $remessaBB->addField("DataGravRemRet_G068", "3");
 $remessaBB->addField("DataCredito_C003", "3");
 $remessaBB->addField("FEBRABAN5_G004", "3");
-$remessaBB->post();
+$remessaBB->post();//Fim do header do lote
 
-//HeadereSeguimentoP
+//SeguimentoP
 $remessaBB->Append($SeguimentoP);
 $remessaBB->addField("CodBancoComp_G001", "0");
 $remessaBB->addField("LoteServico_G002", "0");
@@ -104,12 +105,39 @@ $remessaBB->addField("CodProtesto_C026", "0");
 $remessaBB->addField("NumDiasProtesto_C027", "0");
 $remessaBB->addField("CodBaixa_C028", "0");
 $remessaBB->addField("NumDiasBaixaDev_C029", "0");
-$remessaBB->addField("CodMoeda_C065", "0");
+$remessaBB->addField("CodMoeda_C065", "9"); //09 Real, 02 Dolar Comercial(Venda),03 Dolar Turismo(Venda)
 $remessaBB->addField("NumContratoOpCred_C030", "0");
 $remessaBB->addField("NumContratoOpCred_C030", "0");
 $remessaBB->addField("FEBRABAN1_G004", "0");
-$remessaBB->post();
-//
+$remessaBB->post();//Fim seguimento P
+
+//Seguimento Q
+$remessaBB->Append($TrailerLote);
+$remessaBB->addField("CodBancoComp_G001","001");
+$remessaBB->addField("LoteServico_G002","0000");
+$remessaBB->addField("TipoRegistro_G003","3");
+$remessaBB->addField("NumSeqRegLote_G038","");
+$remessaBB->addField("CodSegRegDetalhe_G039","P");
+$remessaBB->addField("FEBRABAN1_G004","");
+$remessaBB->addField("CodMovRemessa_C004","P");
+$remessaBB->addField("tpPessoa_G005","2");
+$remessaBB->addField("tpPessoaNum_G006","");
+$remessaBB->addField("Nome_G013","");
+$remessaBB->addField("Endereco_G032","");
+$remessaBB->addField("Bairro_G032","");
+$remessaBB->addField("CEP_G032","");
+$remessaBB->addField("SufixoCEP_G034","");
+$remessaBB->addField("Cidade_G033","");
+$remessaBB->addField("UF_G036","");
+$remessaBB->addField("TipoInsc_G005","0");
+$remessaBB->addField("NumInscricao_G006","");
+$remessaBB->addField("NomeSacadorAvalista_G013","");
+$remessaBB->addField("CodBcoCompesacao_C031","0");
+$remessaBB->addField("NossoNumBancoCorresp_C032","");
+$remessaBB->addField("FEBRABAN2_G004","");
+$remessaBB->post();//Fim seguimento Q
+
+//Trailer do lote
 $remessaBB->Append($TrailerLote);
 $remessaBB->addField("CodBancoComp_G001", "0");
 $remessaBB->addField("LoteServico_G002", "0");
@@ -117,8 +145,9 @@ $remessaBB->addField("TipoRegistro_G003", "0");
 $remessaBB->addField("FEBRABAN1_G004", "0");
 $remessaBB->addField("QtdeRegistLote_G057", "0");
 $remessaBB->addField("FEBRABAN2_G004", "0");
-$remessaBB->post();
-//
+$remessaBB->post();//Fim trailer do lote
+
+//Trailer do arquivo 
 $remessaBB->Append($TrailerArquivo);
 $remessaBB->addField("CodBancoComp_G001", "0");
 $remessaBB->addField("LoteServico_G002", "0");
@@ -127,15 +156,14 @@ $remessaBB->addField("FEBRABAN1_G004", "0");
 $remessaBB->addField("QtdeLoteArquivo_G049", "0");
 $remessaBB->addField("QtdeRegistArquivo_G056", "0");
 $remessaBB->addField("FEBRABAN2_G004", "0");
-$remessaBB->post();
+$remessaBB->post();//Fim trailer do arquivo 
 
+//Gerando o arquivo na pasta remessa/
 $remessaBB->saveToFile("");
 
 
 
 
-//09 Real 
-//02 Dolar Comercial(Venda)
-//03 Dolar Turismo(Venda)
+
 
 
