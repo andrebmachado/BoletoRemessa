@@ -61,8 +61,8 @@ $SeguimentoP =
             ,"NumSeqRegLote_G038"=>array("nCmp"=>"3.3","posInicio"=>"9","posFim"=>"13","leng"=>"5","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"0")
             ,"CodSegRegDetalhe_G039"=>array("nCmp"=>"3.3","posInicio"=>"14","posFim"=>"14","leng"=>"1","Dec"=>"","type"=>"Alpha","Default"=>"P","valueReplace"=>"")
             ,"FEBRABAN1_G004"=>array("nCmp"=>"6.3","posInicio"=>"15","posFim"=>"15","leng"=>"1","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ")/* espaços em branco*/            
-            ,"CodMovRemessa_C004"=>array("nCmp"=>"7.3","posInicio"=>"16","posFim"=>"17","leng"=>"2","Dec"=>"","type"=>"Num","Default"=>"P","valueReplace"=>"")
             ,"CodMovRemessa_C004"=>array("nCmp"=>"7.3","posInicio"=>"16","posFim"=>"17","leng"=>"2","Dec"=>"","type"=>"Num","Default"=>"P","valueReplace"=>"")            
+
             ,"NumAgencia_G008"=>array("nCmp"=>"8.3","posInicio"=>"18","posFim"=>"22","leng"=>"5","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"0")            
             ,"DVAgencia_G009"=>array("nCmp"=>"9.3","posInicio"=>"23","posFim"=>"23","leng"=>"1","Dec"=>"","type"=>"Alpha","Default"=>"X","valueReplace"=>"")            
             ,"NumContaC_G010"=>array("nCmp"=>"10.3","posInicio"=>"24","posFim"=>"35","leng"=>"12","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"0")
@@ -100,6 +100,32 @@ $SeguimentoP =
             ,"NumContratoOpCred_C030"=>array("nCmp"=>"41.3","posInicio"=>"230","posFim"=>"239","leng"=>"10","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"")/* O BB prenche conforme cadastro da empresa*/            
             ,"FEBRABAN1_G004"=>array("nCmp"=>"42.3","posInicio"=>"240","posFim"=>"240","leng"=>"1","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ")/* espaços em branco*/            
         );
+$SeguimentoQ = 
+        array(
+            "CodBancoComp_G001"=>array("nCmp"=>"1.3","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"001","valueReplace"=>"0") /* 001 Banco do brasil*/
+            ,"LoteServico_G002"=>array("nCmp"=>"2.3","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"","type"=>"Num","Default"=>"0000","valueReplace"=>"0")            
+            ,"TipoRegistro_G003"=>array("nCmp"=>"3.3","posInicio"=>"8","posFim"=>"8","leng"=>"1","Dec"=>"","type"=>"Num","Default"=>"3","valueReplace"=>"")
+            ,"NumSeqRegLote_G038"=>array("nCmp"=>"3.3","posInicio"=>"9","posFim"=>"13","leng"=>"5","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"0")
+            ,"CodSegRegDetalhe_G039"=>array("nCmp"=>"3.3","posInicio"=>"14","posFim"=>"14","leng"=>"1","Dec"=>"","type"=>"Alpha","Default"=>"P","valueReplace"=>"")
+            ,"FEBRABAN1_G004"=>array("nCmp"=>"6.3","posInicio"=>"15","posFim"=>"15","leng"=>"1","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ") /* espaços em branco*/            
+            ,"CodMovRemessa_C004"=>array("nCmp"=>"7.3","posInicio"=>"16","posFim"=>"17","leng"=>"2","Dec"=>"","type"=>"Num","Default"=>"P","valueReplace"=>"")            
+            ,"tpPessoa_G005"=>array("nCmp"=>"8.3","posInicio"=>"18","posFim"=>"18","leng"=>"1","Dec"=>"","type"=>"Num","Default"=>"2","valueReplace"=>"0")    /* 1-PF 2-PJ */
+            ,"tpPessoaNum_G006"=>array("nCmp"=>"9.3","posInicio"=>"19","posFim"=>"33","leng"=>"15","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"0")
+            ,"Nome_G013"=>array("nCmp"=>"10.3","posInicio"=>"34","posFim"=>"73","leng"=>"40","Dec"=>"","type"=>"Alpha","Default"=>"","valueReplace"=>"0")      /*São tratadas somente 37 posições, da posição 34 a 70.*/
+            ,"Endereco_G032"=>array("nCmp"=>"11.3","posInicio"=>"74","posFim"=>"113","leng"=>"40","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ") /* Endereco completo somente quando o banco envia os boletos*/
+            ,"Bairro_G032"=>array("nCmp"=>"12.3","posInicio"=>"114","posFim"=>"128","leng"=>"15","Dec"=>"","type"=>"Alpha","Default"=>"","valueReplace"=>"0")  /*Tratados somente 12 posicoes 114 a 125*/
+            ,"CEP_G032"=>array("nCmp"=>"13.3","posInicio"=>"129","posFim"=>"133","leng"=>"5","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"")  /* Cep valido ou sera recusado */
+            ,"SufixoCEP_G034"=>array("nCmp"=>"14.3","posInicio"=>"134","posFim"=>"136","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"")  /**/
+            ,"Cidade_G033"=>array("nCmp"=>"15.3","posInicio"=>"137","posFim"=>"151","leng"=>"15","Dec"=>"","type"=>"Alpha","Default"=>"","valueReplace"=>"")  /**/
+            ,"UF_G036"=>array("nCmp"=>"16.3","posInicio"=>"152","posFim"=>"153","leng"=>"2","Dec"=>"","type"=>"Alpha","Default"=>"","valueReplace"=>"")  /**/            
+            ,"TipoInsc_G005"=>array("nCmp"=>"17.3","posInicio"=>"154","posFim"=>"154","leng"=>"1","Dec"=>"","type"=>"Num","Default"=>"0","valueReplace"=>"0")  /* So quando o cedente original do titulo for outro,*/
+            ,"NumInscricao_G006"=>array("nCmp"=>"18.3","posInicio"=>"155","posFim"=>"169","leng"=>"15","Dec"=>"","type"=>"Num","Default"=>"","valueReplace"=>"")/* Caso nao haja sacador/avalista (0) ou (branco)*/
+            ,"NomeSacadorAvalista_G013"=>array("nCmp"=>"19.3","posInicio"=>"170","posFim"=>"209","leng"=>"40","Dec"=>"","type"=>"Alpha","Default"=>"","valueReplace"=>"")/*Tratados21Posicoes default(0) ou (brancos). se informado nao podera utilizar Mensagem1 ou 3 */
+            ,"CodBcoCompesacao_C031"=>array("nCmp"=>"20.3","posInicio"=>"210","posFim"=>"212","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"0","valueReplace"=>"0")/* Nao tratato informar 0*/
+            ,"NossoNumBancoCorresp_C032"=>array("nCmp"=>"21.3","posInicio"=>"213","posFim"=>"232","leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ")/* Nao tratato informar 0*/
+            ,"FEBRABAN2_G004"=>array("nCmp"=>"22.3","posInicio"=>"233","posFim"=>"240","leng"=>"8","Dec"=>"","type"=>"Alpha","Default"=>" ","valueReplace"=>" ")/* espaços em branco*/            
+);
+
 $TrailerLote= array(
             "CodBancoComp_G001"=>array("nCmp"=>"1.5","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"001","valueReplace"=>"0")
             ,"LoteServico_G002"=>array("nCmp"=>"2.5","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"","type"=>"Num","Default"=>"0000","valueReplace"=>"0")
