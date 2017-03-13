@@ -1,12 +1,14 @@
 <?php
-class castType{
+include_once 'dataSource.class.php';
+class castType extends dataSource{
     private $aValue;
     private $aValueResult = array("status"=>false,"retorno"=>null);
     private $params = [];
+    
     public function __construct($params=[]){
         $this->params = $params;
         //var_dump($params);
-    }
+    }    
     private function isNumeric(){
         return str_pad($this->aValue, $this->params['leng'],"0",STR_PAD_LEFT);
     }
@@ -15,14 +17,15 @@ class castType{
     }     
     private function checkType(){
         try {
-            if(strlen($this->aValue)>$this->params['leng']){ 
+            $this->aValue = substr($this->aValue, $this->params['leng']);
+            
+            if(strlen($this->aValue)>$this->params['leng']){                
                 throw new Exception("Valor informado maior que o campo!");
             }
         } catch (Exception $e) {
             echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
             exit; 
-       } 
-        
+       }         
 //        if(strlen($this->aValue)>$this->params['leng']){ 
 //            return $this->aValueResult("false","Valor informado maior que o campo!");
 //        }

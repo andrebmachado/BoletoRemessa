@@ -9,6 +9,10 @@ class dataSource{
     private $fileGenerate;
     private $castType;
     
+    public function getFieldName(){
+        return $this->fieldName;
+    }
+
     private function Exception($aMsg){
         try {                                
             throw new Exception($aMsg);                        
@@ -69,13 +73,15 @@ class dataSource{
         //if($this->Append()){
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
+                //$this->fieldName = "Field: ".$fieldName;
                 if($this->castType->value($fieldValue)['status']){
                     $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];      
-                    $this->lineString .= $this->castType->value($fieldValue)['retorno'];
+                    $this->lineString .= $this-> castType->value($fieldValue)['retorno'];
                 }
             }else{        
                 $words  = array_keys($this->dataSet);
                 $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
+                $this->Exception($msg);
                 return $msg;
             }
         //}
