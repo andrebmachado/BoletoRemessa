@@ -10,25 +10,28 @@ class castType extends dataSource{
         //var_dump($params);
     }    
     private function isNumeric(){
-        return str_pad($this->aValue, $this->params['leng'],"0",STR_PAD_LEFT);
+        $leng = $this->params['leng'];
+        if($this->params['Dec']==2){
+            $leng = $this->params['leng'] +2;
+        }           
+        return str_pad($this->aValue, $leng,"0",STR_PAD_LEFT);
     }
     private function isString(){
         return str_pad($this->aValue, $this->params['leng']," ",STR_PAD_RIGHT);
     }     
     private function checkType(){
         try {
-            $this->aValue = substr($this->aValue, $this->params['leng']);
-            
+            $this->aValue = substr($this->aValue,0, $this->params['leng']);
             if(strlen($this->aValue)>$this->params['leng']){                
                 throw new Exception("Valor informado maior que o campo!");
             }
+//            if(strlen($this->aValue)<$this->params['leng']){                
+//                throw new Exception("Valor informado menor que o campo!");
+//            }            
         } catch (Exception $e) {
             echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
             exit; 
-       }         
-//        if(strlen($this->aValue)>$this->params['leng']){ 
-//            return $this->aValueResult("false","Valor informado maior que o campo!");
-//        }
+        }         
         if(empty($this->aValue)||!empty($this->params['Default'])){
             $this->aValueResult['status'] = True;
             $this->aValueResult['retorno']= $this->params['Default'];            

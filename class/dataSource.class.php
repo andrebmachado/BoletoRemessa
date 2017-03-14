@@ -8,6 +8,8 @@ class dataSource{
     private $lineString;
     private $fileGenerate;
     private $castType;
+    private $QtdeRegsArquivo_G056;
+    private $QtdeLoteArquivo_G049;
     
     public function getFieldName(){
         return $this->fieldName;
@@ -34,6 +36,7 @@ class dataSource{
     }
     public function Append($params = []){        
         //var_dump($params);
+        $this->QtdeRegsArquivo_G056++;
         if(empty($params)){            
             $this->Exception("Informe o dataset");
         }else{
@@ -69,8 +72,21 @@ class dataSource{
                     return 0; 
                 } 
             } 
-    public  function addField($fieldName,$fieldValue){    
-        //if($this->Append()){
+    public  function addField($fieldName,$fieldValue){            
+        
+            //Soma quantidade de registros do arquivo conforma o tipo 0,1,3,5,9
+            if($fieldName=='QtdeRegistArquivo_G056'){
+                $fieldValue = $this->QtdeRegsArquivo_G056;
+                //debug echo $fieldName."=".$fieldValue."<br>";
+            }
+            //Soma quantidade de lotes do arquivo conforma o tipo 3
+            if($fieldName=='TipoRegistro_G003' and $fieldValue==3){
+                $this->QtdeLoteArquivo_G049++;                 
+            }else if($fieldName=='QtdeLoteArquivo_G049'){
+                $fieldValue = $this->QtdeLoteArquivo_G049;
+                //echo $fieldName."=".$fieldValue."<br>";
+            }
+            
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
                 //$this->fieldName = "Field: ".$fieldName;
@@ -84,7 +100,6 @@ class dataSource{
                 $this->Exception($msg);
                 return $msg;
             }
-        //}
     }
     public function post(){
         $this->lineString .= "\n";
