@@ -1,5 +1,6 @@
 <?php
 //@todo header do arquivo
+//RegexBB [0-9]{3}[0-9]{4}[0-9]{1}\s{9}[0-9]{1}[0-9]{14}\s{20}[0-9]{5}[0-9]{1}[0-9]{12}[0-9]{1}\s{1}..............................BANCO DO BRASIL S.A.
 $headerArquivo = 
         array(
             "CodBancoComp_G001"    =>array("nCmp"=>"1.0", "posInicio"=>"1",  "posFim"=>"3",  "leng"=>"3", "Dec"=>"","type"=>"Num",  "Default"=>"001", "valueReplace"=>"0")
