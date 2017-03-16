@@ -9,7 +9,7 @@ class dataSource{
     private $fileGenerate;
     private $castType;
     private $QtdeRegsArquivo_G056;
-    private $QtdeLoteArquivo_G049;
+    private $QtdeRegistLote_G057;
     
     public function getFieldName(){
         return $this->fieldName;
@@ -72,21 +72,19 @@ class dataSource{
                     return 0; 
                 } 
             } 
-    public  function addField($fieldName,$fieldValue){            
-        
+    public  function addField($fieldName,$fieldValue){        
             //Soma quantidade de registros do arquivo conforma o tipo 0,1,3,5,9
             if($fieldName=='QtdeRegistArquivo_G056'){
                 $fieldValue = $this->QtdeRegsArquivo_G056;
                 //debug echo $fieldName."=".$fieldValue."<br>";
             }
-            //Soma quantidade de lotes do arquivo conforma o tipo 3
-            if($fieldName=='TipoRegistro_G003' and $fieldValue==3){
-                $this->QtdeLoteArquivo_G049++;                 
-            }else if($fieldName=='QtdeLoteArquivo_G049'){
-                $fieldValue = $this->QtdeLoteArquivo_G049;
+            //Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5
+            if($fieldName=='TipoRegistro_G003' and $fieldValue>=1 and $fieldValue<=5){
+                $this->QtdeRegistLote_G057++;                 
+            }else if($fieldName=='QtdeRegistLote_G057'){
+                $fieldValue = $this->QtdeRegistLote_G057;
                 //echo $fieldName."=".$fieldValue."<br>";
             }
-            
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
                 //$this->fieldName = "Field: ".$fieldName;
@@ -109,7 +107,7 @@ class dataSource{
     }
     public function saveToFile($filename=""){        
         if($filename===""){
-           $filename = "remessa/".date('Ymd')."txt"; 
+           $filename = "remessa/".date('Ymd').".txt"; 
         }        
         try {                
             if(($f=fopen($filename, 'w'))){

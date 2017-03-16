@@ -9,7 +9,7 @@ $headerArquivo =
             ,"FEBRABAN1_G004"      =>array("nCmp"=>"4.0", "posInicio"=>"9",  "posFim"=>"17", "leng"=>"9", "Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
             ,"tpPessoa_G005"       =>array("nCmp"=>"5.0", "posInicio"=>"18", "posFim"=>"18", "leng"=>"1", "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"0")/* 1-PF 2-PJ */
             ,"tpPessoaNum_G006"    =>array("nCmp"=>"6.0", "posInicio"=>"19", "posFim"=>"32", "leng"=>"14","Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"0")
-            ,"ConvBanco_G007"      =>array("nCmp"=>"7.0", "posInicio"=>"33", "posFim"=>"52", "leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")
+            ,"CodConvBanco_G007"   =>array("nCmp"=>"7.0", "posInicio"=>"33", "posFim"=>"52", "leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")
             ,"NumAgencia_G008"     =>array("nCmp"=>"8.0", "posInicio"=>"53", "posFim"=>"57", "leng"=>"5", "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"0")
             ,"DVAgencia_G009"      =>array("nCmp"=>"9.0", "posInicio"=>"58", "posFim"=>"58", "leng"=>"1", "Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")            
             ,"NumContaC_G010"      =>array("nCmp"=>"10.0","posInicio"=>"59", "posFim"=>"70", "leng"=>"12","Dec"=>"","type"=>"Num",  "Default"=>"0",   "valueReplace"=>"0")
@@ -41,7 +41,7 @@ $headerLote =
             ,"FEBRABAN2_G004"=>     array("nCmp"=>"8.1", "posInicio"=>"17", "posFim"=>"17", "leng"=>"1", "Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")/* espaços em branco*/
             ,"tpPessoa_G005"=>      array("nCmp"=>"9.1", "posInicio"=>"18", "posFim"=>"18", "leng"=>"1", "Dec"=>"","type"=>"Num",  "Default"=>"2",   "valueReplace"=>"0")/* 1-PF 2-PJ */
             ,"tpPessoaNum_G006"=>   array("nCmp"=>"10.1","posInicio"=>"19", "posFim"=>"33", "leng"=>"15","Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"0")
-            ,"ConvBanco_G007"=>     array("nCmp"=>"11.1","posInicio"=>"34", "posFim"=>"53", "leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")            
+            ,"CodConvBanco_G007"=>  array("nCmp"=>"11.1","posInicio"=>"34", "posFim"=>"53", "leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")            
             ,"NumAgencia_G008"=>    array("nCmp"=>"12.1","posInicio"=>"54", "posFim"=>"58", "leng"=>"5", "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"0")            
             ,"DVAgencia_G009"=>     array("nCmp"=>"13.1","posInicio"=>"59", "posFim"=>"59", "leng"=>"1", "Dec"=>"","type"=>"Alpha","Default"=>"X",   "valueReplace"=>"")            
             ,"NumContaC_G010"=>     array("nCmp"=>"14.1","posInicio"=>"60", "posFim"=>"71", "leng"=>"12","Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"0")
@@ -145,5 +145,6 @@ $TrailerArquivo= array(
             ,"FEBRABAN1_G004"=>         array("nCmp"=>"4.9","posInicio"=>"9", "posFim"=>"17", "leng"=>"9",  "Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
             ,"QtdeLoteArquivo_G049"=>   array("nCmp"=>"5.9","posInicio"=>"18","posFim"=>"23", "leng"=>"6",  "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"0")            
             ,"QtdeRegistArquivo_G056"=> array("nCmp"=>"6.9","posInicio"=>"24","posFim"=>"29", "leng"=>"6",  "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"")/* Numero de linhas do arquivo pg25 manual*/
-            ,"FEBRABAN2_G004"=>         array("nCmp"=>"7.9","posInicio"=>"36","posFim"=>"240","leng"=>"205","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
+            ,"QtdeContasConcil_G037"=>  array("nCmp"=>"7.9","posInicio"=>"30","posFim"=>"35", "leng"=>"6",  "Dec"=>"","type"=>"Num",  "Default"=>" ",    "valueReplace"=>"")/* Numero de linhas do arquivo pg25 manual*/
+            ,"FEBRABAN2_G004"=>         array("nCmp"=>"8.9","posInicio"=>"36","posFim"=>"240","leng"=>"205","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
 );
