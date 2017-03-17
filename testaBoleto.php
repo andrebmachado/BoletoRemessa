@@ -6,20 +6,19 @@ include_once 'class/dataSource.class.php';
 include_once 'class/dadosComuns.php';
 include_once 'class/DBConnect.php';
 
-//$BoletoHeaders = $con->prepare("select * from boleto limit 1");
-//$BoletoHeaders->execute();
-//$HeaderLinha = $BoletoHeaders->fetchAll(PDO::FETCH_OBJ);
+$BoletoHeaders      = $con->prepare("select * from boleto_remessa");
+$BoletoHeaders->execute();
+$BOLETO_REMESSA     = $BoletoHeaders->fetchAll(PDO::FETCH_OBJ);
+
 //Dados do boleto
+$LoteServico_G002   = $BOLETO_REMESSA[0]->LoteServico_G002;
+$NumSeqArquivo_G018 = $BOLETO_REMESSA[0]->NumSeqArquivo_G018;
 
-$LoteServico_G002   = 1;//Controle
-$NumSeqArquivo_G018 = 1;//Controle
+$DataGeracao        = date_create($BOLETO_REMESSA[0]->DataGeracao_G016);
+$DataGeracao_G016   = date_format($DataGeracao,"dmY");
+$DataGravRemRet_G068= date_format($DataGeracao,"dmY");
 
-$DataGeracao_G016   = date("dmY");//Controle
-$NumRemRet_G079     = 1;
-$DataGravRemRet_G068= date('dmY');
-$CodRemRet_G015     = "1";//1-Remessa(Cliente->Banco),2-Retorno(Banco->Cliente)
-
-//[0-9]{3}[0-9]{4}[0-9]{1}\s{9}[0-9]{1}[0-9]{14}
+$NumRemRet_G079     = $BOLETO_REMESSA[0]->NumRemRet_G079;
 
 $remessaBB = new dataSource();
 //HeaderDoArquivo
@@ -39,7 +38,7 @@ $remessaBB->addField("DVAgConta_G012", "");                     /*01 Brancos Nã
 $remessaBB->addField("NomeEmpresa_G013",$NomeEmpresa_G013);     /*30 */
 $remessaBB->addField("NomeBanco_G014",$NomeBanco_G014);         /*30 */
 $remessaBB->addField("FEBRABAN2_G004", "");                     /*10 Brancos*/
-$remessaBB->addField("CodRemRet_G015", $CodRemRet_G015);        /*01 1-Remessa(Cliente->Banco),2-Retorno(Banco->Cliente)*/
+$remessaBB->addField("CodRemRet_G015", "1");        /*01 1-Remessa(Cliente->Banco),2-Retorno(Banco->Cliente)*/
 $remessaBB->addField("DataGeracao_G016", $DataGeracao_G016);    /*08 DDMMAAAA */
 $remessaBB->addField("HoraGeracao_G017", "000000");             /*06 Zeros Informar zeros ou hora no formato HHMMSS*/ 
 $remessaBB->addField("NumSeqArquivo_G018", $NumSeqArquivo_G018);/*06 ???? Numero sequencial de controle */
@@ -82,10 +81,10 @@ function df($d,$format){
     return date_format($dt,$format);
 }
 //--------------------------------------------------------------------SeguimentoP--------------------------------------------------------------------
-$ListaBoletos = $con->prepare("select * from boleto limit 20");
+$ListaBoletos = $con->prepare("select * from boleto limit 10");
 $ListaBoletos->execute();
 $Linha = $ListaBoletos->fetchAll(PDO::FETCH_OBJ);
-var_dump($Linha);
+
 $NumSeqRegLote_G038=0;
 foreach($Linha as $col){
     $NumSeqRegLote_G038++;
@@ -175,6 +174,7 @@ foreach($Linha as $col){
     $remessaBB->addField("FEBRABAN2_G004","");                      /*08 Brancos */
     $remessaBB->post();//Fim seguimento Q
 }
+
 //Trailer do lote
 $remessaBB->Append($TrailerLote);
 $remessaBB->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do banco cedente */
@@ -193,17 +193,21 @@ $remessaBB->addField("TipoRegistro_G003",9);                   /*01  '9' = Trail
 $remessaBB->addField("FEBRABAN1_G004","");                    /*09  */
 $remessaBB->addField("QtdeLoteArquivo_G049",1);                /*06  Auto Somatória dos registros de tipo 1-Header do lote */
 $remessaBB->addField("QtdeRegistArquivo_G056","");             /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
-$remessaBB->addField("QtdeContasConcil_G037","0");             /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
+$remessaBB->addField("QtdeContasConcil_G037","0");             /*06  */
 $remessaBB->addField("FEBRABAN2_G004","");                    /*205 */
 $remessaBB->post();//Fim trailer do arquivo 
+
+
+$AtualizaQtdes=$con->prepare("UPDATE boleto_remessa SET TLQtdeRegistLote_G057=".$remessaBB->getQtdeRegistLote_G057().", TAQtdeRegistArquivo_G056=".$remessaBB->getQtdeRegistLote_G056()." WHERE (I_BOLETO_REMESSA_ID=".$BOLETO_REMESSA[0]->LoteServico_G002.") LIMIT 1");
+$AtualizaQtdes->execute();
 
 //Gerando o arquivo na pasta remessa/
 $file = "remessa/".date("dmYhis").".tx3";
 
-//foreach (glob("remessa/*.tx3") as $filename) {
-//   //echo "$filename size " . filesize($filename) . "\n";
-//   unlink($filename);
-//}
+foreach (glob("remessa/*.tx3") as $filename) {
+   //echo "$filename size " . filesize($filename) . "\n";
+   unlink($filename);
+}
 
 $remessaBB->saveToFile("");
 $remessaBB->saveToFile($file);

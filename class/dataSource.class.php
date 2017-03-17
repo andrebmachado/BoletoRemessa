@@ -10,6 +10,8 @@ class dataSource{
     private $castType;
     private $QtdeRegsArquivo_G056;
     private $QtdeRegistLote_G057;
+    private $QtdeRegsArquivo_G056_Tot;
+    private $QtdeRegistLote_G057_Tot;
     
     public function getFieldName(){
         return $this->fieldName;
@@ -72,6 +74,7 @@ class dataSource{
                     return 0; 
                 } 
             } 
+    
     public  function addField($fieldName,$fieldValue){        
             //Soma quantidade de registros do arquivo conforma o tipo 0,1,3,5,9
             if($fieldName=='QtdeRegistArquivo_G056'){
@@ -99,6 +102,13 @@ class dataSource{
                 return $msg;
             }
     }
+    public function getQtdeRegsArquivo_G056(){
+        return $this->QtdeRegsArquivo_G056;
+    }
+    public function getQtdeRegistLote_G057(){
+        return $this->QtdeRegistLote_G057;
+    }
+    
     public function post(){
         $this->lineString .= "\n";
         $this->State = "dsInactive";
