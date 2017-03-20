@@ -198,7 +198,18 @@ $remessaBB->addField("FEBRABAN2_G004","");                    /*205 */
 $remessaBB->post();//Fim trailer do arquivo 
 
 
-$AtualizaQtdes=$con->prepare("UPDATE boleto_remessa SET TLQtdeRegistLote_G057=".$remessaBB->getQtdeRegistLote_G057().", TAQtdeRegistArquivo_G056=".$remessaBB->getQtdeRegistLote_G056()." WHERE (I_BOLETO_REMESSA_ID=".$BOLETO_REMESSA[0]->LoteServico_G002.") LIMIT 1");
+$sql =  "UPDATE boleto_remessa SET "
+        . "TLQtdeRegistLote_G057=".$remessaBB->getQtdeRegistLote_G057()
+        . ",TAQtdeLoteArquivo_G049=1"
+        .",TAQtdeRegistArquivo_G056=".$remessaBB->getQtdeRegsArquivo_G056()
+        .",ArquivoRemessa=\"".$remessaBB->getStringFile()."\"";
+        //." WHERE (I_BOLETO_REMESSA_ID=".$BOLETO_REMESSA[0]->LoteServico_G002
+        //.") LIMIT 1";
+        ;
+
+echo "<pre>".$sql."</pre>";
+
+$AtualizaQtdes=$con->prepare($sql);
 $AtualizaQtdes->execute();
 
 //Gerando o arquivo na pasta remessa/
