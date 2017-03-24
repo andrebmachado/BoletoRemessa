@@ -11,7 +11,9 @@ $remessaBB->addField("TipoRegistro_G003", 0);                   /*01 0-Header do
 $remessaBB->addField("FEBRABAN1_G004", "");                     /*09 Brancos */
 $remessaBB->addField("tpPessoa_G005", $tpPessoa_G005);          /*01 1-CPF 2-CNPJ */
 $remessaBB->addField("tpPessoaNum_G006", $tpPessoaNum_G006);    /*14 */
-$remessaBB->addField("CodConvBanco_G007",$ConvBanco_G007);      /*20 Brancos */
+
+$ConvBanco_G007_1 = $ConvBanco_G007." ";
+$remessaBB->addField("CodConvBanco_G007",$ConvBanco_G007_1);      /*20 Brancos */
 $remessaBB->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
 $remessaBB->addField("DVAgencia_G009", $DVAgencia_G009);        /*01 */
 $remessaBB->addField("NumContaC_G010", $NumContaC_G010);        /*12 */
@@ -43,7 +45,9 @@ $remessaBB->addField("LayoutArquivo_G030", "0");                 /*03 Zeros Camp
 $remessaBB->addField("FEBRABAN2_G004", "");                      /*01 Brancos*/
 $remessaBB->addField("tpPessoa_G005", $tpPessoa_G005);           /*01 1-CPF 2-CNPJ */
 $remessaBB->addField("tpPessoaNum_G006", $tpPessoaNum_G006);     /*15 */
-$remessaBB->addField("CodConvBanco_G007", $ConvBanco_G007);      /*20 NumeroConvenio+CobrancaCedente+NumeroCarteira+CmpIdRemTestes*/
+
+$ConvBanco_G007_2 = $ConvBanco_G007."  ";
+$remessaBB->addField("CodConvBanco_G007", $ConvBanco_G007_2);      /*20 NumeroConvenio+CobrancaCedente+NumeroCarteira+CmpIdRemTestes*/
 $remessaBB->addField("NumAgencia_G008", $NumAgencia_G008);       /*05 */
 $remessaBB->addField("DVAgencia_G009", $DVAgencia_G009);         /*01 */
 $remessaBB->addField("NumContaC_G010", $NumContaC_G010);         /*12 */
@@ -86,7 +90,7 @@ foreach($Linha as $col){
     $remessaBB->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
     $remessaBB->addField("CodSegRegDetalhe_G039","P");              /*01 */
     $remessaBB->addField("FEBRABAN1_G004", "");                     /*01 */
-    $remessaBB->addField("CodMovRemessa_C004", "01");               /*02 01 – Entrada de títulos,02 – Pedido de baixa.... Manual Pag8 */
+/**/$remessaBB->addField("CodMovRemessa_C004", "01");               /*02 01 – Entrada de títulos,02 – Pedido de baixa.... Manual Pag8 */
     $remessaBB->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
     $remessaBB->addField("DVAgencia_G009",$DVAgencia_G009);         /*01 */
     $remessaBB->addField("NumContaC_G010",$NumContaC_G010);         /*12 */
@@ -104,7 +108,7 @@ foreach($Linha as $col){
     $remessaBB->addField("AgEncCobranca_C014", "0");                /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
     $remessaBB->addField("DVAgencia_G009", "");                     /*01 Branco*/                
     $remessaBB->addField("EspecieTit_C015", "99");                  /*02 Espécie do Título (99)Outros */ 
-    $remessaBB->addField("IdTitulo_C016", "A");                     /*01 (reconhecimento da dívida pelo Sacado).(A-Aceite)(N-Nao Aceite) */ 
+    $remessaBB->addField("IdTitulo_C016", "N");                     /*01 (reconhecimento da dívida pelo Sacado).(A-Aceite)(N-Nao Aceite) */ 
     $remessaBB->addField("DataEmitTit_G071", $D_EMISSAO);           /*08 */              
     //@todo Juros 
     $remessaBB->addField("CodJurosMora_C018", "3");                 /*01 (3)-isento, não é tratado automaticamente pelo Banco.*/
@@ -142,10 +146,10 @@ foreach($Linha as $col){
     $remessaBB->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
     $remessaBB->addField("CodSegRegDetalhe_G039","Q");              /*01 */
     $remessaBB->addField("FEBRABAN1_G004","");                      /*01 */
-    $remessaBB->addField("CodMovRemessa_C004","01");                /*02  */
+/**/$remessaBB->addField("CodMovRemessa_C004","01");                /*02  */
     $remessaBB->addField("tpPessoa_G005",$tpPessoa_G005);           /*01 */
     $remessaBB->addField("tpPessoaNum_G006",$tpPessoaNum_G006);     /*15 */
-    $remessaBB->addField("Nome_G013", utf8_encode($Nome_G013));                   /*40 */
+    $remessaBB->addField("Nome_G013", utf8_encode($Nome_G013));     /*40 */
     $remessaBB->addField("Endereco_G032"," ");                      /*40 */
     $remessaBB->addField("Bairro_G032"," ");                        /*15 */
     $remessaBB->addField("CEP_G032"," ");                           /*05 */
@@ -204,6 +208,7 @@ $remessaBB->addField("QtdeContasConcil_G037","0");              /*06  */
 $remessaBB->addField("FEBRABAN2_G004","");                      /*205 */
 $remessaBB->post();//Fim trailer do arquivo 
 
+echo "<pre>".$remessaBB->getStringFile();
 try{
     $sql =  "UPDATE boleto_remessa SET "
             . "TLQtdeRegistLote_G057=".$remessaBB->getQtdeRegistLote_G057()
@@ -211,7 +216,7 @@ try{
             .",TAQtdeRegistArquivo_G056=".$remessaBB->getQtdeRegsArquivo_G056()
             .",ArquivoRemessa=\"".$remessaBB->getStringFile()."\""
             ." WHERE LoteServico_G002=".$LoteServico_G002;               
-    echo "<pre>".$sql;
+    //echo "<pre>".$sql;
     $AtualizaQtdes=$con->prepare($sql);
     $AtualizaQtdes->execute();
 } catch (Exception $e) {
@@ -221,6 +226,8 @@ try{
 
 //Gerando o arquivo na pasta remessa/
 $file = "remessa/".date("dmYhis").".tx3";
+
+//apaga arquivo com extensão tx3 para gerar outro para o validador online
 foreach (glob("remessa/*.tx3") as $filename) {
    //echo "$filename size " . filesize($filename) . "\n";
    unlink($filename);

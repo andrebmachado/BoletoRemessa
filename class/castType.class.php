@@ -25,9 +25,6 @@ class castType extends dataSource{
             if(strlen($this->aValue)>$this->params['leng']){                
                 throw new Exception("Valor informado maior que o campo!");
             }
-//            if(strlen($this->aValue)<$this->params['leng']){                
-//                throw new Exception("Valor informado menor que o campo!");
-//            }            
         } catch (Exception $e) {
             echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
             exit; 
@@ -56,6 +53,3 @@ class castType extends dataSource{
         return $this->aValueResult;
     }
 }
-//$x = array("nCmp"=>"4.0","posInicio"=>"9","posFim"=>"17","leng"=>"9","Dec"=>"","type"=>"Alpha","Default"=>"","value"=>"");
-//$test = new castType($x);
-//var_dump($test->value("2"));
