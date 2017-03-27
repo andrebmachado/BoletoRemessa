@@ -1,6 +1,5 @@
 <?php
 include_once 'dataSet.class.php';
-
 class loadFile{  
     
     private $dataSet=[];
@@ -22,7 +21,7 @@ class loadFile{
         $this->ponteiro = fopen ($this->fileName,"r");
         while(!feof($this->ponteiro)){
             $this->linhaArquivo = fgets($this->ponteiro,4096);
-            //echo $this->linhaArquivo;
+            $this->linhaArquivo;
             $this->splitLine();
         }     
         //fclose($this->fileName);
@@ -31,16 +30,16 @@ class loadFile{
     public function splitLine(){
         foreach ($this->dataSet as $key => $value) {
             if(substr($this->linhaArquivo ,13, 1)=="T"){
-                echo "<br>".$this->seguimentoU[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+                $this->seguimentoU[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
             }
             if(substr($this->linhaArquivo ,13, 1)=="U"){
-                echo "<br>".$this->seguimentoU[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+                $this->seguimentoU[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
             }
             //echo $this->seguimentoU[$key];
             //echo substr($this->linha1 ,$value['posInicio']-1, $value['leng']+$value['Dec'])." ------- ";
             //echo $key." - <b>Inicio</b>".$value['posInicio']." - <b>Fim</b>".$value['posFim']." - <b>Tam</b>".$value['leng']."<br>";
         }
-        //var_dump($this->seguimentoU);
+        var_dump($this->seguimentoU);
     }
 
     
