@@ -1,7 +1,6 @@
 <?php
 //@todo header do arquivo
-$headerArquivo = 
-        array(
+$headerArquivo = array(
             "CodBancoComp_G001"    =>array("nCmp"=>"1.0", "posInicio"=>"1",  "posFim"=>"3",  "leng"=>"3", "Dec"=>"","type"=>"Num",  "Default"=>"001", "valueReplace"=>"0")
             ,"LoteServico_G002"    =>array("nCmp"=>"2.0", "posInicio"=>"4",  "posFim"=>"7",  "leng"=>"4", "Dec"=>"","type"=>"Num",  "Default"=>"0000","valueReplace"=>"0")
             ,"TipoRegistro_G003"   =>array("nCmp"=>"3.0", "posInicio"=>"8",  "posFim"=>"8",  "leng"=>"1", "Dec"=>"","type"=>"Num",  "Default"=>"0",   "valueReplace"=>"0")
@@ -28,8 +27,7 @@ $headerArquivo =
             ,"FEBRABAN3_G004"      =>array("nCmp"=>"24.0","posInicio"=>"212","posFim"=>"240","leng"=>"29","Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")  /* a criterio da empresa */            
         );  
 //@todo header do lote
-$headerLote = 
-        array(
+$headerLote = array(
             "CodBancoComp_G001"=>   array("nCmp"=>"1.1", "posInicio"=>"1",  "posFim"=>"3",  "leng"=>"3", "Dec"=>"","type"=>"Num",  "Default"=>"001", "valueReplace"=>"0")   /* 001 Banco do brasil*/
             ,"LoteServico_G002"=>   array("nCmp"=>"2.1", "posInicio"=>"4",  "posFim"=>"7",  "leng"=>"4", "Dec"=>"","type"=>"Num",  "Default"=>"0000","valueReplace"=>"0")
             ,"TipoRegistro_G003"=>  array("nCmp"=>"3.1", "posInicio"=>"8",  "posFim"=>"8",  "leng"=>"1", "Dec"=>"","type"=>"Num",  "Default"=>"1",   "valueReplace"=>"0")
@@ -53,11 +51,10 @@ $headerLote =
             ,"DataGravRemRet_G068"=>array("nCmp"=>"21.0","posInicio"=>"192","posFim"=>"199","leng"=>"8", "Dec"=>"","type"=>"Num",  "Default"=>"0",   "valueReplace"=>"")    /*DDMMAAAA nao obrigatorio informar zeros*/
             ,"DataCredito_C003"=>   array("nCmp"=>"21.0","posInicio"=>"200","posFim"=>"207","leng"=>"8", "Dec"=>"","type"=>"Num",  "Default"=>"      ","valueReplace"=>" ") /*DDMMAAAA nao obrigatorio informar zeros*/
             ,"FEBRABAN3_G004"=>     array("nCmp"=>"22.1","posInicio"=>"208","posFim"=>"240","leng"=>"33","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")   /* espaços em branco*/            
-        );
+            );
 
  //@todo SeguimentoP 
-$SeguimentoP = 
-        array(
+$SeguimentoP = array(
             "CodBancoComp_G001"=>       array("nCmp"=>"1.3", "posInicio"=>"1",  "posFim"=>"3",  "leng"=>"3", "Dec"=>"", "type"=>"Num",  "Default"=>"1","valueReplace"=>"0") /* 001 Banco do brasil*/
             ,"LoteServico_G002"=>       array("nCmp"=>"2.3", "posInicio"=>"4",  "posFim"=>"7",  "leng"=>"4", "Dec"=>"", "type"=>"Num",  "Default"=>"0","valueReplace"=>"0")            
             ,"TipoRegistro_G003"=>      array("nCmp"=>"3.3", "posInicio"=>"8",  "posFim"=>"8",  "leng"=>"1", "Dec"=>"", "type"=>"Num",  "Default"=>"3","valueReplace"=>"")
@@ -102,8 +99,7 @@ $SeguimentoP =
             ,"FEBRABAN2_G004"=>         array("nCmp"=>"42.3","posInicio"=>"240","posFim"=>"240","leng"=>"1", "Dec"=>"", "type"=>"Alpha","Default"=>" ","valueReplace"=>" ") /* espaços em branco*/            
         );
 //@todo seguimentoQ
-$SeguimentoQ = 
-        array(
+$SeguimentoQ = array(
             "CodBancoComp_G001"=>        array("nCmp"=>"1.3","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"","type"=>"Num","Default"=>"001","valueReplace"=>"0")       /* 001 Banco do brasil*/
             ,"LoteServico_G002"=>        array("nCmp"=>"2.3","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"","type"=>"Num","Default"=>"0000","valueReplace"=>"0")            
             ,"TipoRegistro_G003"=>       array("nCmp"=>"3.3","posInicio"=>"8","posFim"=>"8","leng"=>"1","Dec"=>"","type"=>"Num","Default"=>"3","valueReplace"=>"")
@@ -130,13 +126,13 @@ $SeguimentoQ =
 
 //@todo seguimentoT
 $SeguimentoT = array(
-        "CodBancoComp_G001"=>       array("nCmp"=>"01.3T","desc"=>"Código do Banco na Compensação ","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"- ","type"=>"Numérico","default"=>"001","codFebraban"=>"G001","listFields"=>" ")
-        ,"LoteServico_G002"=>       array("nCmp"=>"02.3T","desc"=>"Lote de Serviço ","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G002","listFields"=>" ")
-        ,"TipoRegistro_G003"=>      array("nCmp"=>"03.3T","desc"=>"Tipo de Registro ","posInicio"=>"8","posFim"=>"8","leng"=>"1","Dec"=>"- ","type"=>"Numérico","default"=>"‘3’ ","codFebraban"=>"G003","listFields"=>" ")
-        ,"NumSeqRegLote_G038"=>     array("nCmp"=>"04.3T","desc"=>"Número Sequencial Registro no Lote ","posInicio"=>"9","posFim"=>"13","leng"=>"5","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G038","listFields"=>" ")
-        ,"CodSegRegDetalhe_G039"=>  array("nCmp"=>"05.3T","desc"=>"Segmento do Registro Detalhe ","posInicio"=>"14","posFim"=>"14","leng"=>"1","Dec"=>"- ","type"=>"Alfanumérico","default"=>"´T´ ","codFebraban"=>"G039","listFields"=>" ")
-        ,"FEBRABAN1_G004"=>         array("nCmp"=>"06.3T","desc"=>"Uso Exclusivo FEBRABAN/CNAB ","posInicio"=>"15","posFim"=>"15","leng"=>"1","Dec"=>"- ","type"=>"Alfanumérico","default"=>"Brancos ","codFebraban"=>"G004","listFields"=>" ")
-        ,"CodMovRetorno_C044"=>     array("nCmp"=>"07.3T","desc"=>"Código de Movimento Retorno ","posInicio"=>"16","posFim"=>"17","leng"=>"2","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"C044","listFields"=>
+            "CodBancoComp_G001"=>       array("nCmp"=>"01.3T","desc"=>"Código do Banco na Compensação ","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"0","type"=>"Numérico","default"=>"001","codFebraban"=>"G001","listFields"=>" ")
+            ,"LoteServico_G002"=>       array("nCmp"=>"02.3T","desc"=>"Lote de Serviço ","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G002","listFields"=>" ")
+            ,"TipoRegistro_G003"=>      array("nCmp"=>"03.3T","desc"=>"Tipo de Registro ","posInicio"=>"8","posFim"=>"8","leng"=>"1","Dec"=>"0","type"=>"Numérico","default"=>"‘3’ ","codFebraban"=>"G003","listFields"=>" ")
+            ,"NumSeqRegLote_G038"=>     array("nCmp"=>"04.3T","desc"=>"Número Sequencial Registro no Lote ","posInicio"=>"9","posFim"=>"13","leng"=>"5","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G038","listFields"=>" ")
+            ,"CodSegRegDetalhe_G039"=>  array("nCmp"=>"05.3T","desc"=>"Segmento do Registro Detalhe ","posInicio"=>"14","posFim"=>"14","leng"=>"1","Dec"=>"0","type"=>"Alfanumérico","default"=>"T","codFebraban"=>"G039","listFields"=>" ")
+            ,"FEBRABAN1_G004"=>         array("nCmp"=>"06.3T","desc"=>"Uso Exclusivo FEBRABAN/CNAB ","posInicio"=>"15","posFim"=>"15","leng"=>"1","Dec"=>"0","type"=>"Alfanumérico","default"=>"Brancos ","codFebraban"=>"G004","listFields"=>" ")
+            ,"CodMovRetorno_C044"=>     array("nCmp"=>"07.3T","desc"=>"Código de Movimento Retorno ","posInicio"=>"16","posFim"=>"17","leng"=>"2","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"C044","listFields"=>
               array("02"=>"Entrada confirmada"
                     ,"03"=>"Entrada Rejeitada"
                     ,"04"=>"Transferência de Carteira/Entrada"
@@ -161,55 +157,55 @@ $SeguimentoT = array(
                     ,"44"=>"Título pago com cheque devolvido"
                     ,"50"=>"Título pago com cheque pendente de compensação.
               "))
-        ,"AgMantConta_G008"=>         array("nCmp"=>"08.3T","desc"=>"Agência Mantenedora da Conta ","posInicio"=>"18","posFim"=>"22","leng"=>"5","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G008","listFields"=>" ")
-        ,"DVAgMantConta_G009"=>          array("nCmp"=>"09.3T","desc"=>"Dígito Verificador da Agência ","posInicio"=>"23","posFim"=>"23","leng"=>"1","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G009","listFields"=>" ")
-        ,"NumContaC_G010"=>          array("nCmp"=>"10.3T","desc"=>"Número da Conta Corrente ","posInicio"=>"24","posFim"=>"35","leng"=>"12","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G010","listFields"=>" ")
-        ,"DVConta_G011"=>            array("nCmp"=>"11.3T","desc"=>"Dígito Verificador da Conta ","posInicio"=>"36","posFim"=>"36","leng"=>"1","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G011","listFields"=>" ")
-        ,"DVAgConta_G012"=>          array("nCmp"=>"12.3T","desc"=>"Dígito Verificador da Ag/Conta ","posInicio"=>"37","posFim"=>"37","leng"=>"1","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G012","listFields"=>" ")
-        ,"IdTituloBanco_G069"=>      array("nCmp"=>"13.3T","desc"=>"Identificação do Título ","posInicio"=>"38","posFim"=>"57","leng"=>"20","Dec"=>"- ","type"=>"Alfanumérico","default"=>"","codFebraban"=>"G069","listFields"=>" ")
-        ,"CodCarteira_C006"=>        array("nCmp"=>"14.3T","desc"=>"Código da Carteira ","posInicio"=>"58","posFim"=>"58","leng"=>"1","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"C006","listFields"=>" ")
-        ,"NumDocCobranca_C011"=>     array("nCmp"=>"15.3T","desc"=>"Número do Documento de Cobrança ","posInicio"=>"59","posFim"=>"73","leng"=>"15","Dec"=>"- ","type"=>"Alfanumérico","default"=>"","codFebraban"=>"C011","listFields"=>"Informação disponível somente em caso de cobrança registrada.")
-        ,"DataVencTit_C012"=>        array("nCmp"=>"16.3T","desc"=>"Data do Vencimento do Título ","posInicio"=>"74","posFim"=>"81","leng"=>"8","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"C012","listFields"=>"Informação disponível somente em caso de cobrança registrada.")
-        ,"VlrNominalTit_G070"=>      array("nCmp"=>"17.3T","desc"=>"Valor Nominal do Título ","posInicio"=>"82","posFim"=>"96","leng"=>"13","Dec"=>"2","type"=>"Numérico","default"=>"","codFebraban"=>"G070","listFields"=>" ")
-        ,"NumeroBanco_C045"=>        array("nCmp"=>"18.3T","desc"=>"Número do Banco ","posInicio"=>"97","posFim"=>"99","leng"=>"3","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"C045","listFields"=>" ")
-        ,"AgCobraReceb_G008"=>         array("nCmp"=>"19.3T","desc"=>"Agência Cobradora/Recebedora ","posInicio"=>"100","posFim"=>"104","leng"=>"5","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G008","listFields"=>" ")
-        ,"DVAgCobraReceb_G009"=>          array("nCmp"=>"20.3T","desc"=>"Dígito Verificador da Agência ","posInicio"=>"105","posFim"=>"105","leng"=>"1","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G009","listFields"=>" ")
-        ,"IdTituloEmpresa_G072"=>    array("nCmp"=>"21.3T","desc"=>"Identificação do Título na Empresa ","posInicio"=>"106","posFim"=>"130","leng"=>"25","Dec"=>"- ","type"=>"Alfanumérico","default"=>"","codFebraban"=>"G072","listFields"=>"Informação disponível somente em caso de cobrança registrada.")
-        ,"CodMoeda_G065"=>           array("nCmp"=>"22.3T","desc"=>"Código da Moeda ","posInicio"=>"131","posFim"=>"132","leng"=>"2","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G065","listFields"=>" ")
-        ,"tpPessoa_G005"=>           array("nCmp"=>"23.3T","desc"=>"Tipo de Inscrição ","posInicio"=>"133","posFim"=>"133","leng"=>"1","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G005","listFields"=>"Não informado.")
-        ,"tpPessoaNum_G006"=>        array("nCmp"=>"24.3T","desc"=>"Número de Inscrição ","posInicio"=>"134","posFim"=>"148","leng"=>"15","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"G006","listFields"=>"Não informado")
-        ,"NomeSacadorAvalista_G013"=>array("nCmp"=>"25.3T","desc"=>"Nome ","posInicio"=>"149","posFim"=>"188","leng"=>"40","Dec"=>"- ","type"=>"Alfanumérico","default"=>"","codFebraban"=>"G013","listFields"=>"Não informado.")
-        ,"NumContratoOpCred_C030"=>  array("nCmp"=>"26.3T","desc"=>"Nº do Contr. da Operação de Crédito ","posInicio"=>"189","posFim"=>"198","leng"=>"10","Dec"=>"- ","type"=>"Numérico","default"=>"","codFebraban"=>"C030","listFields"=>"Não informado.")
-        ,"VlrTarifa_G076"=>          array("nCmp"=>"27.3T","desc"=>"Valor da Tarifa / Custas ","posInicio"=>"199","posFim"=>"213","leng"=>"13","Dec"=>"2","type"=>"Numérico","default"=>"","codFebraban"=>"G076","listFields"=>" ")
-        ,"IdRejeicoes_C047"=>        array("nCmp"=>"28.3T","desc"=>"Identificação para Rejeições, Tarifas, Custas, Liquidação e Baixas","posInicio"=>"214","posFim"=>"223","leng"=>"10","Dec"=>"- ","type"=>"Alfanumérico","default"=>"","codFebraban"=>"C047","listFields"=>"Os códigos de Rejeições, Tarifas, Custas, Liquidações e Baixas, estão diretamente relacionados com os Códigos de Movimentos Retorno (pos. 16 e 17). Vide tabelas leiaute Febraban.")
-        ,"FEBRABAN2_G004"=>          array("nCmp"=>"29.3T","desc"=>"Uso Exclusivo FEBRABAN/CNAB ","posInicio"=>"224","posFim"=>"240","leng"=>"17","Dec"=>"- ","type"=>"Alfanumérico","default"=>"Brancos ","codFebraban"=>"G004","listFields"=>" ")
+            ,"AgMantConta_G008"=>        array("nCmp"=>"08.3T","desc"=>"Agência Mantenedora da Conta ","posInicio"=>"18","posFim"=>"22","leng"=>"5","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G008","listFields"=>" ")
+            ,"DVAgMantConta_G009"=>      array("nCmp"=>"09.3T","desc"=>"Dígito Verificador da Agência ","posInicio"=>"23","posFim"=>"23","leng"=>"1","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G009","listFields"=>" ")
+            ,"NumContaC_G010"=>          array("nCmp"=>"10.3T","desc"=>"Número da Conta Corrente ","posInicio"=>"24","posFim"=>"35","leng"=>"12","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G010","listFields"=>" ")
+            ,"DVConta_G011"=>            array("nCmp"=>"11.3T","desc"=>"Dígito Verificador da Conta ","posInicio"=>"36","posFim"=>"36","leng"=>"1","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G011","listFields"=>" ")
+            ,"DVAgConta_G012"=>          array("nCmp"=>"12.3T","desc"=>"Dígito Verificador da Ag/Conta ","posInicio"=>"37","posFim"=>"37","leng"=>"1","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G012","listFields"=>" ")
+            ,"IdTituloBanco_G069"=>      array("nCmp"=>"13.3T","desc"=>"Identificação do Título ","posInicio"=>"38","posFim"=>"57","leng"=>"20","Dec"=>"0","type"=>"Alfanumérico","default"=>"","codFebraban"=>"G069","listFields"=>" ")
+            ,"CodCarteira_C006"=>        array("nCmp"=>"14.3T","desc"=>"Código da Carteira ","posInicio"=>"58","posFim"=>"58","leng"=>"1","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"C006","listFields"=>" ")
+            ,"NumDocCobranca_C011"=>     array("nCmp"=>"15.3T","desc"=>"Número do Documento de Cobrança ","posInicio"=>"59","posFim"=>"73","leng"=>"15","Dec"=>"0","type"=>"Alfanumérico","default"=>"","codFebraban"=>"C011","listFields"=>"Informação disponível somente em caso de cobrança registrada.")
+            ,"DataVencTit_C012"=>        array("nCmp"=>"16.3T","desc"=>"Data do Vencimento do Título ","posInicio"=>"74","posFim"=>"81","leng"=>"8","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"C012","listFields"=>"Informação disponível somente em caso de cobrança registrada.")
+            ,"VlrNominalTit_G070"=>      array("nCmp"=>"17.3T","desc"=>"Valor Nominal do Título ","posInicio"=>"82","posFim"=>"96","leng"=>"13","Dec"=>"2","type"=>"Numérico","default"=>"","codFebraban"=>"G070","listFields"=>" ")
+            ,"NumeroBanco_C045"=>        array("nCmp"=>"18.3T","desc"=>"Número do Banco ","posInicio"=>"97","posFim"=>"99","leng"=>"3","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"C045","listFields"=>" ")
+            ,"AgCobraReceb_G008"=>       array("nCmp"=>"19.3T","desc"=>"Agência Cobradora/Recebedora ","posInicio"=>"100","posFim"=>"104","leng"=>"5","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G008","listFields"=>" ")
+            ,"DVAgCobraReceb_G009"=>     array("nCmp"=>"20.3T","desc"=>"Dígito Verificador da Agência ","posInicio"=>"105","posFim"=>"105","leng"=>"1","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G009","listFields"=>" ")
+            ,"IdTituloEmpresa_G072"=>    array("nCmp"=>"21.3T","desc"=>"Identificação do Título na Empresa ","posInicio"=>"106","posFim"=>"130","leng"=>"25","Dec"=>"0","type"=>"Alfanumérico","default"=>"","codFebraban"=>"G072","listFields"=>"Informação disponível somente em caso de cobrança registrada.")
+            ,"CodMoeda_G065"=>           array("nCmp"=>"22.3T","desc"=>"Código da Moeda ","posInicio"=>"131","posFim"=>"132","leng"=>"2","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G065","listFields"=>" ")
+            ,"tpPessoa_G005"=>           array("nCmp"=>"23.3T","desc"=>"Tipo de Inscrição ","posInicio"=>"133","posFim"=>"133","leng"=>"1","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G005","listFields"=>"Não informado.")
+            ,"tpPessoaNum_G006"=>        array("nCmp"=>"24.3T","desc"=>"Número de Inscrição ","posInicio"=>"134","posFim"=>"148","leng"=>"15","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"G006","listFields"=>"Não informado")
+            ,"NomeSacadorAvalista_G013"=>array("nCmp"=>"25.3T","desc"=>"Nome ","posInicio"=>"149","posFim"=>"188","leng"=>"40","Dec"=>"0","type"=>"Alfanumérico","default"=>"","codFebraban"=>"G013","listFields"=>"Não informado.")
+            ,"NumContratoOpCred_C030"=>  array("nCmp"=>"26.3T","desc"=>"Nº do Contr. da Operação de Crédito ","posInicio"=>"189","posFim"=>"198","leng"=>"10","Dec"=>"0","type"=>"Numérico","default"=>"","codFebraban"=>"C030","listFields"=>"Não informado.")
+            ,"VlrTarifa_G076"=>          array("nCmp"=>"27.3T","desc"=>"Valor da Tarifa / Custas ","posInicio"=>"199","posFim"=>"213","leng"=>"13","Dec"=>"2","type"=>"Numérico","default"=>"","codFebraban"=>"G076","listFields"=>" ")
+            ,"IdRejeicoes_C047"=>        array("nCmp"=>"28.3T","desc"=>"Identificação para Rejeições, Tarifas, Custas, Liquidação e Baixas","posInicio"=>"214","posFim"=>"223","leng"=>"10","Dec"=>"0","type"=>"Alfanumérico","default"=>"","codFebraban"=>"C047","listFields"=>"Os códigos de Rejeições, Tarifas, Custas, Liquidações e Baixas, estão diretamente relacionados com os Códigos de Movimentos Retorno (pos. 16 e 17). Vide tabelas leiaute Febraban.")
+            ,"FEBRABAN2_G004"=>          array("nCmp"=>"29.3T","desc"=>"Uso Exclusivo FEBRABAN/CNAB ","posInicio"=>"224","posFim"=>"240","leng"=>"17","Dec"=>"0","type"=>"Alfanumérico","default"=>"Brancos ","codFebraban"=>"G004","listFields"=>" ")
 );
 //@todo SeguimentoU
 $SeguimentoU = array(
-	"CodBancoComp_G001" =>          array("nCmp"=>"01.3U","desc"=>"Código do Banco na Compensação   ","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"0","type"=>"Num","default"=>"001","codFebraban"=>"G001","listFields"=>"")
-	,"LoteServico_G002" =>          array("nCmp"=>"02.3U","desc"=>"Lote de Serviço			","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"G002","listFields"=>"")
-	,"TipoRegistro_G003" =>         array("nCmp"=>"03.3U","desc"=>"Tipo de Registro 		","posInicio"=>"8","posFim"=>"8","leng"=>"1","Dec"=>"0","type"=>"Num","default"=>"‘3’ ","codFebraban"=>"G003","listFields"=>"")
-	,"NumSeqRegLote_G038" =>        array("nCmp"=>"04.3U","desc"=>"Nº Sequencial do Registro no Lote","posInicio"=>"9","posFim"=>"13","leng"=>"5","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"G038","listFields"=>"")
-	,"CodSegRegDetalhe_G039" =>     array("nCmp"=>"05.3U","desc"=>"Cód. Segmento do Registro Detalhe","posInicio"=>"14","posFim"=>"14","leng"=>"1","Dec"=>"0","type"=>"Alpha","default"=>"‘U’ ","codFebraban"=>"G039","listFields"=>"")
-	,"FEBRABAN1_G004" =>            array("nCmp"=>"06.3U","desc"=>"Uso Exclusivo FEBRABAN/CNAB 	","posInicio"=>"15","posFim"=>"15","leng"=>"1","Dec"=>"0","type"=>"Alpha","default"=>"Brancos ","codFebraban"=>"G004","listFields"=>"")
-	,"CodMovRetorno_C044" =>        array("nCmp"=>"07.3U","desc"=>"Código de Movimento Retorno 	","posInicio"=>"16","posFim"=>"17","leng"=>"2","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C044","listFields"=>"")
-	,"JurosMultas_C048" =>          array("nCmp"=>"08.3U","desc"=>"Juros / Multa / Encargos 	","posInicio"=>"18","posFim"=>"32","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C048","listFields"=>"")
-	,"Descontos_C049" =>            array("nCmp"=>"09.3U","desc"=>"Valor do Desconto Concedido 	","posInicio"=>"33","posFim"=>"47","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C049","listFields"=>"")
-	,"VlrAbatimento_C050" =>        array("nCmp"=>"10.3U","desc"=>"Valor do Abat. Concedido/Cancel. ","posInicio"=>"48","posFim"=>"62","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C050","listFields"=>"")
-	,"VlrIOF_G077" =>               array("nCmp"=>"11.3U","desc"=>"Valor do IOF Recolhido		","posInicio"=>"63","posFim"=>"77","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"G077","listFields"=>"")
-	,"VlrPagoSacado_C052" =>        array("nCmp"=>"12.3U","desc"=>"Valor Pago pelo Sacado 		","posInicio"=>"78","posFim"=>"92","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C052","listFields"=>"")
-	,"VlrLiquidoCreditado_G078" =>  array("nCmp"=>"13.3U","desc"=>"Valor Líquido a ser Creditado 	","posInicio"=>"93","posFim"=>"107","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"G078","listFields"=>"Valor pago pelo sacado menos a tarifa.")
-	,"VlrOutrasDespesas_C054" =>    array("nCmp"=>"14.3U","desc"=>"Valor de Outras Despesas 	","posInicio"=>"108","posFim"=>"122","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C054","listFields"=>"")
-	,"VlrOutrosCreditos_C055" =>    array("nCmp"=>"15.3U","desc"=>"Valor de Outros Créditos 	","posInicio"=>"123","posFim"=>"137","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C055","listFields"=>"")
-	,"DtOcorrencia_C056" =>         array("nCmp"=>"16.3U","desc"=>"Data da Ocorrência 		","posInicio"=>"138","posFim"=>"145","leng"=>"8","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C056","listFields"=>"")
-	,"DtEfetivCredito_C057" =>      array("nCmp"=>"17.3U","desc"=>"Data da Efetivação do Crédito 	","posInicio"=>"146","posFim"=>"153","leng"=>"8","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C057","listFields"=>"")
-	,"CodOcorrencia_A001" =>        array("nCmp"=>"18.3U","desc"=>"Código da Ocorrência 		","posInicio"=>"154","posFim"=>"157","leng"=>"4","Dec"=>"0","type"=>"Alpha","default"=>"","codFebraban"=>"A001","listFields"=>"Não informado no retorno.")
-	,"DtOcorrencia_C058" =>         array("nCmp"=>"19.3U","desc"=>"Data da Ocorrência 		","posInicio"=>"158","posFim"=>"165","leng"=>"8","Dec"=>"0","type"=>"Alpha","default"=>"","codFebraban"=>"C058","listFields"=>"Não informado no retorno.")
-	,"VlrOcorrencia_C059" =>        array("nCmp"=>"20.3U","desc"=>"Valor da Ocorrência 		","posInicio"=>"166","posFim"=>"180","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C059","listFields"=>"Não informado no retorno.")
-	,"ComplemOcorrencia_A002" =>    array("nCmp"=>"21.3U","desc"=>"Complem. da Ocorrência 		","posInicio"=>"181","posFim"=>"210","leng"=>"30","Dec"=>"0","type"=>"Alpha","default"=>"","codFebraban"=>"A002","listFields"=>"Não informado no retorno.")
-	,"CodBcoCompesacao_C031" =>     array("nCmp"=>"22.3U","desc"=>"Cód. Banco CorrespondenteCompens.","posInicio"=>"211","posFim"=>"213","leng"=>"3","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C031","listFields"=>"Não informado no retorno.")
-	,"NossoNumBancoCorresp_C032" => array("nCmp"=>"23.3U","desc"=>"Nosso Nº Banco Correspondente    ","posInicio"=>"214","posFim"=>"233","leng"=>"20","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C032","listFields"=>"Não informado no retorno.")
-	,"FEBRABAN2_G004" =>            array("nCmp"=>"24.3U","desc"=>"Uso Exclusivo FEBRABAN/CNAB 	","posInicio"=>"234","posFim"=>"240","leng"=>"7","Dec"=>"0","type"=>"Alpha","default"=>"Brancos ","codFebraban"=>"G004","listFields"=>"")
+            "CodBancoComp_G001" =>          array("nCmp"=>"01.3U","desc"=>"Código do Banco na Compensação   ","posInicio"=>"1","posFim"=>"3","leng"=>"3","Dec"=>"0","type"=>"Num","default"=>"001","codFebraban"=>"G001","listFields"=>"")
+            ,"LoteServico_G002" =>          array("nCmp"=>"02.3U","desc"=>"Lote de Serviço                  ","posInicio"=>"4","posFim"=>"7","leng"=>"4","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"G002","listFields"=>"")
+            ,"TipoRegistro_G003" =>         array("nCmp"=>"03.3U","desc"=>"Tipo de Registro 		    ","posInicio"=>"8","posFim"=>"8","leng"=>"1","Dec"=>"0","type"=>"Num","default"=>"3","codFebraban"=>"G003","listFields"=>"")
+            ,"NumSeqRegLote_G038" =>        array("nCmp"=>"04.3U","desc"=>"Nº Sequencial do Registro no Lote","posInicio"=>"9","posFim"=>"13","leng"=>"5","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"G038","listFields"=>"")
+            ,"CodSegRegDetalhe_G039" =>     array("nCmp"=>"05.3U","desc"=>"Cód. Segmento do Registro Detalhe","posInicio"=>"14","posFim"=>"14","leng"=>"1","Dec"=>"0","type"=>"Alpha","default"=>"U","codFebraban"=>"G039","listFields"=>"")
+            ,"FEBRABAN1_G004" =>            array("nCmp"=>"06.3U","desc"=>"Uso Exclusivo FEBRABAN/CNAB 	    ","posInicio"=>"15","posFim"=>"15","leng"=>"1","Dec"=>"0","type"=>"Alpha","default"=>"Brancos ","codFebraban"=>"G004","listFields"=>"")
+            ,"CodMovRetorno_C044" =>        array("nCmp"=>"07.3U","desc"=>"Código de Movimento Retorno      ","posInicio"=>"16","posFim"=>"17","leng"=>"2","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C044","listFields"=>"")
+            ,"JurosMultas_C048" =>          array("nCmp"=>"08.3U","desc"=>"Juros / Multa / Encargos 	    ","posInicio"=>"18","posFim"=>"32","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C048","listFields"=>"")
+            ,"Descontos_C049" =>            array("nCmp"=>"09.3U","desc"=>"Valor do Desconto Concedido      ","posInicio"=>"33","posFim"=>"47","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C049","listFields"=>"")
+            ,"VlrAbatimento_C050" =>        array("nCmp"=>"10.3U","desc"=>"Valor do Abat. Concedido/Cancel. ","posInicio"=>"48","posFim"=>"62","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C050","listFields"=>"")
+            ,"VlrIOF_G077" =>               array("nCmp"=>"11.3U","desc"=>"Valor do IOF Recolhido           ","posInicio"=>"63","posFim"=>"77","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"G077","listFields"=>"")
+            ,"VlrPagoSacado_C052" =>        array("nCmp"=>"12.3U","desc"=>"Valor Pago pelo Sacado           ","posInicio"=>"78","posFim"=>"92","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C052","listFields"=>"")
+            ,"VlrLiquidoCreditado_G078" =>  array("nCmp"=>"13.3U","desc"=>"Valor Líquido a ser Creditado    ","posInicio"=>"93","posFim"=>"107","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"G078","listFields"=>"Valor pago pelo sacado menos a tarifa.")
+            ,"VlrOutrasDespesas_C054" =>    array("nCmp"=>"14.3U","desc"=>"Valor de Outras Despesas         ","posInicio"=>"108","posFim"=>"122","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C054","listFields"=>"")
+            ,"VlrOutrosCreditos_C055" =>    array("nCmp"=>"15.3U","desc"=>"Valor de Outros Créditos 	    ","posInicio"=>"123","posFim"=>"137","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C055","listFields"=>"")
+            ,"DtOcorrencia_C056" =>         array("nCmp"=>"16.3U","desc"=>"Data da Ocorrência 		    ","posInicio"=>"138","posFim"=>"145","leng"=>"8","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C056","listFields"=>"")
+            ,"DtEfetivCredito_C057" =>      array("nCmp"=>"17.3U","desc"=>"Data da Efetivação do Crédito    ","posInicio"=>"146","posFim"=>"153","leng"=>"8","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C057","listFields"=>"")
+            ,"CodOcorrencia_A001" =>        array("nCmp"=>"18.3U","desc"=>"Código da Ocorrência             ","posInicio"=>"154","posFim"=>"157","leng"=>"4","Dec"=>"0","type"=>"Alpha","default"=>"","codFebraban"=>"A001","listFields"=>"Não informado no retorno.")
+            ,"DtOcorrencia_C058" =>         array("nCmp"=>"19.3U","desc"=>"Data da Ocorrência               ","posInicio"=>"158","posFim"=>"165","leng"=>"8","Dec"=>"0","type"=>"Alpha","default"=>"","codFebraban"=>"C058","listFields"=>"Não informado no retorno.")
+            ,"VlrOcorrencia_C059" =>        array("nCmp"=>"20.3U","desc"=>"Valor da Ocorrência              ","posInicio"=>"166","posFim"=>"180","leng"=>"13","Dec"=>"2","type"=>"Num","default"=>"","codFebraban"=>"C059","listFields"=>"Não informado no retorno.")
+            ,"ComplemOcorrencia_A002" =>    array("nCmp"=>"21.3U","desc"=>"Complem. da Ocorrência           ","posInicio"=>"181","posFim"=>"210","leng"=>"30","Dec"=>"0","type"=>"Alpha","default"=>"","codFebraban"=>"A002","listFields"=>"Não informado no retorno.")
+            ,"CodBcoCompesacao_C031" =>     array("nCmp"=>"22.3U","desc"=>"Cód. Banco CorrespondenteCompens.","posInicio"=>"211","posFim"=>"213","leng"=>"3","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C031","listFields"=>"Não informado no retorno.")
+            ,"NossoNumBancoCorresp_C032" => array("nCmp"=>"23.3U","desc"=>"Nosso Nº Banco Correspondente    ","posInicio"=>"214","posFim"=>"233","leng"=>"20","Dec"=>"0","type"=>"Num","default"=>"","codFebraban"=>"C032","listFields"=>"Não informado no retorno.")
+            ,"FEBRABAN2_G004" =>            array("nCmp"=>"24.3U","desc"=>"Uso Exclusivo FEBRABAN/CNAB      ","posInicio"=>"234","posFim"=>"240","leng"=>"7","Dec"=>"0","type"=>"Alpha","default"=>"Brancos","codFebraban"=>"G004","listFields"=>"")
 );
 
 //@todo Trailer do lote
