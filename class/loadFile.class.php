@@ -51,5 +51,5 @@ $retornoBB->loadFile("../retorno/RET999999.RET");
 var_dump($retornoBB->getRetornoMapeado());
 
 foreach ($retornoBB->getRetornoMapeado() as $key => $value) {
-    //echo $key." -> ".$value."<br>";
+    //@TOTO: ler a tabela e atulizar no banco
 }
