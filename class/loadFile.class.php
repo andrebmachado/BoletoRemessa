@@ -1,53 +1,55 @@
 <?php
 include_once 'dataSet.class.php';
+//$testLinha1 = "11122223444445677888889000000000000ASCCCCCCCCCCCCCCCCCCCCDEEEEEEEEEEEEEEEFFFFFFFFGGGGGGGGGGGGGGGHHHIIIIIJKKKKKKKKKKKKKKKKKKKKKKKKKLLMNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPQQQQQQQQQQQQQQQRRRRRRRRRRSSSSSSSSSSSSSSSSS";
+//$testLinha2 = "11122223444445677888888888888888999999999999999000000000000000AAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEFFFFFFFFGGGGGGGGHHHHIIIIIIIIJJJJJJJJJJJJJJJKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLMMMMMMMMMMMMMMMMMMMMNNNNNNN";
+
 class loadFile{  
-    
-    private $dataSet=[];
-    private $tableData=[];
-    //private $linha1 = "11122223444445677888889000000000000ASCCCCCCCCCCCCCCCCCCCCDEEEEEEEEEEEEEEEFFFFFFFFGGGGGGGGGGGGGGGHHHIIIIIJKKKKKKKKKKKKKKKKKKKKKKKKKLLMNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOPPPPPPPPPPQQQQQQQQQQQQQQQRRRRRRRRRRSSSSSSSSSSSSSSSSS";
-    //private $linha2 = "11122223444445677888888888888888999999999999999000000000000000AAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEFFFFFFFFGGGGGGGGHHHHIIIIIIIIJJJJJJJJJJJJJJJKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKLLLMMMMMMMMMMMMMMMMMMMMNNNNNNN";
+    private $dataSetT=[];
+    private $dataSetU=[];
+    private $table=[];
     private $fileName;
     private $ponteiro;
-    private $linhaArquivo;
-    private $seguimentoU=[];
+    private $linhaArquivo;   
     
     public function __construct($params=[]){
-        $this->dataSet = $params;
-        //var_dump($this->dataSet);
+        $this->dataSetT = $params['SeguimentoT'];
+        $this->dataSetU = $params['SeguimentoU'];
+        //var_dump($this->dataSetU);
     }
-    
     public function loadFile($fileName){
         $this->fileName = $fileName;
         $this->ponteiro = fopen ($this->fileName,"r");
         while(!feof($this->ponteiro)){
             $this->linhaArquivo = fgets($this->ponteiro,4096);
-            $this->linhaArquivo;
             $this->splitLine();
         }     
         //fclose($this->fileName);
     } 
-
-    public function splitLine(){
-        foreach ($this->dataSet as $key => $value) {
-            if(substr($this->linhaArquivo ,13, 1)=="T"){
-                $this->seguimentoU[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
-            }
-            if(substr($this->linhaArquivo ,13, 1)=="U"){
-                $this->seguimentoU[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
-            }
-            //echo $this->seguimentoU[$key];
-            //echo substr($this->linha1 ,$value['posInicio']-1, $value['leng']+$value['Dec'])." ------- ";
-            //echo $key." - <b>Inicio</b>".$value['posInicio']." - <b>Fim</b>".$value['posFim']." - <b>Tam</b>".$value['leng']."<br>";
+    private function splitLine(){
+        $arr="";
+        if(substr($this->linhaArquivo ,13, 1)=="T"){
+            foreach ($this->dataSetT as $key => $value) {            
+                 $arr[] = (object)$key."=>".substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']).",";
+            }   
+            $this->table[] = $arr;
         }
-        var_dump($this->seguimentoU);
+        if(substr($this->linhaArquivo ,13, 1)=="U"){
+            foreach ($this->dataSetU as $key => $value) {            
+                $arr[] = $key."=>".substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+            }
+            $this->table[] = $arr;
+        }
     }
-
-    
-    
+    public function getRetornoMapeado(){
+        return $this->table;
+    }
 }
 
 echo "<pre>";
-$retornoBB = new loadFile($SeguimentoT);
-$retornoBB->splitLine();
+$retornoBB = new loadFile(array("SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
 $retornoBB->loadFile("../retorno/RET999999.RET");
+var_dump($retornoBB->getRetornoMapeado());
 
+foreach ($retornoBB->getRetornoMapeado() as $key => $value) {
+    //echo $key." -> ".$value."<br>";
+}
