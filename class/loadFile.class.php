@@ -9,7 +9,8 @@ class loadFile{
     private $table=[];
     private $fileName;
     private $ponteiro;
-    private $linhaArquivo;   
+    private $linhaArquivo;  
+    private $arr;
     
     public function __construct($params=[]){
         $this->dataSetT = $params['SeguimentoT'];
@@ -26,18 +27,23 @@ class loadFile{
         //fclose($this->fileName);
     } 
     private function splitLine(){
-        $arr="";
         if(substr($this->linhaArquivo ,13, 1)=="T"){
+            $this->arr="";
+        }
+        if(substr($this->linhaArquivo ,13, 1)=="T"){
+            
             foreach ($this->dataSetT as $key => $value) {            
-                 $arr[] = (object)$key."=>".substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']).",";
-            }   
-            $this->table[] = $arr;
+                if($value['Dec']!=0){
+                    
+                }
+                $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+            }
         }
         if(substr($this->linhaArquivo ,13, 1)=="U"){
             foreach ($this->dataSetU as $key => $value) {            
-                $arr[] = $key."=>".substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+                $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
             }
-            $this->table[] = $arr;
+           $this->table[] = $this->arr;
         }
     }
     public function getRetornoMapeado(){
