@@ -6,14 +6,14 @@ $remessaBB = new dataSource();
 //HeaderDoArquivo
 $remessaBB->Append($headerArquivo);
 $remessaBB->addField("CodBancoComp_G001", $CodBancoComp_G001);  /*03 Banco do Brasil 001 */
-$remessaBB->addField("LoteServico_G002", $LoteServico_G002);    /*04 */
+$remessaBB->addField("LoteServico_G002", $LoteServico_G002);    /*04 Nexxera Pediu pra enviar DDMMYYYY*/
 $remessaBB->addField("TipoRegistro_G003", 0);                   /*01 0-Header do arquivo*/
 $remessaBB->addField("FEBRABAN1_G004", "");                     /*09 Brancos */
 $remessaBB->addField("tpPessoa_G005", $tpPessoa_G005);          /*01 1-CPF 2-CNPJ */
 $remessaBB->addField("tpPessoaNum_G006", $tpPessoaNum_G006);    /*14 */
 
 $ConvBanco_G007_1 = $ConvBanco_G007." ";
-$remessaBB->addField("CodConvBanco_G007",$ConvBanco_G007_1);      /*20 Brancos */
+$remessaBB->addField("CodConvBanco_G007",$ConvBanco_G007_1);    /*20 Brancos */
 $remessaBB->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
 $remessaBB->addField("DVAgencia_G009", $DVAgencia_G009);        /*01 */
 $remessaBB->addField("NumContaC_G010", $NumContaC_G010);        /*12 */
@@ -26,7 +26,7 @@ $remessaBB->addField("CodRemRet_G015", "1");                    /*01 1-Remessa(C
 $remessaBB->addField("DataGeracao_G016", $DataGeracao_G016);    /*08 DDMMAAAA */
 $remessaBB->addField("HoraGeracao_G017", "000000");             /*06 Zeros Informar zeros ou hora no formato HHMMSS*/ 
 $remessaBB->addField("NumSeqArquivo_G018", $NumSeqArquivo_G018);/*06 ???? Numero sequencial de controle */
-$remessaBB->addField("LayoutArquivo_G019","0");                 /*03 Zeros */      
+$remessaBB->addField("LayoutArquivo_G019","083");               /*03 Zeros  -  - Nexxera Pediu pra enviar 083*/      
 $remessaBB->addField("DensGravArquivo_G020", "");               /*05 Brancos */
 $remessaBB->addField("ReservBB_G021", "");                      /*20 Brancos */
 $remessaBB->addField("ReservEmpresa_G022","");                  /*20 Não tratado*/
@@ -41,7 +41,7 @@ $remessaBB->addField("TipoRegistro_G003", 1);                    /*01 1-Header d
 $remessaBB->addField("TipoOperacao_G028", "R");                  /*01 R–Remessa, T–Retorno.*/
 $remessaBB->addField("TipoServico_G025", "01");                  /*02 Default(01)*/
 $remessaBB->addField("FEBRABAN1_G004", "");                      /*02 Brancos*/
-$remessaBB->addField("LayoutArquivo_G030", "0");                 /*03 Zeros Campo nao criticado*/
+$remessaBB->addField("LayoutArquivo_G030", "042");               /*03 Zeros Campo nao criticado - Nexxera Pediu pra enviar 042*/
 $remessaBB->addField("FEBRABAN2_G004", "");                      /*01 Brancos*/
 $remessaBB->addField("tpPessoa_G005", $tpPessoa_G005);           /*01 1-CPF 2-CNPJ */
 $remessaBB->addField("tpPessoaNum_G006", $tpPessoaNum_G006);     /*15 */
@@ -69,8 +69,7 @@ function df($d,$format){
 
 $Linha = $SReg;
 $NumSeqRegLote_G038=0;
-foreach($Linha as $col){
-    $NumSeqRegLote_G038++;
+foreach($Linha as $col){    
     $I_BOLETO_ID    = $col->I_BOLETO_ID;
     $I_NOSSONUMERO  = $col->I_NOSSONUMERO;
     $I_REQUISICAO   = str_pad($col->I_REQUISICAO,10,'0',STR_PAD_LEFT);
@@ -82,6 +81,7 @@ foreach($Linha as $col){
     $D_VENCIMENTO   = df($col->D_VENCIMENTO,"dmY");
     
     //--------------------------------------------------------------------Seguimento P--------------------------------------------------------------------
+    $NumSeqRegLote_G038++;
     $IdTituloBanco_G069 = $_NumeroConvenio.$I_REQUISICAO;            /*07Digitos numero do convenio + 10 Digitos Num Sequencial de controle */
     $remessaBB->Append($SeguimentoP); 
     $remessaBB->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03 */
@@ -130,6 +130,7 @@ foreach($Linha as $col){
     $remessaBB->post();//Fim seguimento P
     
     //--------------------------------------------------------------------Seguimento Q--------------------------------------------------------------------
+    $NumSeqRegLote_G038++;
     $tpPessoa_G005=2;
     $tpPessoaNum_G006=preg_replace("/[^0-9]/", "", $col->CNPJ);
     $Nome_G013       =   $col->Razao_Social;
@@ -146,14 +147,14 @@ foreach($Linha as $col){
     $remessaBB->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
     $remessaBB->addField("CodSegRegDetalhe_G039","Q");              /*01 */
     $remessaBB->addField("FEBRABAN1_G004","");                      /*01 */
-/**/$remessaBB->addField("CodMovRemessa_C004","01");                /*02  */
+/**/$remessaBB->addField("CodMovRemessa_C004","01");                /*02 */
     $remessaBB->addField("tpPessoa_G005",$tpPessoa_G005);           /*01 */
     $remessaBB->addField("tpPessoaNum_G006",$tpPessoaNum_G006);     /*15 */
     $remessaBB->addField("Nome_G013", utf8_encode($Nome_G013));     /*40 */
     $remessaBB->addField("Endereco_G032"," ");                      /*40 */
     $remessaBB->addField("Bairro_G032"," ");                        /*15 */
-    $remessaBB->addField("CEP_G032"," ");                           /*05 */
-    $remessaBB->addField("SufixoCEP_G034"," ");                     /*03 */
+    $remessaBB->addField("CEP_G032","00000");                       /*05 Nexxera prencher com zeros*/ 
+    $remessaBB->addField("SufixoCEP_G034","000");                   /*03 Nexxera prencher com zeros*/
     $remessaBB->addField("Cidade_G033","Cidade");                   /*15 */
     $remessaBB->addField("UF_G036","UF");                           /*02 */
     $remessaBB->addField("TipoInsc_G005","");                       /*01 Brancos(Sacador/Avalista)*/
@@ -199,7 +200,7 @@ $remessaBB->post();//Fim trailer do lote
 //Trailer do arquivo 
 $remessaBB->Append($TrailerArquivo);
 $remessaBB->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do banco cedente */
-$remessaBB->addField("LoteServico_G002",$LoteServico_G002);     /*04  */
+$remessaBB->addField("LoteServico_G002",9999);                  /*04  Nexxera Pediu pra enviar 9999*/
 $remessaBB->addField("TipoRegistro_G003",9);                    /*01  '9' = Trailer de Arquivo*/
 $remessaBB->addField("FEBRABAN1_G004","");                      /*09  */
 $remessaBB->addField("QtdeLoteArquivo_G049",1);                 /*06  Auto Somatória dos registros de tipo 1-Header do lote */
@@ -234,3 +235,8 @@ foreach (glob("remessa/*.tx3") as $filename) {
 }
 $remessaBB->saveToFile("");
 $remessaBB->saveToFile($file);
+
+echo "<pre>";
+$retornoBB = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
+$retornoBB->loadFile($file);
+var_dump($retornoBB->getRetornoMapeado());

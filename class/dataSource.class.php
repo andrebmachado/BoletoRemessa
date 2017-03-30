@@ -10,6 +10,7 @@ class dataSource{
     private $castType;
     private $QtdeRegsArquivo_G056;
     private $QtdeRegistLote_G057;
+    private $NumSeqRegLote_G038=1;
     
     public function getFieldName(){
         return $this->fieldName;
@@ -77,23 +78,25 @@ class dataSource{
             //Soma quantidade de registros do arquivo conforma o tipo 0,1,3,5,9
             if($fieldName=='QtdeRegistArquivo_G056'){
                 $fieldValue = $this->QtdeRegsArquivo_G056;
-                //debug echo $fieldName."=".$fieldValue."<br>";
             }
+            //Numero sequencial de registros do lote (Ex: 1P, 2Q, 3P, 4Q)
+            if($fieldName=='NumSeqRegLote_G038'){
+                $fieldValue = $this->NumSeqRegLote_G038++;
+            }            
             //Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5
             if($fieldName=='TipoRegistro_G003' and $fieldValue>=1 and $fieldValue<=5){
                 $this->QtdeRegistLote_G057++;                 
             }else if($fieldName=='QtdeRegistLote_G057'){
                 $fieldValue = $this->QtdeRegistLote_G057;
-                //echo $fieldName."=".$fieldValue."<br>";
             }
+            //Verifica se o campo informado existe no dataset
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
-                //$this->fieldName = "Field: ".$fieldName;
                 if($this->castType->value($fieldValue)['status']){
                     $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];      
                     $this->lineString .= $this-> castType->value($fieldValue)['retorno'];
                 }
-            }else{        
+            }else{//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
                 $words  = array_keys($this->dataSet);
                 $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
                 $this->Exception($msg);

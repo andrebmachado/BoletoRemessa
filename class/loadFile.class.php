@@ -26,26 +26,63 @@ class loadFile{
         }     
         //fclose($this->fileName);
     } 
+    
+    public function separaDecimal($str,$nDecimal=2,$separador=","){
+        return substr($str, 0,-$nDecimal).$separador.substr($str, -$nDecimal);
+    }
+    
+    /*
+     * Verifica se existe uma chave/valor no array
+     * @param $array onde buscar
+     * @param $chave que esta buscado
+     * @param $valor par da $chave que esta buscando
+     */
+    public function findKeyValue_Array($array,$chave,$valor){
+        foreach ($array as $key => $value) {
+            if(($key==$chave) and ($value==$valor)){
+                return true;            
+            }else{
+                return false;
+            }
+        }
+    }      
+    
     private function splitLine(){
         if(substr($this->linhaArquivo ,13, 1)=="T"){
             $this->arr="";
         }
-        if(substr($this->linhaArquivo ,13, 1)=="T"){
-            
-            foreach ($this->dataSetT as $key => $value) {            
-                if($value['Dec']!=0){
-                    
+        if(substr($this->linhaArquivo ,13, 1)=="T"){            
+            //Percorre o datasetT para splitar os campos
+            foreach($this->dataSetT as $key => $value){
+                if($value['Dec']!=0){//Verifica se o campo tem decimal e coloca virgula
+                    $campo = $this->separaDecimal(substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']), 2, ",");
+                } else {
+                    $campo = $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);                    
                 }
-                $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+                $this->arr[$key] = $campo;
+                
             }
+            //$this->table[] = $this->arr;
         }
         if(substr($this->linhaArquivo ,13, 1)=="U"){
-            foreach ($this->dataSetU as $key => $value) {            
-                $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+            //Percorre o datasetU para splitar os campos
+            foreach ($this->dataSetU as $key => $value) {
+                if($value['Dec']!=0){
+                    $campo = $this->separaDecimal(substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']));                    
+                } else {
+                    $campo = $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
+                } 
+                if($key === 'CodSegRegDetalhe_G039'){
+                    $campo="T e U";
+                }
+                if(!$this->findKeyValue_Array($this->arr, $key, $value)){
+                    $this->arr[$key] = $campo;
+                }
             }
            $this->table[] = $this->arr;
         }
     }
+    
     public function getRetornoMapeado(){
         return $this->table;
     }
