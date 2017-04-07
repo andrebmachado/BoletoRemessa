@@ -25,6 +25,7 @@ $headerArquivo = array(
             ,"ReservBB_G021"       =>array("nCmp"=>"22.0","posInicio"=>"172","posFim"=>"191","leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")  /*campo nao criticado - zeros ou 01600 ou 06250*/
             ,"ReservEmpresa_G022"  =>array("nCmp"=>"23.0","posInicio"=>"192","posFim"=>"211","leng"=>"20","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")  /* a criterio da empresa */         
             ,"FEBRABAN3_G004"      =>array("nCmp"=>"24.0","posInicio"=>"212","posFim"=>"240","leng"=>"29","Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")  /* a criterio da empresa */            
+            ,"CampoOpcional_OPT"   =>array("nCmp"=>"24.0","posInicio"=>"212","posFim"=>"240","leng"=>"","Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")  /* a criterio da empresa */            
         );  
 //@todo header do lote
 $headerLote = array(

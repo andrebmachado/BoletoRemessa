@@ -12,7 +12,8 @@ $remessaBB->addField("FEBRABAN1_G004", "");                     /*09 Brancos */
 $remessaBB->addField("tpPessoa_G005", 2);                       /*01 1-CPF 2-CNPJ */
 $remessaBB->addField("tpPessoaNum_G006", $tpPessoaNum_G006);    /*14 */
 
-$ConvBanco_G007_1 = $ConvBanco_G007." ";
+//$ConvBanco_G007_1 = $ConvBanco_G007." ";
+$remessaBB->addField("CampoOpcional_OPT",00000000000000000000); /*20 Brancos */
 $remessaBB->addField("CodConvBanco_G007",$ConvBanco_G007_1);    /*20 Brancos */
 $remessaBB->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
 $remessaBB->addField("DVAgencia_G009", $DVAgencia_G009);        /*01 */
