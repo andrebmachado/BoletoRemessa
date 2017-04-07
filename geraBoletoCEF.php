@@ -1,15 +1,15 @@
 <?php
-include_once 'novaRemessa.php';
+include_once 'novaRemessaCEF.php';
 //echo $LoteServico_G002."<br>";
 
 $remessaBB = new dataSource();
 //HeaderDoArquivo
 $remessaBB->Append($headerArquivo);
 $remessaBB->addField("CodBancoComp_G001", $CodBancoComp_G001);  /*03 Banco do Brasil 001 */
-$remessaBB->addField("LoteServico_G002", "0000");    /*04 */
+$remessaBB->addField("LoteServico_G002", "0000");               /*04 */
 $remessaBB->addField("TipoRegistro_G003", 0);                   /*01 0-Header do arquivo*/
 $remessaBB->addField("FEBRABAN1_G004", "");                     /*09 Brancos */
-$remessaBB->addField("tpPessoa_G005", $tpPessoa_G005);          /*01 1-CPF 2-CNPJ */
+$remessaBB->addField("tpPessoa_G005", 2);                       /*01 1-CPF 2-CNPJ */
 $remessaBB->addField("tpPessoaNum_G006", $tpPessoaNum_G006);    /*14 */
 
 $ConvBanco_G007_1 = $ConvBanco_G007." ";

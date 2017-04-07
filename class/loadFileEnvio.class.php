@@ -33,6 +33,22 @@ class loadFile{
         //fclose($this->fileName);
     } 
     
+    /*
+     * Verifica se existe uma chave/valor no array
+     * @param $array onde buscar
+     * @param $chave que esta buscado
+     * @param $valor par da $chave que esta buscando
+     */
+    public function findKeyValue_Array($array,$chave,$valor){                
+        foreach ($array as $key => $value) {
+            if(($key==$chave) and ($value==$valor)){
+                return true;            
+            }else{
+                return false;
+            }
+        }
+    }      
+        
     public function separaDecimal($str,$nDecimal=2,$separador=","){
         return substr($str, 0,-$nDecimal).$separador.substr($str, -$nDecimal);
     }
@@ -51,7 +67,7 @@ class loadFile{
                 }
                 $this->arr[$key] = $campo;                
             }
-            $this->table[] = $this->arr;
+            //$this->table[] = $this->arr;
         }
         if(substr($this->linhaArquivo ,13, 1)=="Q"){
             //Percorre o datasetQ para splitar os campos
@@ -63,10 +79,14 @@ class loadFile{
                 }
                 if($key === 'CodSegRegDetalhe_G039'){
                     $campo="P e Q";
-                }             
-                $this->arr[$key] = $campo;                                
+                }           
+                if($this->findKeyValue_Array($this->arr, $key, $campo)){
+                    $this->arr[$key."_2"] = $campo;                   
+                }else{                
+                    $this->arr[$key] = $campo;
+                }
             }
-            $this->table[] = $this->arr;
+            $this->table[] = $this->arr;            
         }
     }
     

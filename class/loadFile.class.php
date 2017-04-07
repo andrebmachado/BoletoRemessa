@@ -38,6 +38,7 @@ class loadFile{
      * @param $valor par da $chave que esta buscando
      */
     public function findKeyValue_Array($array,$chave,$valor){
+        echo "<b>Chave:</b>".$chave." <b>Valor:</b>".$valor."<br>";
         foreach ($array as $key => $value) {
             if(($key==$chave) and ($value==$valor)){
                 return true;            
@@ -60,7 +61,6 @@ class loadFile{
                     $campo = $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);                    
                 }
                 $this->arr[$key] = $campo;
-                
             }
             //$this->table[] = $this->arr;
         }
@@ -75,8 +75,10 @@ class loadFile{
                 if($key === 'CodSegRegDetalhe_G039'){
                     $campo="T e U";
                 }
-                if(!$this->findKeyValue_Array($this->arr, $key, $value)){
+                if($this->findKeyValue_Array($this->arr, $key, $campo)){
                     $this->arr[$key] = $campo;
+                }else {
+                    $this->arr[$key."_2"] = $campo;
                 }
             }
            $this->table[] = $this->arr;
