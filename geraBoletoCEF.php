@@ -101,11 +101,13 @@ foreach($Linha as $col){
     $remessaCEF->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
     $remessaCEF->addField("DVAgencia_G009",$DVAgencia_G009);         /*01 */
     $remessaCEF->addField("CampoPersonalizado","",["Valor"=>"0","leng"=>"6","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*G007 Cod.Conv.Banco Caixa*/    
-    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>"0","leng"=>"8","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*Campo11.3 EXCLUSIVO CAIXA*/
+    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>"0","leng"=>"8","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*Campo11.3 EXCLUSIVO CAIXA*/    
+/**/$remessaCEF->addField("CampoPersonalizado","",["Valor"=>"0","leng"=>"2","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*Campo12.3 Filler Caixa   */
+        
+    //NOSSO NUMERO CAMPO 13.3P 
+    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$I_NOSSONUMERO,"leng"=>"18","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*Campo12.3 Filler Caixa*/
     
-    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>"0","leng"=>"2","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*Campo12.3 Filler Caixa   */
     
-    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$I_REQUISICAO,"leng"=>"15","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*Campo12.3 Filler Caixa*/
     
     //$remessaCEF->addField("NumContaC_G010",$NumContaC_G010);         /*12 */    
     //$remessaCEF->addField("DVConta_G011", $DVConta_G011);            /*01 */
