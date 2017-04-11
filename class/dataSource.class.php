@@ -72,9 +72,22 @@ class dataSource{
                 } else { 
                     return 0; 
                 } 
-            } 
-    
-    public  function addField($fieldName,$fieldValue){        
+            }     
+    private function CampoPersonalizado($params){        
+        $valor = $params['Valor'];
+        if(empty($params['Valor'])){
+            $valor = $params['Default'];            
+        }        
+        if(isset($params['SIDE_STR'])){
+            if($params['SIDE_STR']=="L"){
+                $SIDE_STR=STR_PAD_LEFT;
+            }else if($params['SIDE_STR']=="R"){
+                $SIDE_STR =STR_PAD_RIGHT;
+            }            
+        }
+        return str_pad($valor,$params['leng'],$params['valueReplace'],$SIDE_STR);        
+    }
+    public  function addField($fieldName,$fieldValue,$fieldParams=array()){        
             //Soma quantidade de registros do arquivo conforma o tipo 0,1,3,5,9
             if($fieldName=='QtdeRegistArquivo_G056'){
                 $fieldValue = $this->QtdeRegsArquivo_G056;
@@ -93,9 +106,14 @@ class dataSource{
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
                 if($this->castType->value($fieldValue)['status']){
-                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];      
-                    $this->lineString .= $this-> castType->value($fieldValue)['retorno'];
+                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
+                    $this->lineString .= $this->castType->value($fieldValue)['retorno'];
                 }
+            }else if($fieldName=="CampoPersonalizado"){
+                //echo $this->CampoPersonalizado($fieldParams);
+                $this->lineString .= $this->CampoPersonalizado($fieldParams);
+                //var_dump($this->lineString);
+                //exit;
             }else{//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
                 $words  = array_keys($this->dataSet);
                 $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);

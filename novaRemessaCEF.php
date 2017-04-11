@@ -45,7 +45,7 @@ $SemRegistros = $con->prepare("
     from boleto_avulso b2 
         left join boleto_remessa_reg rg on b2.I_NOSSONUMERO =rg.I_BOLETO_AVULSO
     where rg.I_BOLETO is null
-    limit 2");//
+    limit 1");//
     try{
         $SemRegistros->execute();
         $SReg     = $SemRegistros->fetchAll(PDO::FETCH_OBJ);        
