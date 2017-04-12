@@ -190,14 +190,13 @@ foreach($Linha as $col){
                 . "I_BOLETO_AVULSO=".$col->I_BOLETO_AVULSO_ID;    
         $Reg = $con->prepare($SQLReg);
         //echo $SQLReg."<br>";
-        $Reg->execute();        
+        //$Reg->execute();        
     } catch (Exception $e) {
         echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                                 
     }     
     
 
 }
-
 //Trailer do lote
 $remessaCEF->Append($TrailerLote);
 $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do banco cedente */
@@ -205,7 +204,11 @@ $remessaCEF->addField("LoteServico_G002",$LoteServico_G002);     /*04  */
 $remessaCEF->addField("TipoRegistro_G003",5);                    /*01  '5'= Trailer de Lote*/
 $remessaCEF->addField("FEBRABAN1_G004","");                      /*09  Brancos*/
 $remessaCEF->addField("QtdeRegistLote_G057","");                 /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
-$remessaCEF->addField("FEBRABAN2_G004","");                      /*217 */
+$remessaCEF->addField("QtdeTitCobranca_C070","");                /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart_C071","");                /*06  C071 Valor total dos titulos */
+
+//$remessaCEF->addField("FEBRABAN2_G004","");                    /*217 */
+
 $remessaCEF->post();//Fim trailer do lote
 
 //Trailer do arquivo 
@@ -221,19 +224,19 @@ $remessaCEF->addField("FEBRABAN2_G004","");                      /*205 */
 $remessaCEF->post();//Fim trailer do arquivo 
 
 echo "<pre>".$remessaCEF->getStringFile();
-try{
-    $sql =  "UPDATE boleto_remessa SET "
-            . "TLQtdeRegistLote_G057=".$remessaCEF->getQtdeRegistLote_G057()
-            . ",TAQtdeLoteArquivo_G049=1"
-            .",TAQtdeRegistArquivo_G056=".$remessaCEF->getQtdeRegsArquivo_G056()
-            .",ArquivoRemessa=\"".$remessaCEF->getStringFile()."\""
-            ." WHERE LoteServico_G002=".$LoteServico_G002;               
-    //echo "<pre>".$sql;
-    $AtualizaQtdes=$con->prepare($sql);
-    $AtualizaQtdes->execute();
-} catch (Exception $e) {
-    echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
-}
+//try{
+//    $sql =  "UPDATE boleto_remessa SET "
+//            . "TLQtdeRegistLote_G057=".$remessaCEF->getQtdeRegistLote_G057()
+//            . ",TAQtdeLoteArquivo_G049=1"
+//            .",TAQtdeRegistArquivo_G056=".$remessaCEF->getQtdeRegsArquivo_G056()
+//            .",ArquivoRemessa=\"".$remessaCEF->getStringFile()."\""
+//            ." WHERE LoteServico_G002=".$LoteServico_G002;               
+//    //echo "<pre>".$sql;
+//    $AtualizaQtdes=$con->prepare($sql);
+//    $AtualizaQtdes->execute();
+//} catch (Exception $e) {
+//    echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
+//}
 
 
 //Gerando o arquivo na pasta remessa/
@@ -248,6 +251,6 @@ $remessaCEF->saveToFile("");
 $remessaCEF->saveToFile($file);
 
 echo "<pre>";
-$retornoBB = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
-$retornoBB->loadFile($file);
-var_dump($retornoBB->getRetornoMapeado());
+//$retornoBB = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
+//$retornoBB->loadFile($file);
+//var_dump($retornoBB->getRetornoMapeado());

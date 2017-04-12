@@ -215,6 +215,8 @@ $TrailerLote= array(
             ,"TipoRegistro_G003"=>      array("nCmp"=>"3.5","posInicio"=>"8", "posFim"=>"8",  "leng"=>"1",  "Dec"=>"","type"=>"Num",  "Default"=>"5",   "valueReplace"=>"5")
             ,"FEBRABAN1_G004"=>         array("nCmp"=>"4.5","posInicio"=>"9", "posFim"=>"17", "leng"=>"9",  "Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")
             ,"QtdeRegistLote_G057"=>    array("nCmp"=>"5.5","posInicio"=>"18","posFim"=>"23", "leng"=>"6",  "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"")            
+            ,"QtdeTitCobranca_C070"=>   array("nCmp"=>"5.5","posInicio"=>"18","posFim"=>"23", "leng"=>"6",  "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"") //Add para CAIXA            
+            ,"ValorTotTitCart_C071"=>   array("nCmp"=>"5.5","posInicio"=>"18","posFim"=>"23", "leng"=>"17", "Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"") //Add para CAIXA            
             ,"FEBRABAN2_G004"=>         array("nCmp"=>"6.5","posInicio"=>"24","posFim"=>"240","leng"=>"217","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
 );
 //@todo Trailer do arquivo
