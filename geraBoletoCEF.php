@@ -106,23 +106,18 @@ foreach($Linha as $col){
         
     //NOSSO NUMERO CAMPO 13.3P 
     $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$I_NOSSONUMERO,"leng"=>"18","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/*Campo12.3 Filler Caixa*/
+    $remessaCEF->addField("CodCarteira_C006",1);                     /*01 C006 (1=Cobrança Simples)*/
+    $remessaCEF->addField("FormCadTitBanco_C007",1);                 /*01 C007 (1=Cobrança Registrada)*/
+    $remessaCEF->addField("TipoDoc_C008",2);                         /*01 C008 (2=Escritural)*/
+    $remessaCEF->addField("IdEmiBloqueto_C009", "");                 /*01 C009 (2=Cliente Emite)*/
+    $remessaCEF->addField("IdDistribuicao_C010",0);                  /*01 C010 (0=Postagem pelo Beneficiário)*/
+    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$I_REQUISICAO,"leng"=>"11","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/**/    
+/**/$remessaCEF->addField("CampoPersonalizado","",["Valor"=>" ","leng"=>"4","Default"=>"0","valueReplace"=>" ","SIDE_STR"=>"L"]);/*Campo19.3 Filler Caixa   */    
+    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$D_VENCIMENTO,"leng"=>"8","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/**/    
+    $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$F_VALOR,"leng"=>"15","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/**/    
     
-    
-    
-    //$remessaCEF->addField("NumContaC_G010",$NumContaC_G010);         /*12 */    
-    //$remessaCEF->addField("DVConta_G011", $DVConta_G011);            /*01 */
-    //$remessaCEF->addField("DVAgConta_G012", "0");                    /*01 Brancos*/
-    //$remessaCEF->addField("IdTituloBanco_G069",$IdTituloBanco_G069); /*20 NumeroConvenio+I_REQUISIÇAO+Brancos*/    
-    //$remessaCEF->addField("CodCarteira_C006", 0);                    /*01 7-para carteira 17 modalidade Simples.*/
-    //$remessaCEF->addField("FormCadTitBanco_C007", "1");              /*01 1–(Cobrança registrada) 2-(Cobrança sem registro*/
-    //$remessaCEF->addField("TipoDoc_C008", "");                       /*01 Branco Campo nao tratado*/
-    $remessaCEF->addField("IdEmiBloqueto_C009", "");                 /*01 Branco*/
-    $remessaCEF->addField("IdDistribuicao_C010",2);                  /*01 Brancos ou para carteira 17 informar  2(Cliente distribui) */
-    $remessaCEF->addField("NumDocCobranca_C011",$I_NOSSONUMERO);     /*15 Para Carteira 17 Igual ao campo Número do Documento do bloqueto impresso*/
-    $remessaCEF->addField("DataVencTit_C012",$D_VENCIMENTO);         /*15 ,Para vencimento “A vista” preencher com '11111111' */
-    $remessaCEF->addField("VlrNominalTit_G070",$F_VALOR);            /*13,2 Valor nominal do titulo  */
     $remessaCEF->addField("AgEncCobranca_C014", "0");                /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
-    $remessaCEF->addField("DVAgencia_G009", "");                     /*01 Branco*/                
+    $remessaCEF->addField("DVAgencia_G009", "0  ");                     /*01 Branco*/                
     $remessaCEF->addField("EspecieTit_C015", "99");                  /*02 Espécie do Título (99)Outros */ 
     $remessaCEF->addField("IdTitulo_C016", "N");                     /*01 (reconhecimento da dívida pelo Sacado).(A-Aceite)(N-Nao Aceite) */ 
     $remessaCEF->addField("DataEmitTit_G071", $D_EMISSAO);           /*08 */              
@@ -176,7 +171,7 @@ foreach($Linha as $col){
     $remessaCEF->addField("TipoInsc_G005","");                       /*01 Brancos(Sacador/Avalista)*/
     $remessaCEF->addField("NumInscricao_G006","");                   /*15 Brancos(Sacador/Avalista)*/
     $remessaCEF->addField("NomeSacadorAvalista_G013","");            /*40 Brancos(Sacador/Avalista)*/
-    $remessaCEF->addField("CodBcoCompesacao_C031","0");              /*03 Zeros (Campo nao tratado)*/
+    $remessaCEF->addField("CodBcoCompesacao_C031","   ");            /*03 Zeros (Campo nao tratado)*/
     $remessaCEF->addField("NossoNumBancoCorresp_C032","");           /*20 Brancos (Campo nao tratado)*/
     $remessaCEF->addField("FEBRABAN2_G004","");                      /*08 Brancos */
     $remessaCEF->post();//Fim seguimento Q    
