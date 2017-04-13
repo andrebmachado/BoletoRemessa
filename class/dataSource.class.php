@@ -100,7 +100,7 @@ class dataSource{
                 echo "<br>".$fieldName."=";
                 echo $fieldValue = $this->QtdeTitulos;
             }
-            verifica se for o campo valor acrescenta a soma do valor total
+//@todo: verifica se for o campo valor acrescenta a soma do valor total
             
             
             //Soma quantidade de registros do arquivo conforme o tipo 0,1,3,5,9

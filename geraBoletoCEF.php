@@ -114,7 +114,9 @@ foreach($Linha as $col){
     $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$I_REQUISICAO,"leng"=>"11","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/**/    
 /**/$remessaCEF->addField("CampoPersonalizado","",["Valor"=>" ","leng"=>"4","Default"=>"0","valueReplace"=>" ","SIDE_STR"=>"L"]);/*Campo19.3 Filler Caixa   */    
     $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$D_VENCIMENTO,"leng"=>"8","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/**/    
+    
     $remessaCEF->addField("CampoPersonalizado","",["Valor"=>$F_VALOR,"leng"=>"15","Default"=>"0","valueReplace"=>"0","SIDE_STR"=>"L"]);/**/    
+    $remessaCEF->addField("", "0");                /*15 */
     
     $remessaCEF->addField("AgEncCobranca_C014", "0");                /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
     $remessaCEF->addField("DVAgencia_G009", "0  ");                     /*01 Branco*/                
