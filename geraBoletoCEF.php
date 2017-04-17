@@ -191,9 +191,8 @@ foreach($Linha as $col){
     } catch (Exception $e) {
         echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                                 
     }     
-    
-
 }
+
 //Trailer do lote
 $remessaCEF->Append($TrailerLote);
 $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do banco cedente */
@@ -203,7 +202,8 @@ $remessaCEF->addField("FEBRABAN1_G004","");                      /*09  Brancos*/
 $remessaCEF->addField("QtdeRegistLote_G057","");                 /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
 $remessaCEF->addField("QtdeTitCobranca_C070","");                /*06  C070 Quantidade de titulos emitidos no lote*/
 $remessaCEF->addField("ValorTotTitCart_C071","");                /*06  C071 Valor total dos titulos */
-//$remessaCEF->addField("FEBRABAN2_G004","");                    /*217 */
+$remessaCEF->addField("FEBRABAN1_G004"," ");                     /*06  C071 Valor total dos titulos */
+$remessaCEF->addField("FEBRABAN2_G004"," ");                     /*06  C071 Valor total dos titulos */
 $remessaCEF->post();//Fim trailer do lote
 
 //Trailer do arquivo 
@@ -212,11 +212,12 @@ $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do
 $remessaCEF->addField("LoteServico_G002",9999);                  /*04  Nexxera Pediu pra enviar 9999*/
 $remessaCEF->addField("TipoRegistro_G003",9);                    /*01  '9' = Trailer de Arquivo*/
 $remessaCEF->addField("FEBRABAN1_G004","");                      /*09  */
+//Totais
 $remessaCEF->addField("QtdeLoteArquivo_G049",1);                 /*06  Auto Somatória dos registros de tipo 1-Header do lote */
 $remessaCEF->addField("QtdeRegistArquivo_G056","");              /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
-$remessaCEF->addField("QtdeContasConcil_G037","0");              /*06  */
-$remessaCEF->addField("FEBRABAN2_G004","");                      /*205 */
-$remessaCEF->post();//Fim trailer do arquivo 
+$remessaCEF->addField("FEBRABAN2_G004"," ");                     /* */
+$remessaCEF->addField("FEBRABAN3_G004"," ");                     /* */
+$remessaCEF->post();                                             //Fim trailer do arquivo 
 
 echo "<pre>".$remessaCEF->getStringFile();
 //try{
