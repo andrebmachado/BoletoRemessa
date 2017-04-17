@@ -128,7 +128,8 @@ class dataSource{
                 $this->castType = new castType($this->dataSet[$fieldName]);
                 if($this->castType->value($fieldValue)['status']){
                     $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
-                    $this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];
+                    $this->lineString .= $this->castType->value($fieldValue)['retorno'];
+                    //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];
                 }
             }else if($fieldName=="CampoPersonalizado"){
                 //echo $this->CampoPersonalizado($fieldParams);
