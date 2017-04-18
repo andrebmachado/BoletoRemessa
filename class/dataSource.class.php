@@ -129,13 +129,10 @@ class dataSource{
                 if($this->castType->value($fieldValue)['status']){
                     $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
                     $this->lineString .= $this->castType->value($fieldValue)['retorno'];
-                    //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];
+                    //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];                    
                 }
-            }else if($fieldName=="CampoPersonalizado"){
-                //echo $this->CampoPersonalizado($fieldParams);
-                $this->lineString .= "-".$this->CampoPersonalizado($fieldParams);
-                //var_dump($this->lineString);
-                //exit;
+            }else if($fieldName=="CampoPersonalizado"){                
+                $this->lineString .= "-".$this->CampoPersonalizado($fieldParams);                
             }else{//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
                 $words  = array_keys($this->dataSet);
                 $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
@@ -159,6 +156,7 @@ class dataSource{
         $this->State = "dsInactive";
         $this->dataSet=array();
         //var_dump($this->dataSet);
+        //echo "<b>".strlen($this->lineString)."</b>";
     }
     public function saveToFile($filename=""){        
         if($filename===""){
