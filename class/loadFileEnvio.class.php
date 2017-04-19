@@ -3,7 +3,7 @@
 //echo $n = substr($number, 0,-2).",".substr($number, -2);
 //exit;
 
-include_once 'dataSet.class.php';
+//include_once 'dataSet.class.php';
 
 class loadFile{  
     private $dataSetP=[];
@@ -24,12 +24,16 @@ class loadFile{
         //var_dump($this->dataSetQ);
     }
     public function loadFile($fileName){
-        $this->fileName = $fileName;
-        $this->ponteiro = fopen ($this->fileName,"r");
+        $this->fileName = $fileName;        
+        if(file_exists($this->fileName)){
+            $this->ponteiro = fopen ($this->fileName,"r");                    
         while(!feof($this->ponteiro)){
             $this->linhaArquivo = fgets($this->ponteiro,4096);
             $this->splitLine();
         }     
+        } else {
+            echo "Arquivo ".$this->fileName." nao encontrado.";
+        }
         //fclose($this->fileName);
     } 
     
@@ -95,10 +99,10 @@ class loadFile{
     }
 }
 
-//echo "<pre>";
-//$retornoBB = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
-//$retornoBB->loadFile("../remessa/20170330.txt");
-//var_dump($retornoBB->getRetornoMapeado());
+echo "<pre>";
+$retornoCEF = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
+$retornoCEF->loadFile("remessa/20170419.txt");
+var_dump($retornoBCEF->getRetornoMapeado());
 //
 //foreach ($retornoBB->getRetornoMapeado() as $key => $value) {
 //    //@TOTO: ler a tabela e atulizar no banco

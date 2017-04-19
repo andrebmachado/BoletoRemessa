@@ -127,9 +127,10 @@ class dataSource{
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
                 if($this->castType->value($fieldValue)['status']){
-                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
-                    $this->lineString .= $this->castType->value($fieldValue)['retorno'];
-                    //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];                    
+                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];                    
+                    //$this->lineString .= $this->castType->value($fieldValue)['retorno'];
+                    $this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];  
+                    if($fieldName === 'DataEmitTit_G071'){echo "<b>/".$fieldValue."/</b>"; }
                 }
             }else if($fieldName=="CampoPersonalizado"){                
                 $this->lineString .= "-".$this->CampoPersonalizado($fieldParams);                
