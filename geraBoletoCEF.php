@@ -75,10 +75,9 @@ foreach($Linha as $col){
     $F_MORA         = $col->F_MORA;
     $D_EMISSAO      = df($col->D_EMISSAO,"dmY");
     $D_VENCIMENTO   = df($col->D_VENCIMENTO,"dmY");
-    //echo "------->".df($col->D_EMISSAO,"dmY");
+    
     //--------------------------------------------------------------------------SeguimentoP---------------------------------------------------------------
-    $NumSeqRegLote_G038++;
-    //$IdTituloBanco_G069 = $_NumeroConvenio.$I_REQUISICAO;          /*07Digitos numero do convenio + 10 Digitos Num Sequencial de controle */    
+    $NumSeqRegLote_G038++;    
     $remessaCEF->Append($SeguimentoP); 
     //Controle
     $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03 */
@@ -87,16 +86,16 @@ foreach($Linha as $col){
     //Serviço
     $remessaCEF->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
     $remessaCEF->addField("CodSegRegDetalhe_G039","P");              /*01 */
-    $remessaCEF->addField("FEBRABAN1_G004","");                     /*01 Filler CAIXA*/
-/**/$remessaCEF->addField("CodMovRemessa_C004", "01");               /*02 01 – Entrada de títulos,02 – Pedido de baixa.... Manual Pag8 */
+    $remessaCEF->addField("FEBRABAN1_G004","");                      /*01 */
+/**/$remessaCEF->addField("CodMovRemessa_C004", "01");               /*02 01–Entrada de títulos,02–Pedido de baixa*/
     //Cod. Id. Beneficiario
     $remessaCEF->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
     $remessaCEF->addField("DVAgencia_G009",$DVAgencia_G009);         /*01 */
-    $remessaCEF->addField("CodConvBanco_G007","0");                  /*G007 Cod.Conv.Banco Caixa*/    
-    $remessaCEF->addField("Exclusivo_CAIXA1","0");                   /*Campo11.3 EXCLUSIVO CAIXA*/    
-/**/$remessaCEF->addField("FEBRABAN2_G004","0");                     /*Campo12.3 Filler Caixa   */
+    $remessaCEF->addField("CodConvBanco_G007","0");                  /* G007 Cod.Conv.Banco Caixa*/    
+    $remessaCEF->addField("Exclusivo_CAIXA1","0");                   /* Campo11.3 EXCLUSIVO CAIXA*/    
+/**/$remessaCEF->addField("FEBRABAN2_G004","0");                     /* Campo12.3 Filler Caixa   */
     //NOSSO NUMERO CAMPO 13.3P 
-    $remessaCEF->addField("IdTituloBanco_G069",$I_NOSSONUMERO);/*Campo12.3 Filler Caixa*/
+    $remessaCEF->addField("IdTituloBanco_G069",$I_NOSSONUMERO);      /* */
     //Caracteristicas da cobrança
     $remessaCEF->addField("CodCarteira_C006",1);                     /*01 C006 (1=Cobrança Simples)*/
     $remessaCEF->addField("FormCadTitBanco_C007",1);                 /*01 C007 (1=Cobrança Registrada)*/
@@ -104,7 +103,7 @@ foreach($Linha as $col){
     $remessaCEF->addField("IdEmiBloqueto_C009", "");                 /*01 C009 (2=Cliente Emite)*/
     $remessaCEF->addField("IdDistribuicao_C010",0);                  /*01 C010 (0=Postagem pelo Beneficiário)*/
     $remessaCEF->addField("NumDocCobranca_C011",$I_REQUISICAO);      /**/    
-/**/$remessaCEF->addField("Exclusivo_CAIXA2","");                   /*Campo19.3 Filler Caixa   */    
+    $remessaCEF->addField("Exclusivo_CAIXA2","");                    /* Campo19.3 Filler Caixa   */    
     $remessaCEF->addField("DataVencTit_C012",$D_VENCIMENTO);         /**/        
     $remessaCEF->addField("VlrNominalTit_G070",$F_VALOR);            /**/        
     
@@ -112,10 +111,10 @@ foreach($Linha as $col){
     $remessaCEF->addField("DVAgencia_G009", "0");                     /*01 Branco*/                
     $remessaCEF->addField("EspecieTit_C015", "99");                  /*02 Espécie do Título (99)Outros */ 
     $remessaCEF->addField("IdTitulo_C016", "N");                     /*01 (reconhecimento da dívida pelo Sacado).(A-Aceite)(N-Nao Aceite) */ 
-    $remessaCEF->addField("DataEmitTit_G071", "20170419");           /*08 */              
+    $remessaCEF->addField("DataEmitTit_G071", $D_EMISSAO);           /*08 */              
     //@todo Juros 
     $remessaCEF->addField("CodJurosMora_C018", "3");                 /*01 (3)-isento, não é tratado automaticamente pelo Banco.*/
-    $remessaCEF->addField("DataJurosMora_C019", "00000000");         /*08 verificar pagina10 */
+    $remessaCEF->addField("DataJurosMora_C019", "00000000");         /*08 */
     $remessaCEF->addField("JurosMoraDiaTx_C020", "0");               /*13,2 */
     //Desconto
     $remessaCEF->addField("CodDesconto1_C021", "0");                 /*01 (0)-Nao ha desconto */
@@ -124,15 +123,15 @@ foreach($Linha as $col){
     
     $remessaCEF->addField("IOFRecolhido_C024", "0");                 /*13,2 Zeros, quando não houver desconto a ser concedido. */    
     $remessaCEF->addField("ValorAbatimento_G045", "0");              /*13,2 Deduzido do valor original do titulo*/
-    $remessaCEF->addField("IdTituloEmpresa_G072",$I_NOSSONUMERO);    /*25 ?*/
+    $remessaCEF->addField("IdTituloEmpresa_G072",$I_NOSSONUMERO);    /*25 */
     $remessaCEF->addField("CodProtesto_C026", "3");                  /*01 (3)Nao protestar */
     $remessaCEF->addField("NumDiasProtesto_C027", "0");              /*02 se CodProtesto_C026=3 entao informar zero*/
     $remessaCEF->addField("CodBaixa_C028", "0");                     /*01 Zeros o sistema considera a carteira junto ao banco */
     $remessaCEF->addField("NumDiasBaixaDev_C029", "0");              /*03 Zeros o sistema considera a carteira junto ao banco */
-    $remessaCEF->addField("CodMoeda_G065", "9");                     /*02 09 Real, 02 Dolar Comercial(Venda),03 Dolar Turismo(Venda) */
-    $remessaCEF->addField("Exclusivo_CAIXA2", "4");                  /*0*/   
-    $remessaCEF->addField("FEBRABAN3_G004", "");                     /*01 Brancos*/
-    $remessaCEF->post();                                             //Fim seguimento P
+    $remessaCEF->addField("CodMoeda_G065", "09");                    /*02 09-Real, 02-DolarComercial(Venda),03-Dolar Turismo(Venda) */
+    $remessaCEF->addField("Exclusivo_CAIXA3", 0);                    /*10*/   
+    $remessaCEF->addField("FEBRABAN3_G004"," ");                     /*01 Brancos*/
+    $remessaCEF->post();                                             
     
     //--------------------------------------------------------------------------SeguimentoQ---------------------------------------------------------------
     $NumSeqRegLote_G038++;
@@ -148,27 +147,27 @@ foreach($Linha as $col){
     $remessaCEF->Append($SeguimentoQ);
     $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03 */
     $remessaCEF->addField("LoteServico_G002",$LoteServico_G002);     /*04 */
-    $remessaCEF->addField("TipoRegistro_G003",3);                    /*01 Default 3*/
+    $remessaCEF->addField("TipoRegistro_G003",3);                    /*01 Default3 */
     $remessaCEF->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
     $remessaCEF->addField("CodSegRegDetalhe_G039","Q");              /*01 */
     $remessaCEF->addField("FEBRABAN1_G004","");                      /*01 */
-/**/$remessaCEF->addField("CodMovRemessa_C004","01");                /*02 */
+    $remessaCEF->addField("CodMovRemessa_C004","01");                /*02 */
     $remessaCEF->addField("tpPessoa_G005",$tpPessoa_G005);           /*01 */
     $remessaCEF->addField("tpPessoaNum_G006",$tpPessoaNum_G006);     /*15 */
     $remessaCEF->addField("Nome_G013", utf8_encode($Nome_G013));     /*40 */
     $remessaCEF->addField("Endereco_G032"," ");                      /*40 */
     $remessaCEF->addField("Bairro_G032"," ");                        /*15 */
-    $remessaCEF->addField("CEP_G032","00000");                       /*05 Nexxera prencher com zeros*/ 
-    $remessaCEF->addField("SufixoCEP_G034","000");                   /*03 Nexxera prencher com zeros*/
+    $remessaCEF->addField("CEP_G032","00000");                       /*05 */ 
+    $remessaCEF->addField("SufixoCEP_G034","000");                   /*03 */
     $remessaCEF->addField("Cidade_G033","Cidade");                   /*15 */
     $remessaCEF->addField("UF_G036","UF");                           /*02 */
     $remessaCEF->addField("TipoInsc_G005","");                       /*01 Brancos(Sacador/Avalista)*/
     $remessaCEF->addField("NumInscricao_G006","");                   /*15 Brancos(Sacador/Avalista)*/
-    //$remessaCEF->addField("NomeSacadoAvalista_G013","");            /*40 Brancos(Sacador/Avalista)*/
-    $remessaCEF->addField("CodBcoCompesacao_C031","   ");            /*03 Zeros (Campo nao tratado)*/
-    $remessaCEF->addField("NossoNumBancCorresp_C032","");           /*20 Brancos (Campo nao tratado)*/
-    $remessaCEF->addField("FEBRABAN2_G004","");                      /*08 Brancos */
-    $remessaCEF->post();//Fim seguimento Q    
+    $remessaCEF->addField("NomeSacadoAvalista_C060","Sacado-Avalis");/*40 Brancos(Sacador/Avalista)*/
+    $remessaCEF->addField("CodBcoCompesacao_C031"," ");               /*03 Zeros (Campo nao tratado)*/
+    $remessaCEF->addField("NossoNumBancCorresp_C032"," ");           /*20 Brancos (Campo nao tratado)*/
+    $remessaCEF->addField("FEBRABAN2_G004"," ");                     /*08 Brancos */
+    $remessaCEF->post();
     
     if(!$col->I_BOLETO_AVULSO_ID){
         $col->I_BOLETO_AVULSO_ID=0;
@@ -196,12 +195,22 @@ $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do
 $remessaCEF->addField("LoteServico_G002",$LoteServico_G002);     /*04  */
 $remessaCEF->addField("TipoRegistro_G003",5);                    /*01  '5'= Trailer de Lote*/
 $remessaCEF->addField("FEBRABAN1_G004","");                      /*09  Brancos*/
+
+//Total de registros no lote
 $remessaCEF->addField("QtdeRegistLote_G057","");                 /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
-$remessaCEF->addField("QtdeTitCobranca_C070","");                /*06  C070 Quantidade de titulos emitidos no lote*/
-$remessaCEF->addField("ValorTotTitCart_C071","");                /*06  C071 Valor total dos titulos */
+//Totalizacao cobranca simples
+$remessaCEF->addField("QtdeTitCobranca1_C070","");                /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart1_C071","");                /*17  C071 Valor total dos titulos */
+//Totalizacao cobranca caucionada
+$remessaCEF->addField("QtdeTitCobranca2_C070","0");                /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart2_C071","0");                /*17  C071 Valor total dos titulos */
+//Totalizacao cobranca descontada
+$remessaCEF->addField("QtdeTitCobranca3_C070","0");                /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart3_C071","0");                /*17  C071 Valor total dos titulos */
+//CNAB
 $remessaCEF->addField("FEBRABAN1_G004"," ");                     /*06  C071 Valor total dos titulos */
-$remessaCEF->addField("FEBRABAN2_G004"," ");                     /*06  C071 Valor total dos titulos */
-$remessaCEF->post();//Fim trailer do lote
+$remessaCEF->addField("FEBRABAN2_G004"," ");                     /*17  C071 Valor total dos titulos */
+$remessaCEF->post();
 
 //Trailer do arquivo--------------------------------------------------------------------------------------------------------------------------------------
 $remessaCEF->Append($TrailerArquivo);

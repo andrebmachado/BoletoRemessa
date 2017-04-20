@@ -51,12 +51,10 @@ class loadFile{
                 return false;
             }
         }
-    }      
-        
+    }              
     public function separaDecimal($str,$nDecimal=2,$separador=","){
         return substr($str, 0,-$nDecimal).$separador.substr($str, -$nDecimal);
-    }
-    
+    }    
     private function splitLine(){
         if(substr($this->linhaArquivo ,13, 1)=="P"){
             $this->arr="";
@@ -71,7 +69,7 @@ class loadFile{
                 }
                 $this->arr[$key] = $campo;                
             }
-            //$this->table[] = $this->arr;
+            $this->table[] = $this->arr;
         }
         if(substr($this->linhaArquivo ,13, 1)=="Q"){
             //Percorre o datasetQ para splitar os campos
@@ -81,14 +79,14 @@ class loadFile{
                 } else {
                     $campo = $this->arr[$key] = substr($this->linhaArquivo ,$value['posInicio']-1, $value['leng']+$value['Dec']);
                 }
-                if($key === 'CodSegRegDetalhe_G039'){
+                /*if($key==='CodSegRegDetalhe_G039'){
                     $campo="P e Q";
                 }           
                 if($this->findKeyValue_Array($this->arr, $key, $campo)){
                     $this->arr[$key."_2"] = $campo;                   
                 }else{                
                     $this->arr[$key] = $campo;
-                }
+                }*/
             }
             $this->table[] = $this->arr;            
         }
@@ -101,8 +99,9 @@ class loadFile{
 
 echo "<pre>";
 $retornoCEF = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
-$retornoCEF->loadFile("remessa/20170419.txt");
-var_dump($retornoBCEF->getRetornoMapeado());
+$retornoCEF->loadFile("remessa/20170420.txt");
+var_dump($retornoCEF->getRetornoMapeado());
+
 //
 //foreach ($retornoBB->getRetornoMapeado() as $key => $value) {
 //    //@TOTO: ler a tabela e atulizar no banco

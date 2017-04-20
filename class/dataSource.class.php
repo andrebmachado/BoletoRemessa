@@ -91,14 +91,15 @@ class dataSource{
         return str_pad($valor,$params['leng'],$params['valueReplace'],$SIDE_STR);        
     }
     public  function addField($fieldName,$fieldValue,$fieldParams=array()){    
+            echo "--".$fieldName." = ".$fieldValue." <br>";
             //Soma a quantidade de titulos se o CodSegRegDetalhe_G039=P 
             if($fieldName=='CodSegRegDetalhe_G039' and $fieldValue=="P"){                                
-                echo $this->QtdeTitulos++;
+                $this->QtdeTitulos++;
             }
             //Informa o numero de titulos quando solicitado o campo QtdeTitCobranca_C070
             if($fieldName=="QtdeTitCobranca_C070"){
-                echo "<br>".$fieldName."=";
-                echo $fieldValue = $this->QtdeTitulos;
+                //echo "<br>".$fieldName."=";
+                $fieldValue = $this->QtdeTitulos;
             }
 //@todo: verifica se for o campo valor acrescenta a soma do valor total
             
@@ -106,31 +107,31 @@ class dataSource{
             //Soma quantidade de registros do arquivo conforme o tipo 0,1,3,5,9
             
             if($fieldName=='QtdeRegistArquivo_G056'){                
-                echo "<br>".$fieldName."=";
-                echo $fieldValue = $this->QtdeRegsArquivo_G056;
+                //echo "<br>".$fieldName."=";
+                $fieldValue = $this->QtdeRegsArquivo_G056;
             }
             //Numero sequencial de registros do lote (Ex: 1P, 2Q, 3P, 4Q)
             if($fieldName=='NumSeqRegLote_G038'){
-                echo "<br>".$fieldName."=";
-                echo $fieldValue = $this->NumSeqRegLote_G038++;
+                //echo "<br>".$fieldName."=";
+                $fieldValue = $this->NumSeqRegLote_G038++;
             }            
             //Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5
             if($fieldName=='TipoRegistro_G003' and $fieldValue>=1 and $fieldValue<=5){
-                echo "<br>".$fieldName."=";
+                //echo "<br>".$fieldName."=";
                 $this->QtdeRegistLote_G057++;                 
-                echo $this->QtdeRegistLote_G057;
+                $this->QtdeRegistLote_G057;
             }else if($fieldName=='QtdeRegistLote_G057'){
-                echo "<br>".$fieldName."=";
-                echo $fieldValue = $this->QtdeRegistLote_G057;
+                //echo "<br>".$fieldName."=";
+                $fieldValue = $this->QtdeRegistLote_G057;
             }
             //Verifica se o campo informado existe no dataset
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
                 if($this->castType->value($fieldValue)['status']){
                     $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];                    
-                    //$this->lineString .= $this->castType->value($fieldValue)['retorno'];
-                    $this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];  
-                    if($fieldName === 'DataEmitTit_G071'){echo "<b>/".$fieldValue."/</b>"; }
+                    $this->lineString .= $this->castType->value($fieldValue)['retorno'];
+                    //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];  
+                    //if($fieldName === 'DataEmitTit_G071'){echo "<b><h3>/".$fieldValue."/</h3></b>"; }
                 }
             }else if($fieldName=="CampoPersonalizado"){                
                 $this->lineString .= "-".$this->CampoPersonalizado($fieldParams);                
