@@ -191,39 +191,39 @@ foreach($Linha as $col){
 
 //Trailer do lote ----------------------------------------------------------------------------------------------------------------------------------------
 $remessaCEF->Append($TrailerLote);
-$remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do banco cedente */
-$remessaCEF->addField("LoteServico_G002",$LoteServico_G002);     /*04  */
-$remessaCEF->addField("TipoRegistro_G003",5);                    /*01  '5'= Trailer de Lote*/
-$remessaCEF->addField("FEBRABAN1_G004","");                      /*09  Brancos*/
+$remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);/*03  Codigo do banco cedente */
+$remessaCEF->addField("LoteServico_G002",$LoteServico_G002);  /*04  */
+$remessaCEF->addField("TipoRegistro_G003",5);                 /*01  '5'= Trailer de Lote*/
+$remessaCEF->addField("FEBRABAN1_G004","000000000");                   /*09  Brancos*/
 
 //Total de registros no lote
-$remessaCEF->addField("QtdeRegistLote_G057","");                 /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
+$remessaCEF->addField("QtdeRegistLote_G057","000001");       /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
 //Totalizacao cobranca simples
-$remessaCEF->addField("QtdeTitCobranca1_C070","");                /*06  C070 Quantidade de titulos emitidos no lote*/
-$remessaCEF->addField("ValorTotTitCart1_C071","");                /*17  C071 Valor total dos titulos */
+$remessaCEF->addField("QtdeTitCobranca1_C070","000001");            /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart1_C071","000100");            /*17  C071 Valor total dos titulos */
 //Totalizacao cobranca caucionada
-$remessaCEF->addField("QtdeTitCobranca2_C070","0");                /*06  C070 Quantidade de titulos emitidos no lote*/
-$remessaCEF->addField("ValorTotTitCart2_C071","0");                /*17  C071 Valor total dos titulos */
+$remessaCEF->addField("QtdeTitCobranca2_C070","0");           /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart2_C071","0");           /*17  C071 Valor total dos titulos */
 //Totalizacao cobranca descontada
-$remessaCEF->addField("QtdeTitCobranca3_C070","0");                /*06  C070 Quantidade de titulos emitidos no lote*/
-$remessaCEF->addField("ValorTotTitCart3_C071","0");                /*17  C071 Valor total dos titulos */
+$remessaCEF->addField("QtdeTitCobranca3_C070","0");           /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart3_C071","0");           /*17  C071 Valor total dos titulos */
 //CNAB
-$remessaCEF->addField("FEBRABAN1_G004"," ");                     /*06  C071 Valor total dos titulos */
-$remessaCEF->addField("FEBRABAN2_G004"," ");                     /*17  C071 Valor total dos titulos */
+$remessaCEF->addField("FEBRABAN1_G004","1");                  /*31  C071 Valor total dos titulos */
+$remessaCEF->addField("FEBRABAN2_G004","1");                  /*117  C071 Valor total dos titulos */
 $remessaCEF->post();
 
 //Trailer do arquivo--------------------------------------------------------------------------------------------------------------------------------------
 $remessaCEF->Append($TrailerArquivo);
-$remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03  Codigo do banco cedente */
-$remessaCEF->addField("LoteServico_G002",9999);                  /*04  Se registro for Trailer do Arquivo='9999' */
-$remessaCEF->addField("TipoRegistro_G003",9);                    /*01  '9' = Trailer de Arquivo*/
-$remessaCEF->addField("FEBRABAN1_G004","");                      /*09  */
+$remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);/*03  Codigo do banco cedente */
+$remessaCEF->addField("LoteServico_G002",9999);               /*04  Se registro for Trailer do Arquivo='9999' */
+$remessaCEF->addField("TipoRegistro_G003",9);                 /*01  '9' = Trailer de Arquivo*/
+$remessaCEF->addField("FEBRABAN1_G004","");                   /*09  */
 //Totais
-$remessaCEF->addField("QtdeLoteArquivo_G049",1);                 /*06  Auto Somatória dos registros de tipo 1-Header do lote */
-$remessaCEF->addField("QtdeRegistArquivo_G056","");              /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
-$remessaCEF->addField("FEBRABAN2_G004"," ");                     /* */
-$remessaCEF->addField("FEBRABAN3_G004"," ");                     /* */
-$remessaCEF->post();                                             //Fim trailer do arquivo 
+$remessaCEF->addField("QtdeLoteArquivo_G049",1);              /*06  Auto Somatória dos registros de tipo 1-Header do lote */
+$remessaCEF->addField("QtdeRegistArquivo_G056","");           /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
+$remessaCEF->addField("FEBRABAN2_G004"," ");                  /* */
+$remessaCEF->addField("FEBRABAN3_G004"," ");                  /* */
+$remessaCEF->post();                                          
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 echo "<pre>".$remessaCEF->getStringFile();
 //try{
