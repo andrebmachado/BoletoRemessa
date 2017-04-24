@@ -99,7 +99,7 @@ class loadFile{
 
 echo "<pre>";
 $retornoCEF = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
-$retornoCEF->loadFile("remessa/20170420.txt");
+$retornoCEF->loadFile("remessa/20170424.txt");
 var_dump($retornoCEF->getRetornoMapeado());
 
 //

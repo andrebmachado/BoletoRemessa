@@ -66,15 +66,15 @@ function df($d,$format){
 $Linha = $SReg;
 $NumSeqRegLote_G038=0;
 foreach($Linha as $col){    
-    $I_BOLETO_ID    = $col->I_BOLETO_ID;
+    $I_BOLETO_ID    = $col->I_BOLETOSCC_ID;
     $I_NOSSONUMERO  = $col->I_NOSSONUMERO;
-    $I_REQUISICAO   = str_pad($col->I_REQUISICAO,10,'0',STR_PAD_LEFT);
+    $I_BOLETOSCC_ID = str_pad($col->I_BOLETOSCC_ID,10,'0',STR_PAD_LEFT);
     $I_VIA          = $col->I_VIA;
-    $F_VALOR        = str_replace(".","",$col->F_VALOR);
+    $F_VALOR        = str_replace(".","",$col->F_VALORBOLETO);
     $F_MULTA        = $col->F_MULTA;
-    $F_MORA         = $col->F_MORA;
-    $D_EMISSAO      = df($col->D_EMISSAO,"dmY");
-    $D_VENCIMENTO   = df($col->D_VENCIMENTO,"dmY");
+    //$F_MORA         = $col->F_MORA;
+    $D_EMISSAO      = df($col->D_EMISSAOBOLETO,"dmY");
+    $D_VENCIMENTO   = df($col->D_VENCIMENTOBOLETO,"dmY");
     
     //--------------------------------------------------------------------------SeguimentoP---------------------------------------------------------------
     $NumSeqRegLote_G038++;    
@@ -102,7 +102,7 @@ foreach($Linha as $col){
     $remessaCEF->addField("TipoDoc_C008",2);                         /*01 C008 (2=Escritural)*/
     $remessaCEF->addField("IdEmiBloqueto_C009", "");                 /*01 C009 (2=Cliente Emite)*/
     $remessaCEF->addField("IdDistribuicao_C010",0);                  /*01 C010 (0=Postagem pelo Beneficiário)*/
-    $remessaCEF->addField("NumDocCobranca_C011",$I_REQUISICAO);      /**/    
+    $remessaCEF->addField("NumDocCobranca_C011",$I_BOLETOSCC_ID);      /**/    
     $remessaCEF->addField("Exclusivo_CAIXA2","");                    /* Campo19.3 Filler Caixa   */    
     $remessaCEF->addField("DataVencTit_C012",$D_VENCIMENTO);         /**/        
     $remessaCEF->addField("VlrNominalTit_G070",$F_VALOR);            /**/        
@@ -136,13 +136,13 @@ foreach($Linha as $col){
     //--------------------------------------------------------------------------SeguimentoQ---------------------------------------------------------------
     $NumSeqRegLote_G038++;
     $tpPessoa_G005=2;
-    $tpPessoaNum_G006=preg_replace("/[^0-9]/", "", $col->CNPJ);
-    $Nome_G013       =   $col->Razao_Social;
+    $tpPessoaNum_G006=preg_replace("/[^0-9]/", "", $col->V_CNPJ);
+    $Nome_G013       =   $col->V_NOME;
     //Verifica se tem dados de PJ se nao PF
-    if($col->CNPJ==null){
+    if($col->V_CNPJ==null){
         $tpPessoa_G005=1;
-        $tpPessoaNum_G006=preg_replace("/[^0-9]/", "", $col->CPF_Responsavel);
-        $Nome_G013       =   $col->Nome_Responsavel;
+        $tpPessoaNum_G006=preg_replace("/[^0-9]/", "", $col->V_CPF);
+        $Nome_G013       =   $col->V_NOME;
     }
     $remessaCEF->Append($SeguimentoQ);
     $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03 */
@@ -169,24 +169,24 @@ foreach($Linha as $col){
     $remessaCEF->addField("FEBRABAN2_G004"," ");                     /*08 Brancos */
     $remessaCEF->post();
     
-    if(!$col->I_BOLETO_AVULSO_ID){
-        $col->I_BOLETO_AVULSO_ID=0;
-    }
-    if(!$col->I_BOLETO_ID){
-        $col->I_BOLETO_ID=0;
-    }
-
-    try {                                
-        $SQLReg = "insert into boleto_remessa_reg set "
-                . "I_BOLETO_REMESSA=".$NumRemRet_G079.","
-                . "I_BOLETO =".$col->I_BOLETO_ID.","
-                . "I_BOLETO_AVULSO=".$col->I_BOLETO_AVULSO_ID;    
-        $Reg = $con->prepare($SQLReg);
-        //echo $SQLReg."<br>";
-        //$Reg->execute();        
-    } catch (Exception $e) {
-        echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                                 
-    }     
+//    if(!$col->I_BOLETO_AVULSO_ID){
+//        $col->I_BOLETO_AVULSO_ID=0;
+//    }
+//    if(!$col->I_BOLETO_ID){
+//        $col->I_BOLETO_ID=0;
+//    }
+//
+//    try {                                
+//        $SQLReg = "insert into boleto_remessa_reg set "
+//                . "I_BOLETO_REMESSA=".$NumRemRet_G079.","
+//                . "I_BOLETO =".$col->I_BOLETO_ID.","
+//                . "I_BOLETO_AVULSO=".$col->I_BOLETO_AVULSO_ID;    
+//        $Reg = $con->prepare($SQLReg);
+//        //echo $SQLReg."<br>";
+//        //$Reg->execute();        
+//    } catch (Exception $e) {
+//        echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                                 
+//    }     
 }
 
 //Trailer do lote ----------------------------------------------------------------------------------------------------------------------------------------
@@ -194,13 +194,12 @@ $remessaCEF->Append($TrailerLote);
 $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);/*03  Codigo do banco cedente */
 $remessaCEF->addField("LoteServico_G002",$LoteServico_G002);  /*04  */
 $remessaCEF->addField("TipoRegistro_G003",5);                 /*01  '5'= Trailer de Lote*/
-$remessaCEF->addField("FEBRABAN1_G004","000000000");                   /*09  Brancos*/
-
+$remessaCEF->addField("FEBRABAN1_G004"," ");                  /*09  Brancos*/
 //Total de registros no lote
-$remessaCEF->addField("QtdeRegistLote_G057","000001");       /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
+$remessaCEF->addField("QtdeRegistLote_G057","");              /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
 //Totalizacao cobranca simples
-$remessaCEF->addField("QtdeTitCobranca1_C070","000001");            /*06  C070 Quantidade de titulos emitidos no lote*/
-$remessaCEF->addField("ValorTotTitCart1_C071","000100");            /*17  C071 Valor total dos titulos */
+$remessaCEF->addField("QtdeTitCobranca1_C070","000001");      /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart1_C071","000100");      /*17  C071 Valor total dos titulos */
 //Totalizacao cobranca caucionada
 $remessaCEF->addField("QtdeTitCobranca2_C070","0");           /*06  C070 Quantidade de titulos emitidos no lote*/
 $remessaCEF->addField("ValorTotTitCart2_C071","0");           /*17  C071 Valor total dos titulos */
@@ -208,8 +207,8 @@ $remessaCEF->addField("ValorTotTitCart2_C071","0");           /*17  C071 Valor t
 $remessaCEF->addField("QtdeTitCobranca3_C070","0");           /*06  C070 Quantidade de titulos emitidos no lote*/
 $remessaCEF->addField("ValorTotTitCart3_C071","0");           /*17  C071 Valor total dos titulos */
 //CNAB
-$remessaCEF->addField("FEBRABAN1_G004","1");                  /*31  C071 Valor total dos titulos */
-$remessaCEF->addField("FEBRABAN2_G004","1");                  /*117  C071 Valor total dos titulos */
+$remessaCEF->addField("FEBRABAN2_G004","");                  /*31  C071 Valor total dos titulos */
+$remessaCEF->addField("FEBRABAN3_G004","");                  /*117  C071 Valor total dos titulos */
 $remessaCEF->post();
 
 //Trailer do arquivo--------------------------------------------------------------------------------------------------------------------------------------
@@ -221,7 +220,7 @@ $remessaCEF->addField("FEBRABAN1_G004","");                   /*09  */
 //Totais
 $remessaCEF->addField("QtdeLoteArquivo_G049",1);              /*06  Auto Somatória dos registros de tipo 1-Header do lote */
 $remessaCEF->addField("QtdeRegistArquivo_G056","");           /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
-$remessaCEF->addField("FEBRABAN2_G004"," ");                  /* */
+$remessaCEF->addField("FEBRABAN2_G004","");                   /* */
 $remessaCEF->addField("FEBRABAN3_G004"," ");                  /* */
 $remessaCEF->post();                                          
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -251,6 +250,7 @@ foreach (glob("remessa/*.tx3") as $filename) {
 }
 $remessaCEF->saveToFile("");
 $remessaCEF->saveToFile($file);
+
 
 echo "<pre>";
 //$retornoBB = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));

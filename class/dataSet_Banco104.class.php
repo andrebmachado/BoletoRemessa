@@ -235,7 +235,7 @@ $TrailerLote= array(
     "CodBancoComp_G001"=>       array("nCmp"=>"1.5" ,"posInicio"=>"1"  ,"posFim"=>"3"  ,"leng"=>"3" ,"Dec"=>"","type"=>"Num",  "Default"=>"104", "valueReplace"=>"0")
     ,"LoteServico_G002"=>       array("nCmp"=>"2.5" ,"posInicio"=>"4"  ,"posFim"=>"7"  ,"leng"=>"4" ,"Dec"=>"","type"=>"Num",  "Default"=>"0000","valueReplace"=>"0")
     ,"TipoRegistro_G003"=>      array("nCmp"=>"3.5" ,"posInicio"=>"8"  ,"posFim"=>"8"  ,"leng"=>"1" ,"Dec"=>"","type"=>"Num",  "Default"=>"5",   "valueReplace"=>"5")
-    ,"FEBRABAN1_G004"=>         array("nCmp"=>"4.5" ,"posInicio"=>"9"  ,"posFim"=>"17" ,"leng"=>"9" ,"Dec"=>"","type"=>"Alpha","Default"=>"",    "valueReplace"=>" ")//Filler
+    ,"FEBRABAN1_G004"=>         array("nCmp"=>"4.5" ,"posInicio"=>"9"  ,"posFim"=>"17" ,"leng"=>"9" ,"Dec"=>"","type"=>"Alpha","Default"=>" ",    "valueReplace"=>" ")//Filler
     //Total de registros no lote
     ,"QtdeRegistLote_G057"=>    array("nCmp"=>"5.5" ,"posInicio"=>"18" ,"posFim"=>"23" ,"leng"=>"6" ,"Dec"=>"","type"=>"Num",  "Default"=>"",    "valueReplace"=>"")
     //Totalizacao cobranca simples
@@ -248,8 +248,8 @@ $TrailerLote= array(
     ,"QtdeTitCobranca3_C070"=>  array("nCmp"=>"10.5","posInicio"=>"70" ,"posFim"=>"75" ,"leng"=>"6" ,"Dec"=>"","type"=>"Num",  "Default"=>"0",    "valueReplace"=>"0")
     ,"ValorTotTitCart3_C071"=>  array("nCmp"=>"11.5","posInicio"=>"76" ,"posFim"=>"92" ,"leng"=>"17","Dec"=>"","type"=>"Num",  "Default"=>"0",    "valueReplace"=>"0")
     //CNAB
-    ,"FEBRABAN1_G004"=>         array("nCmp"=>"12.5","posInicio"=>"93" ,"posFim"=>"123","leng"=>"31","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
-    ,"FEBRABAN2_G004"=>         array("nCmp"=>"13.5","posInicio"=>"124","posFim"=>"240","leng"=>"117","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
+    ,"FEBRABAN2_G004"=>         array("nCmp"=>"12.5","posInicio"=>"93" ,"posFim"=>"123","leng"=>"31","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
+    ,"FEBRABAN3_G004"=>         array("nCmp"=>"13.5","posInicio"=>"124","posFim"=>"240","leng"=>"117","Dec"=>"","type"=>"Alpha","Default"=>" ",   "valueReplace"=>" ")
 );
 //@todo Trailer do arquivo
 $TrailerArquivo= array(
