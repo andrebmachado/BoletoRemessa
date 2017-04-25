@@ -13,19 +13,18 @@ class dataSource{
     private $QtdeTitulos=0;
     private $vlrTotTitulos=0;
 
+    public function __construct(){
+        //$this->fileGenerate = new fileGenerate();
+    }    
     public function getFieldName(){
         return $this->fieldName;
     }
-
     private function Exception($aMsg){
         try {                                
             throw new Exception($aMsg);                        
         } catch (Exception $e) {
             echo '<pre>Exception: ',  $e->getMessage();//," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                                 
         }           
-    }
-    public function __construct(){
-        $this->fileGenerate = new fileGenerate();
     }
     public function getLineArray(){
         return $this->lineArray;
@@ -37,19 +36,18 @@ class dataSource{
         return $return = array("status"=>$status,"msg"=>$msg);
     }
     public function Append($params = []){        
-        //var_dump($params);
         $this->QtdeRegsArquivo_G056++;
         if(empty($params)){            
             $this->Exception("Informe o dataset");
         }else{
             $this->dataSet = $params;
         }        
-        
         if($this->State == "dsInactive"){
              $this->State = "dsInsert";
              return True;
         }else{                      
             $this->Exception("Dataset em modo de inserção, de um post() antes de iniciar nova linha.");
+            $this->logMsg("Dataset em modo de inserção, de um post() antes de iniciar nova linha.");
         }        
     }
     //Sugere um campo se o informado nao corresponder aos index existentes
@@ -97,13 +95,11 @@ class dataSource{
             }
             //Se o campo informado for o valor do titulo soma com o valor anterior para totalizar
             if($fieldName=='VlrNominalTit_G070'){ 
-                echo "<h3>".$fieldValue."</h3>";
+                //echo "<h3>".$fieldValue."</h3>";
                 $this->vlrTotTitulos = $fieldValue + $this->vlrTotTitulos;
             } else if($fieldName=="ValorTotTitCart1_C071"){ //Informa a soma dos titulos para o campo ValorTotTitCart1_C071
                 $fieldValue = $this->vlrTotTitulos;
             } 
-            //@todo: verifica se for o campo valor acrescenta a soma do valor total            
-            
             //Soma quantidade de registros do arquivo conforme o tipo 0,1,3,5,9            
             if($fieldName=='QtdeRegistArquivo_G056'){                
                 $fieldValue = $this->QtdeRegsArquivo_G056;
@@ -121,16 +117,20 @@ class dataSource{
             //Verifica se o campo informado existe no dataset
             if(array_key_exists($fieldName, $this->dataSet)){
                 $this->castType = new castType($this->dataSet[$fieldName]);
+                
+                //var_dump($this->dataSet[$fieldName]); exit;
+                //var_dump($this->castType->value($fieldValue)); exit;
+                
                 if($this->castType->value($fieldValue)['status']){
-                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];                    
+                    $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
                     $this->lineString .= $this->castType->value($fieldValue)['retorno'];
                     //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];  
-                    //if($fieldName === 'DataEmitTit_G071'){echo "<b><h3>/".$fieldValue."/</h3></b>"; }
                 }
             }else{//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
                 $words  = array_keys($this->dataSet);
                 $msg = "Campo ".$fieldName." inexistente, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
                 $this->Exception($msg);
+                $this->logMsg($msg);
                 return $msg;
             }
     }
@@ -145,8 +145,10 @@ class dataSource{
     }
     public function post(){
         if(strlen($this->lineString)>240){
-            echo "Linha superior ao tamanho permitido!"
-            exit;
+            $msg = "Linha superior ao tamanho permitido:\n";
+                    //. "".$this->lineString;
+            //$this->logMsg($msg);
+            //exit;
         }
         $this->lineString .= "\n";
         $this->State = "dsInactive";
@@ -162,15 +164,42 @@ class dataSource{
             if(($f=fopen($filename, 'w'))){
                 fwrite($f, $this->lineString);
             }else{
-                throw new Exception("Falha ao gerar o arquivo!");
+                throw new Exception("Falha ao gerar o arquivo!");                
             }
         } catch (Exception $e) {
-            echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                         
+            //echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                         
+            $logMsg = "Exception:".$e->getMessage()." - File: ".$e->getFile()." Linha: ".$e->getLine();                         
+            $this->logMsg($logMsg, "error");
             return False;
         } finally {            
             fclose($f);
             return true;
         }        
     }
+    protected static function logMsg( $msg, $level = 'info', $file = 'remessaBanco.log' ){        
+        $levelStr = '';        
+        switch ( $level ){
+            case 'info':                
+                $levelStr = 'INFO';// nível de informação
+                break;
+            case 'warning':                
+                $levelStr = 'WARNING';// nível de aviso
+                break;
+            case 'error':                
+                $levelStr = 'ERROR';// nível de erro
+                break;
+        }        
+        $date = date( 'Y-m-d H:i:s' );
+        // formata a mensagem do log
+        // 1o: data atual
+        // 2o: nível da mensagem (INFO, WARNING ou ERROR)
+        // 3o: a mensagem propriamente dita
+        // 4o: uma quebra de linha
+        $msg = sprintf( "[%s] [%s]: %s%s", $date, $levelStr, $msg, PHP_EOL );
+
+        // escreve o log no arquivo
+        // é necessário usar FILE_APPEND para que a mensagem seja escrita no final do arquivo, preservando o conteúdo antigo do arquivo
+        file_put_contents( $file, $msg, FILE_APPEND );
+    }    
     
 }

@@ -10,7 +10,7 @@ $remessaCEF->addField("TipoRegistro_G003",0);                    /*01 0-Header d
 $remessaCEF->addField("FEBRABAN1_G004"," ");                     /*   */
 $remessaCEF->addField("tpPessoa_G005", 2);                       /*01 1-CPF 2-CNPJ */
 $remessaCEF->addField("tpPessoaNum_G006", $tpPessoaNum_G006);    /*14 */
-$remessaCEF->addField("Exclusivo_CAIXA1","0");                   /*20 USO CAIXA */
+$remessaCEF->addField("Exclusivo_CAIXA1","");                   /*20 USO CAIXA */
 $remessaCEF->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
 $remessaCEF->addField("DVAgencia_G009", $DVAgencia_G009);        /*01 */
 $remessaCEF->addField("CodConvBanco_G007",$_NumeroConvenio);     /*06 */
@@ -242,17 +242,13 @@ echo "<pre>".$remessaCEF->getStringFile();
 
 //Gerando o arquivo na pasta remessa/
 $file = "remessa/".date("dmYhis").".tx3";
-
-//apaga arquivo com extensão tx3 para gerar outro para o validador online
-foreach (glob("remessa/*.tx3") as $filename) {
+foreach (glob("remessa/*.tx3") as $filename) {//apaga arquivo com extensão tx3 para gerar outro para o validador online
    //echo "$filename size " . filesize($filename) . "\n";
    unlink($filename);
 }
-$remessaCEF->saveToFile("");
+//$remessaCEF->saveToFile("");
 $remessaCEF->saveToFile($file);
 
-
-echo "<pre>";
 //$retornoBB = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
 //$retornoBB->loadFile($file);
 //var_dump($retornoBB->getRetornoMapeado());

@@ -1,10 +1,4 @@
 <?php
-//$number = "1299";
-//echo $n = substr($number, 0,-2).",".substr($number, -2);
-//exit;
-
-//include_once 'dataSet.class.php';
-
 class loadFile{  
     private $dataSetP=[];
     private $dataSetQ=[];
@@ -34,7 +28,6 @@ class loadFile{
         } else {
             echo "Arquivo ".$this->fileName." nao encontrado.";
         }
-        //fclose($this->fileName);
     } 
     
     /*
@@ -97,10 +90,10 @@ class loadFile{
     }
 }
 
-echo "<pre>";
-$retornoCEF = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
-$retornoCEF->loadFile("remessa/20170424.txt");
-var_dump($retornoCEF->getRetornoMapeado());
+//echo "<pre>";
+//$retornoCEF = new loadFile(array("SeguimentoP"=>$SeguimentoP,"SeguimentoQ"=>$SeguimentoQ,"SeguimentoT"=>$SeguimentoT,"SeguimentoU"=>$SeguimentoU));
+//$retornoCEF->loadFile("remessa/20170424.txt");
+//var_dump($retornoCEF->getRetornoMapeado());
 
 //
 //foreach ($retornoBB->getRetornoMapeado() as $key => $value) {

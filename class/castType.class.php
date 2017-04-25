@@ -7,7 +7,7 @@ class castType extends dataSource{
     
     public function __construct($params=[]){
         $this->params = $params;
-        //var_dump($params);
+        //var_dump($params);exit;
     }    
     private function isNumeric(){
         $leng = $this->params['leng'];
@@ -21,17 +21,18 @@ class castType extends dataSource{
     }     
     private function checkType(){
         try {
-            $this->aValue = substr($this->aValue,0, $this->params['leng']);
-            if(strlen($this->aValue)>$this->params['leng']){                
+            //$this->aValue =$this->aValue;// substr($this->aValue,0, $this->params['leng']);
+            if(strlen($this->aValue)>$this->params['leng']){                              
                 throw new Exception("Valor informado maior que o campo!");
             }
         } catch (Exception $e) {
             echo '<pre>Caught exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";
-            exit; 
+            parent::logMsg("Caught exception: ".$e->getMessage()." Campo".$this->params['nCmp']."- File: ".$e->getFile()." Linha: ".$e->getLine());
+            //exit; 
         }         
         if(empty($this->aValue)||!empty($this->params['Default'])){
             $this->aValueResult['status'] = True;
-            $this->aValueResult['retorno']= $this->params['Default'];            
+            $this->aValueResult['retorno']= $this->params['Default'];
         }
         if(!empty($this->aValue)){
             $this->aValueResult['status'] = True;
