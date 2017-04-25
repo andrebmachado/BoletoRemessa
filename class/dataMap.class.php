@@ -272,21 +272,20 @@ class dataMap{
 class dataSet extends dataMap{
     private $State="dsInactive";
     
-    public function Append($Seguimento="P"){        
-        //$this->QtdeRegsArquivo_G056++;
-        if(empty($params)){            
-            $this->Exception("Informe o dataset");
-        }else{
-            $this->dataSet = $params;
-        }        
-        if($this->State == "dsInactive"){
-             $this->State = "dsInsert";
-             return True;
-        }else{                      
-            $this->Exception("Dataset em modo de inserção, de um post() antes de iniciar nova linha.");
-            $this->logMsg("Dataset em modo de inserção, de um post() antes de iniciar nova linha.");
-        }        
+    public function Append($Seguimento){    
+        if(is_array($Seguimento)){
+            if($this->State == "dsInactive"){
+                 $this->State = "dsInsert";
+                 return True;
+            }else{                                  
+                $this->logMsg("Dataset em modo de inserção, de um post() antes de iniciar nova linha.");
+                return False;
+            }    
+        } else {
+            
+        }
     }
+    
     public function post(){
         if(strlen($this->lineString)>240){
             $msg = "Linha superior ao tamanho permitido:\n";
@@ -303,7 +302,7 @@ class dataSet extends dataMap{
     public function addField(){
         
     }
-    protected static function logMsg( $msg, $level = 'info', $file = 'remessaBanco.log' ){        
+    protected static function logMsg( $msg, $level = 'info', $file = 'remessaBanco2.log' ){        
         $levelStr = '';        
         switch ( $level ){
             case 'info':                
@@ -330,5 +329,5 @@ class dataSet extends dataMap{
     }        
 }
 
-$remessaCEF = new dataMap();
-$remessaCEF->
+$remessaCEF = new dataSet();
+$remessaCEF->addField();
