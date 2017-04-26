@@ -270,39 +270,93 @@ class dataMap{
 }
 
 class dataSet extends dataMap{
-    private $State="dsInactive";
+    private $State="dsInactive";    
+    private $Seguimento;
     
+    
+    /*
+     * @param array $headerArquivo,$headerLote,$SeguimentoP,$SeguimentoQ,$SeguimentoT,$SeguimentoU,$TrailerArquivo,$TrailerLote
+     * @return bool <b>TRUE</b> se <i>$Seguimento</i> seguimento/status do dataset forem validos
+     */
     public function Append($Seguimento){    
-        if(is_array($Seguimento)){
+        if(property_exists("dataSet",$Seguimento)){
+            $this->Seguimento = $this->{$Seguimento};
+            //var_dump($this->Seguimento);
             if($this->State == "dsInactive"){
                  $this->State = "dsInsert";
                  return True;
             }else{                                  
-                $this->logMsg("Dataset em modo de inserção, de um post() antes de iniciar nova linha.");
+                $this->logMsg("Dataset disable ou em modo de inserção, de um post() antes de iniciar nova linha.");
                 return False;
             }    
         } else {
-            
+            $this->logMsg("Informe um seguimento valido!","error");
+            return False;
         }
-    }
-    
-    public function post(){
-        if(strlen($this->lineString)>240){
-            $msg = "Linha superior ao tamanho permitido:\n";
-                    //. "".$this->lineString;
-            //$this->logMsg($msg);
-            //exit;
-        }
+    }    
+    public function post(){        
         $this->lineString .= "\n";
         $this->State = "dsInactive";
         $this->dataSet=array();
-        //var_dump($this->dataSet);
-        //echo "<b>".strlen($this->lineString)."</b>";
     }    
-    public function addField(){
+    private function getValues($fieldName){
+        return $this->Seguimento[$fieldName];         
+    }
+    private function setValue(){
+        return;//$this->Seguimento[]
+    }
+    private function verificaTamanho(){
         
     }
-    protected static function logMsg( $msg, $level = 'info', $file = 'remessaBanco2.log' ){        
+    public function printSeguimentos(){
+        return $this->Seguimento;
+    }
+    public function addField($fieldName,$fieldValue,$params=array()){
+        //Verifica se o campo informado existe no dataset
+        if(array_key_exists($fieldName, $this->Seguimento)){
+            $arr = $this->Seguimento[$fieldName];
+            
+            if($arr['type']=="Num"){                            
+                $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng'],"0",STR_PAD_LEFT);                
+            } else if($arr['type']=="Alpha"){
+                $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng']," ",STR_PAD_RIGHT);
+            }
+            //var_dump($this->Seguimento);
+            /*if($this->castType->value($fieldValue)['status']){
+                $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
+                $this->lineString .= $this->castType->value($fieldValue)['retorno'];
+                //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];  
+            }*/
+        }else{//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
+            $words  = array_keys($this->Seguimento);
+            $msg = "Campo ".$fieldName." inexistente no seguimento $this->Seguimento, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
+            $this->logMsg($msg);
+            return $msg;
+        }        
+    }   
+    
+    private function wordMatch($words, $input, $sensitivity){ 
+                $shortest = -1; 
+                foreach ($words as $word) {             
+                    //verifica a similaridade entre palavras
+                    $lev = levenshtein($input, $word); 
+                    if ($lev == 0) { 
+                        $closest = $word; 
+                        $shortest = 0; 
+                        break; 
+                    } 
+                    if ($lev <= $shortest || $shortest < 0) { 
+                        $closest  = $word; 
+                        $shortest = $lev; 
+                    } 
+                } 
+                if($shortest <= $sensitivity){ 
+                    return $closest; 
+                } else { 
+                    return 0; 
+                } 
+            }    
+    protected static function logMsg($msg,$level = 'info', $file = 'remessaBanco2.log' ){        
         $levelStr = '';        
         switch ( $level ){
             case 'info':                
@@ -330,4 +384,17 @@ class dataSet extends dataMap{
 }
 
 $remessaCEF = new dataSet();
-$remessaCEF->addField();
+$remessaCEF->Append("TrailerArquivo");
+$remessaCEF->addField("CodBancoComp_G001",104);/*03  Codigo do banco cedente */
+$remessaCEF->addField("LoteServico_G002",9999);               /*04  Se registro for Trailer do Arquivo='9999' */
+$remessaCEF->addField("TipoRegistro_G003",9);                 /*01  '9' = Trailer de Arquivo*/
+$remessaCEF->addField("FEBRABAN1_G004","");                   /*09  */
+//Totais
+$remessaCEF->addField("QtdeLoteArquivo_G049",1);              /*06  Auto Somatória dos registros de tipo 1-Header do lote */
+$remessaCEF->addField("QtdeRegistArquivo_G056","");           /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
+$remessaCEF->addField("FEBRABAN2_G004","");                   /* */
+$remessaCEF->addField("FEBRABAN3_G004"," ");                  /* */
+
+var_dump($remessaCEF->printSeguimentos());
+
+//$remessaCEF->addField();
