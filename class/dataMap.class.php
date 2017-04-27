@@ -288,7 +288,7 @@ class dataSet extends dataMap{
     public function Append($Seguimento){    
         if(property_exists("dataSet",$Seguimento)){
             $this->Seguimento = $this->{$Seguimento};
-            //var_dump($this->Seguimento);
+            //var_dump($this->Seguimento);//
             if($this->State == "dsInactive"){
                  $this->State = "dsInsert";
                  return True;
