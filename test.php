@@ -13,7 +13,7 @@ class childClass extends parentClass{
     protected $Atrib6;
     
     public function setAtrib(){
-        $this->
+        //$this->
     }
     
 }

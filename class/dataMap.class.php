@@ -272,8 +272,15 @@ class dataMap{
 class dataSet extends dataMap{
     private $State="dsInactive";    
     private $Seguimento;
-    
-    
+    private $lineArray;
+    private $lineString;
+    private $lineTemp;    
+    //Campos com valores especificos 
+    private $QtdeRegsArquivo_G056;
+    private $QtdeRegistLote_G057;
+    private $NumSeqRegLote_G038=1;
+    private $QtdeTitulos=0;
+    private $vlrTotTitulos=0;    
     /*
      * @param array $headerArquivo,$headerLote,$SeguimentoP,$SeguimentoQ,$SeguimentoT,$SeguimentoU,$TrailerArquivo,$TrailerLote
      * @return bool <b>TRUE</b> se <i>$Seguimento</i> seguimento/status do dataset forem validos
@@ -296,43 +303,130 @@ class dataSet extends dataMap{
     }    
     public function post(){        
         $this->lineString .= "\n";
-        $this->State = "dsInactive";
-        $this->dataSet=array();
-    }    
-    private function getValues($fieldName){
-        return $this->Seguimento[$fieldName];         
-    }
-    private function setValue(){
-        return;//$this->Seguimento[]
-    }
-    private function verificaTamanho(){
+        //$this->lineTemp .= "xxx"; //testar tam da linha
         
+        if(strlen($this->lineTemp)<240){
+            $this->logMsg("Linha menor que 240 posicoes->".$this->lineTemp,"error");            
+        }else if(strlen($this->lineTemp)>240){
+            $this->logMsg("Linha maior que 240 posicoes->".$this->lineTemp,"error");
+        }
+        $this->lineTemp="";
+        $this->State = "dsInactive";
     }
+    public function saveToFile($filename=""){        
+        if($filename===""){
+           $filename = "remessa2/".date('Ymd').".txt"; 
+        }        
+        try {                
+            if(($f=fopen($filename, 'w'))){
+                fwrite($f, $this->lineString);
+            }else{
+                throw new Exception("Falha ao gerar o arquivo!");                
+            }
+        } catch (Exception $e) {
+            //echo '<pre>Exception: ',  $e->getMessage()," - <b>File:</b>".$e->getFile()."<b> Linha:</b>".$e->getLine(),"</pre>\n";                         
+            $logMsg = "Exception:".$e->getMessage()." - File: ".$e->getFile()." Linha: ".$e->getLine();                         
+            $this->logMsg($logMsg, "error");
+            return False;
+        } finally {            
+            fclose($f);
+            return true;
+        }        
+    }    
+    //private function verificaTamanho(){ }
     public function printSeguimentos(){
         return $this->Seguimento;
     }
-    public function padraoSeguimento($params){
-        if($arr['type']=="Num"){                            
-            $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng'],"0",STR_PAD_LEFT);                
-        } else if($arr['type']=="Alpha"){
-            $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng']," ",STR_PAD_RIGHT);
+    public function printLineString(){
+        return $this->lineString;
+    }
+    
+    public function formataConformeSeguimento($dataField,$fieldValue){
+        if($dataField['type']=="Num"){                            
+            return str_pad($fieldValue,$dataField['leng'],"0",STR_PAD_LEFT);                
+        } else if($dataField['type']=="Alpha"){
+            return str_pad($fieldValue,$dataField['leng']," ",STR_PAD_RIGHT);
         }
     }
+    public function formataConformeParams($dataField,$fieldValue){
+        if($dataField['side']=="L"){ $side=STR_PAD_LEFT;}
+        if($dataField['side']=="R"){ $side=STR_PAD_RIGHT;}
+        if($dataField['Dec']!=""){ $dataField['leng']=$dataField['leng']+$dataField['Dec'];}
+        
+        if($dataField['type']=="Num"){                            
+            return str_pad($fieldValue,$dataField['leng'],$dataField['valueReplace'],$side);                
+        } else if($dataField['type']=="Alpha"){
+            return str_pad($fieldValue,$dataField['leng'],$dataField['valueReplace'],$side);
+        }
+    }
+    private function validaCamposEspecificos($fieldName,$fieldValue){        
+        switch ($fieldName) {
+            case 'CodSegRegDetalhe_G039'://Soma a quantidade de titulos se o CodSegRegDetalhe_G039=P 
+                if($fieldValue=="P"){$this->QtdeTitulos++;}
+            break;
+            case 'QtdeTitCobranca1_C070'://Informa o numero de titulos para o campo QtdeTitCobranca_C070
+                $return = $this->QtdeTitulos;
+            break;   
+        
+            case 'VlrNominalTit_G070'://Se o campo informado for o valor do titulo soma com o valor anterior para totalizar
+               $this->vlrTotTitulos = $fieldValue + $this->vlrTotTitulos;
+            break;
+            case 'ValorTotTitCart1_C071'://Informa a soma dos titulos para o campo ValorTotTitCart1_C071
+               $return = $this->vlrTotTitulos; 
+            break;        
+        
+            case 'QtdeRegistArquivo_G056'://Soma quantidade de registros do arquivo conforme o tipo 0,1,3,5,9
+                $this->QtdeRegsArquivo_G056++;
+            break;        
+            case 'NumSeqRegLote_G038'://Numero sequencial de registros do lote (Ex: 1P, 2Q, 3P, 4Q)
+                $this->NumSeqRegLote_G038++;
+            break;        
+        
+            case 'TipoRegistro_G003'://
+                if($fieldValue>=1 and $fieldValue<=5){$this->QtdeRegistLote_G057++;}                
+            break;
+            case 'QtdeRegistLote_G057'://
+                $return = $this->QtdeRegistLote_G057;
+            break;        
+            default:
+                $return = $fieldValue;
+            break;
+        }       
+        return $fieldValue;
+    }
+    private function comparaTamanhoCampo($dataField,$fieldValue){
+        //var_dump($dataField);
+        if($dataField['leng']< strlen($fieldValue)){ 
+            return false;            
+        } else if($dataField['leng']> strlen($fieldValue)){ 
+            return false;            
+        } else {
+            return true;
+        }
+    }
+    /*
+     * @param $fieldName="campo"
+     * $param $fieldValue="valor informado" 
+     * @param $params['leng'=>'','Dec'=>'','type'=>'Num ou Alpha','valueReplace' =>'','side'=>'L ou R']
+     */
     public function addField($fieldName,$fieldValue,$params=array()){
         //Verifica se o campo informado existe no dataset
-        if(array_key_exists($fieldName, $this->Seguimento)){
-            if(empty($params)){
-                $campoTratado = this->padraoSeguimento($this->Seguimento[$fieldName]); 
-            }
-            //$arr = $this->Seguimento[$fieldName];            
-            
-            //var_dump($this->Seguimento);
-            /*if($this->castType->value($fieldValue)['status']){
-                $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
-                $this->lineString .= $this->castType->value($fieldValue)['retorno'];
-                //$this->lineString .= "-".$this->castType->value($fieldValue)['retorno'];  
-            }*/
-        }else{//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
+        if(array_key_exists($fieldName, $this->Seguimento)){                
+                $fieldValue = $this->validaCamposEspecificos($fieldName,$fieldValue);                
+                if(empty($params)){
+                    $this->Seguimento[$fieldName]['value'] = $this->formataConformeSeguimento($this->Seguimento[$fieldName],$fieldValue);
+                } else {
+                    $this->Seguimento[$fieldName]['value'] = $this->formataConformeParams($params,$fieldValue);
+                }
+                if(!$this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value'])){                    
+                    $this->logMsg($fieldName."=".$fieldValue." (Tamanho->".$this->Seguimento[$fieldName]['leng']."caracteres, Informado->".strlen($fieldValue)."caracteres)","error");
+                    exit;
+                }                
+                $this->lineArray[$fieldName]= $this->Seguimento[$fieldName]['value'];
+                $this->lineString          .= $this->Seguimento[$fieldName]['value'];
+                $this->lineTemp            .= $this->Seguimento[$fieldName]['value']; 
+                
+        } else {//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
             $words  = array_keys($this->Seguimento);
             $msg = "Campo ".$fieldName." inexistente no seguimento $this->Seguimento, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
             $this->logMsg($msg);
@@ -388,18 +482,110 @@ class dataSet extends dataMap{
     }        
 }
 
+
+
+//include_once '../novaRemessaCEF.php';
+
 $remessaCEF = new dataSet();
+//HeaderDoArquivo----------------------------------------------------------------------------------------------------------------------------------------
+//$remessaCEF->Append("headerArquivo");
+//$remessaCEF->addField("CodBancoComp_G001", $CodBancoComp_G001);  /*03 CEF 104*/
+//$remessaCEF->addField("LoteServico_G002", "0000");               /*04 Se registro for Header do Arquivo='0000' */
+//$remessaCEF->addField("TipoRegistro_G003",0);                    /*01 0-Header do arquivo*/
+//$remessaCEF->addField("FEBRABAN1_G004"," ");                     /*   */
+//$remessaCEF->addField("tpPessoa_G005", 2);                       /*01 1-CPF 2-CNPJ */
+//$remessaCEF->addField("tpPessoaNum_G006", $tpPessoaNum_G006);    /*14 */
+//$remessaCEF->addField("Exclusivo_CAIXA1","");                   /*20 USO CAIXA */
+//$remessaCEF->addField("NumAgencia_G008",$NumAgencia_G008);       /*05 */
+//$remessaCEF->addField("DVAgencia_G009", $DVAgencia_G009);        /*01 */
+//$remessaCEF->addField("CodConvBanco_G007",$_NumeroConvenio);     /*06 */
+//$remessaCEF->addField("Exclusivo_CAIXA2","");                    /*08 USO CAIXA */
+//$remessaCEF->addField("NomeEmpresa_G013",$NomeEmpresa_G013);     /*30 */
+//$remessaCEF->addField("NomeBanco_G014",$NomeBanco_G014);         /*30 */
+//$remessaCEF->addField("FEBRABAN2_G004", "");                     /*10 */
+//$remessaCEF->addField("CodRemRet_G015", "1");                    /*01 1-Remessa(Cliente->Banco),2-Retorno(Banco->Cliente)*/
+//$remessaCEF->addField("DataGeracao_G016", $DataGeracao_G016);    /*08 DDMMAAAA */
+//$remessaCEF->addField("HoraGeracao_G017", "000000");             /*06 Zeros Informar zeros ou hora no formato HHMMSS*/ 
+//$remessaCEF->addField("NumSeqArquivo_G018", $NumSeqArquivo_G018);/*06 Numero sequencial de controle */
+//$remessaCEF->addField("LayoutArquivo_G019","050");               /*03 Zeros  -  Conforme validador CAIXA*/      
+//$remessaCEF->addField("DensGravArquivo_G020", "00000");          /*05 Padrao CAIXA prencher com zeros */
+//$remessaCEF->addField("Exclusivo_CAIXA3"," ");                   /*20 G021 Filler Espacos*/
+//$remessaCEF->addField("ReservEmpresa_G022","REMESSA TESTE");     /*20 G022 Em producao informar em branco              */
+//$remessaCEF->addField("VersaoApp_C077"," ");                     /*04 C077 Uso Interno   */
+//$remessaCEF->addField("FEBRABAN3_G004"," ");                     /*25 G004 Filler        */
+//$remessaCEF->post();
+//------------------------------------------------------------------------------HeaderDoLote----------------------------------------------------------
+//$remessaCEF->Append("headerLote");
+//$remessaCEF->addField("CodBancoComp_G001", $CodBancoComp_G001);   /*03 Banco do Brasil 001 */
+//$remessaCEF->addField("LoteServico_G002", $LoteServico_G002);     /*04 */
+//$remessaCEF->addField("TipoRegistro_G003", 1);                    /*01 1-Header do lote*/
+//$remessaCEF->addField("TipoOperacao_G028", "R");                  /*01 R–Remessa, T–Retorno.*/
+//$remessaCEF->addField("TipoServico_G025", "01");                  /*02 01-Cobranca Registrada,03-Desconto De titulos,04-Caução de titulos*/
+//$remessaCEF->addField("FEBRABAN1_G004", "00");                    /*02 */
+//$remessaCEF->addField("LayoutArquivo_G030", "030");               /*03 */
+//$remessaCEF->addField("FEBRABAN2_G004", " ");                     /*01 Branco */
+//$remessaCEF->addField("tpPessoa_G005", $tpPessoa_G005);           /*01 1-CPF 2-CNPJ */
+//$remessaCEF->addField("tpPessoaNum_G006", $tpPessoaNum_G006);     /*15 */
+//$remessaCEF->addField("CodConvBanco_G007",$_NumeroConvenio);      /*06 */
+//$remessaCEF->addField("Exclusivo_CAIXA1","0");                    /*14 */
+//$remessaCEF->addField("NumAgencia_G008", $NumAgencia_G008);       /*05 */
+//$remessaCEF->addField("DVAgencia_G009", $DVAgencia_G009);         /*01 */
+//$remessaCEF->addField("CodConvBanco_G007",$_NumeroConvenio);      /*06 */
+//$remessaCEF->addField("CodModBoletos_C078","0");                  /*07 Se nao tem o codigo preencher com zeros */
+//$remessaCEF->addField("Exclusivo_CAIXA2","0");                    /*01 */
+//$remessaCEF->addField("NomeEmpresa_G013", $NomeEmpresa_G013);     /*30 */
+//$remessaCEF->addField("Mensagem1_C073", "");                      /*40 C073*/
+//$remessaCEF->addField("Mensagem2_C073", "");                      /*40 C073*/
+//$remessaCEF->addField("NumRemRet_G079", $NumRemRet_G079);         /*08 Numero da remessa pelo sistema*/
+//$remessaCEF->addField("DataGravRemRet_G068",$DataGravRemRet_G068);/*08 */
+//$remessaCEF->addField("DataCredito_C003", "");                    /*08 Brancos. Nao tratado pelo BB*/
+//$remessaCEF->addField("FEBRABAN3_G004", "");                      /*33 */
+//$remessaCEF->post();//Fim do header do lote
+//
+//
+//Trailer do lote ----------------------------------------------------------------------------------------------------------------------------------------
+$remessaCEF->Append("TrailerLote");
+$remessaCEF->addField("CodBancoComp_G001",104);/*03  Codigo do banco cedente */
+$remessaCEF->addField("LoteServico_G002",0001);  /*04  */
+$remessaCEF->addField("TipoRegistro_G003",5);                 /*01  '5'= Trailer de Lote*/
+$remessaCEF->addField("FEBRABAN1_G004"," ");                  /*09  Brancos*/
+//Total de registros no lote
+$remessaCEF->addField("QtdeRegistLote_G057","");              /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
+//Totalizacao cobranca simples
+$remessaCEF->addField("QtdeTitCobranca1_C070","000001");      /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart1_C071","000100");      /*17  C071 Valor total dos titulos */
+//Totalizacao cobranca caucionada
+$remessaCEF->addField("QtdeTitCobranca2_C070","0");           /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart2_C071","0");           /*17  C071 Valor total dos titulos */
+//Totalizacao cobranca descontada
+$remessaCEF->addField("QtdeTitCobranca3_C070","0");           /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart3_C071","0");           /*17  C071 Valor total dos titulos */
+//CNAB
+$remessaCEF->addField("FEBRABAN2_G004","");                  /*31  C071 Valor total dos titulos */
+$remessaCEF->addField("FEBRABAN3_G004","");                  /*117  C071 Valor total dos titulos */
+$remessaCEF->post();
+
+//Trailer do arquivo--------------------------------------------------------------------------------------------------------------------------------------
 $remessaCEF->Append("TrailerArquivo");
-$remessaCEF->addField("CodBancoComp_G001",104);               /*03  Codigo do banco cedente */
+$remessaCEF->addField("CodBancoComp_G001",104);/*03  Codigo do banco cedente */
 $remessaCEF->addField("LoteServico_G002",9999);               /*04  Se registro for Trailer do Arquivo='9999' */
 $remessaCEF->addField("TipoRegistro_G003",9);                 /*01  '9' = Trailer de Arquivo*/
+//$remessaCEF->addField("FEBRABAN1_G004","X",array('leng'=>'11','Dec'=>'9','type'=>'Alpha','valueReplace'=>'B','side'=>'L'));                   /*09  */
 $remessaCEF->addField("FEBRABAN1_G004","");                   /*09  */
 //Totais
 $remessaCEF->addField("QtdeLoteArquivo_G049",1);              /*06  Auto Somatória dos registros de tipo 1-Header do lote */
 $remessaCEF->addField("QtdeRegistArquivo_G056","");           /*06  Auto Somatória dos registros de tipo 0-HeaderArq,1-HeaderLote,3-Detalhe,5-TrailerLote e 9-TrailerArq */
 $remessaCEF->addField("FEBRABAN2_G004","");                   /* */
 $remessaCEF->addField("FEBRABAN3_G004"," ");                  /* */
+$remessaCEF->post();    
 
-var_dump($remessaCEF->printSeguimentos());
 
-//$remessaCEF->addField();
+
+//Gerando o arquivo na pasta remessa/
+$file = "remessa2/".date("dmYhis").".tx3";
+foreach (glob("remessa2/*.tx3") as $filename) {//apaga arquivo com extensão tx3 para gerar outro para o validador online
+   unlink($filename);
+}
+$remessaCEF->saveToFile($file);
+echo "<pre>".$remessaCEF->printLineString();
+
