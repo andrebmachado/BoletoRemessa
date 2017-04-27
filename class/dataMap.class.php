@@ -311,16 +311,21 @@ class dataSet extends dataMap{
     public function printSeguimentos(){
         return $this->Seguimento;
     }
+    public function padraoSeguimento($params){
+        if($arr['type']=="Num"){                            
+            $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng'],"0",STR_PAD_LEFT);                
+        } else if($arr['type']=="Alpha"){
+            $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng']," ",STR_PAD_RIGHT);
+        }
+    }
     public function addField($fieldName,$fieldValue,$params=array()){
         //Verifica se o campo informado existe no dataset
         if(array_key_exists($fieldName, $this->Seguimento)){
-            $arr = $this->Seguimento[$fieldName];
-            
-            if($arr['type']=="Num"){                            
-                $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng'],"0",STR_PAD_LEFT);                
-            } else if($arr['type']=="Alpha"){
-                $this->Seguimento[$fieldName]['value'] = str_pad($fieldValue,$arr['leng']," ",STR_PAD_RIGHT);
+            if(empty($params)){
+                $campoTratado = this->padraoSeguimento($this->Seguimento[$fieldName]); 
             }
+            //$arr = $this->Seguimento[$fieldName];            
+            
             //var_dump($this->Seguimento);
             /*if($this->castType->value($fieldValue)['status']){
                 $this->lineArray[$fieldName]=$this->castType->value($fieldValue)['retorno'];
@@ -385,7 +390,7 @@ class dataSet extends dataMap{
 
 $remessaCEF = new dataSet();
 $remessaCEF->Append("TrailerArquivo");
-$remessaCEF->addField("CodBancoComp_G001",104);/*03  Codigo do banco cedente */
+$remessaCEF->addField("CodBancoComp_G001",104);               /*03  Codigo do banco cedente */
 $remessaCEF->addField("LoteServico_G002",9999);               /*04  Se registro for Trailer do Arquivo='9999' */
 $remessaCEF->addField("TipoRegistro_G003",9);                 /*01  '9' = Trailer de Arquivo*/
 $remessaCEF->addField("FEBRABAN1_G004","");                   /*09  */
