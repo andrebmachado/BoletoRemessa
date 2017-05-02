@@ -71,7 +71,7 @@ foreach($Linha as $col){
     $I_NOSSONUMERO  = $col->I_NOSSONUMERO;
     $I_BOLETOSCC_ID = str_pad($col->I_BOLETOSCC_ID,10,'0',STR_PAD_LEFT);
     $I_VIA          = $col->I_VIA;
-    $F_VALOR        = str_replace(".","",$col->F_VALORBOLETO);
+    $F_VALOR        = $col->F_VALORBOLETO;//str_replace(".","",$col->F_VALORBOLETO);
     $F_MULTA        = $col->F_MULTA;
     //$F_MORA         = $col->F_MORA;
     $D_EMISSAO      = df($col->D_EMISSAOBOLETO,"dmY");
@@ -107,6 +107,7 @@ foreach($Linha as $col){
     $remessaCEF->addField("Exclusivo_CAIXA2","");                    /* Campo19.3 Filler Caixa   */    
     $remessaCEF->addField("DataVencTit_C012",$D_VENCIMENTO);         /**/        
     $remessaCEF->addField("VlrNominalTit_G070",$F_VALOR);            /**/        
+    //$remessaCEF->addField("VlrNominalTit_G070",137);            /**/        
     
     $remessaCEF->addField("AgEncCobranca_C014","xxxxx");                /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
     $remessaCEF->addField("DVAgencia_G009", "0");                     /*01 Branco*/                
@@ -234,5 +235,6 @@ foreach (glob("remessa/*.tx3") as $filename) {//apaga arquivo com extensão tx3 
    unlink($filename);
 }
 $remessaCEF->saveToFile($file);
+$remessaCEF->saveToFile("");
 echo "<pre>".$remessaCEF->printLineString();
 

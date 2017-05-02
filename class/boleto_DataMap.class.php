@@ -315,7 +315,7 @@ class dataSet extends dataMap{
     }
     public function saveToFile($filename=""){        
         if($filename===""){
-           $filename = "remessa2/".date('Ymd').".txt"; 
+           $filename = "remessa/".date('Ymd').".txt"; 
         }        
         try {                
             if(($f=fopen($filename, 'w'))){
@@ -339,12 +339,15 @@ class dataSet extends dataMap{
     }
     public function printLineString(){
         return $this->lineString;
-    }
-    
+    }    
     public function formataConformeSeguimento($dataField,$fieldValue){
-        //if($dataField['Dec']==2){ $dataField['leng']=$dataField['leng']+2; }
-        if($dataField['type']=="Num"){                            
-            return str_pad($fieldValue,$dataField['leng'],"0",STR_PAD_LEFT);                
+        //formata para decimal e remove o ponto
+        if($dataField['Dec']=="2"){ 
+            $fieldValue = str_replace(".","",number_format($fieldValue, 2, '.', ' '));                       
+            $dataField['leng'] = $dataField['leng'] + 2;
+        }
+        if($dataField['type']=="Num"){                     
+            return str_pad($fieldValue,$dataField['leng'],"0",STR_PAD_LEFT);                            
         } else if($dataField['type']=="Alpha"){
             return str_pad($fieldValue,$dataField['leng']," ",STR_PAD_RIGHT);
         }
@@ -352,10 +355,12 @@ class dataSet extends dataMap{
     public function formataConformeParams($dataField,$fieldValue){
         if($dataField['side']=="L"){ $side=STR_PAD_LEFT;}
         if($dataField['side']=="R"){ $side=STR_PAD_RIGHT;}
-        if($dataField['Dec']!=""){ $dataField['leng']=$dataField['leng']+$dataField['Dec']; }
-        zica no tamanho dos decimais
-        
-        if($dataField['type']=="Num"){                            
+        //formata para decimal e remove o ponto
+        if($dataField['Dec']!=""){ 
+            $fieldValue = str_replace(".","",number_format($fieldValue, 2, '.', ' ')); 
+            $dataField['leng'] = $dataField['leng'] + 2;
+        }
+        if($dataField['type']=="Num"){                                        
             return str_pad($fieldValue,$dataField['leng'],$dataField['valueReplace'],$side);                
         } else if($dataField['type']=="Alpha"){
             return str_pad($fieldValue,$dataField['leng'],$dataField['valueReplace'],$side);
@@ -397,10 +402,13 @@ class dataSet extends dataMap{
         return $fieldValue;
     }
     private function comparaTamanhoCampo($dataField,$fieldValue){
-        //var_dump($dataField);
-        if($dataField['leng']< strlen($fieldValue)){ 
+        $leng = $dataField['leng'];
+        if($dataField['Dec']=="2"){
+            $leng = $dataField['leng']+2;
+        }        
+        if($leng< strlen($fieldValue)){ 
             return false;            
-        } else if($dataField['leng']> strlen($fieldValue)){ 
+        } else if($leng> strlen($fieldValue)){ 
             return false;            
         } else {
             return true;
@@ -412,22 +420,24 @@ class dataSet extends dataMap{
      * @param $params['leng'=>'','Dec'=>'','type'=>'Num ou Alpha','valueReplace' =>'','side'=>'L ou R']
      */
     public function addField($fieldName,$fieldValue,$params=array()){
-        //Verifica se o campo informado existe no dataset
         if(array_key_exists($fieldName, $this->Seguimento)){                
-                $fieldValue = $this->validaCamposEspecificos($fieldName,$fieldValue);
-                if(empty($params)){
-                    $this->Seguimento[$fieldName]['value'] = $this->formataConformeSeguimento($this->Seguimento[$fieldName],$fieldValue);
-                } else {
-                    $this->Seguimento[$fieldName]['value'] = $this->formataConformeParams($params,$fieldValue);
-                }
-                if(!$this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value'])){
-                    $this->logMsg($fieldName."=".$fieldValue." (Tamanho->".$this->Seguimento[$fieldName]['leng']."caracteres, Informado->".strlen($fieldValue)."caracteres(Corte:".substr($fieldValue,0, $this->Seguimento[$fieldName]['leng'])."))","error");
-                    $this->Seguimento[$fieldName]['value'] = substr($fieldValue,0, $this->Seguimento[$fieldName]['leng']);
-                }                
-                $this->lineArray[$fieldName]= $this->Seguimento[$fieldName]['value'];
-                $this->lineString          .= $this->Seguimento[$fieldName]['value'];
-                $this->lineTemp            .= $this->Seguimento[$fieldName]['value']; 
-                
+            $fieldValue = $this->validaCamposEspecificos($fieldName,$fieldValue);            
+            if(empty($params)){
+                $this->Seguimento[$fieldName]['value'] = $this->formataConformeSeguimento($this->Seguimento[$fieldName],$fieldValue);
+            } else {
+                $this->Seguimento[$fieldName]['value'] = $this->formataConformeParams($params,$fieldValue);
+            }                       
+            if(!$this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value'])){                
+                $this->logMsg($fieldName."=".$fieldValue
+                        ." (Tamanho->".$this->Seguimento[$fieldName]['leng']."caracteres, "
+                        . "Informado->".strlen($this->Seguimento[$fieldName]['value'])."caracteres"
+                        . "(Corte:".substr($this->Seguimento[$fieldName]['value'],0, $this->Seguimento[$fieldName]['leng'])."))","error");
+            }                
+            
+            $this->lineArray[$fieldName]= $this->Seguimento[$fieldName]['value'];
+            $this->lineString .= $this->Seguimento[$fieldName]['value'];
+            //$this->lineString   .= "-".$this->Seguimento[$fieldName]['value'];
+            $this->lineTemp     .= $this->Seguimento[$fieldName]['value'];                 
         } else {//se nao existe o campo no dataset verifica qual o nome mais próximo para o campo 
             $words  = array_keys($this->Seguimento);
             $msg = "Campo ".$fieldName." inexistente no seguimento $this->Seguimento, o mais proximo seria o campo ".$this->wordMatch($words, $fieldName, 2);
