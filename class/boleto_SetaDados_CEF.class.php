@@ -109,7 +109,7 @@ foreach($Linha as $col){
     $remessaCEF->addField("VlrNominalTit_G070",$F_VALOR);            /**/        
     //$remessaCEF->addField("VlrNominalTit_G070",137);            /**/        
     
-    $remessaCEF->addField("AgEncCobranca_C014","xxxxx");                /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
+    $remessaCEF->addField("AgEncCobranca_C014","0");                /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
     $remessaCEF->addField("DVAgencia_G009", "0");                     /*01 Branco*/                
     $remessaCEF->addField("EspecieTit_C015", "99");                  /*02 Espécie do Título (99)Outros */ 
     $remessaCEF->addField("IdTitulo_C016", "N");                     /*01 (reconhecimento da dívida pelo Sacado).(A-Aceite)(N-Nao Aceite) */ 
