@@ -280,7 +280,7 @@ class dataSet extends dataMap{
     private $QtdeRegistLote_G057;
     private $NumSeqRegLote_G038=1;
     private $QtdeTitulos=0;
-    private $vlrTotTitulos=0;    
+    private $vlrTotTitulos=0;       
     /*
      * @param array $headerArquivo,$headerLote,$SeguimentoP,$SeguimentoQ,$SeguimentoT,$SeguimentoU,$TrailerArquivo,$TrailerLote
      * @return bool <b>TRUE</b> se <i>$Seguimento</i> seguimento/status do dataset forem validos
@@ -340,6 +340,10 @@ class dataSet extends dataMap{
     public function printLineString(){
         return $this->lineString;
     }    
+    public function printLineArray(){
+        return $this->lineArray;
+    }
+
     public function formataConformeSeguimento($dataField,$fieldValue){
         //formata para decimal e remove o ponto
         if($dataField['Dec']=="2"){ 

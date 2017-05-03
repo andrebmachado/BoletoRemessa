@@ -45,8 +45,7 @@ if($SReg){
     //include_once 'geraBoletoCEF.php';
     include_once 'boleto_dataMap.class.php';    
     if($CodBancoComp_G001==104){
-        include_once 'boleto_SetaDados_CEF.class.php';
-        echo $CodBancoComp_G001;
+        include_once 'boleto_SetaDados_CEF.class.php';        
     }   
     
 }

@@ -63,7 +63,6 @@ function df($d,$format){
     $dt=date_create($d);
     return date_format($dt,$format);
 }
-
 $Linha = $SReg;
 $NumSeqRegLote_G038=0;
 foreach($Linha as $col){    
@@ -103,14 +102,14 @@ foreach($Linha as $col){
     $remessaCEF->addField("TipoDoc_C008",2);                         /*01 C008 (2=Escritural)*/
     $remessaCEF->addField("IdEmiBloqueto_C009", "");                 /*01 C009 (2=Cliente Emite)*/
     $remessaCEF->addField("IdDistribuicao_C010",0);                  /*01 C010 (0=Postagem pelo Beneficiário)*/
-    $remessaCEF->addField("NumDocCobranca_C011",$I_BOLETOSCC_ID);      /**/    
+    $remessaCEF->addField("NumDocCobranca_C011",$I_BOLETOSCC_ID);    /**/    
     $remessaCEF->addField("Exclusivo_CAIXA2","");                    /* Campo19.3 Filler Caixa   */    
     $remessaCEF->addField("DataVencTit_C012",$D_VENCIMENTO);         /**/        
     $remessaCEF->addField("VlrNominalTit_G070",$F_VALOR);            /**/        
-    //$remessaCEF->addField("VlrNominalTit_G070",137);            /**/        
+    //$remessaCEF->addField("VlrNominalTit_G070",137);               /**/        
     
-    $remessaCEF->addField("AgEncCobranca_C014","0");                /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
-    $remessaCEF->addField("DVAgencia_G009", "0");                     /*01 Branco*/                
+    $remessaCEF->addField("AgEncCobranca_C014","0");                 /*05 Zeros, A agência encarregada da Cobrança é definida de acordo com o CEP do sacado. */
+    $remessaCEF->addField("DVAgencia_G009", "0");                    /*01 Branco*/                
     $remessaCEF->addField("EspecieTit_C015", "99");                  /*02 Espécie do Título (99)Outros */ 
     $remessaCEF->addField("IdTitulo_C016", "N");                     /*01 (reconhecimento da dívida pelo Sacado).(A-Aceite)(N-Nao Aceite) */ 
     $remessaCEF->addField("DataEmitTit_G071", $D_EMISSAO);           /*08 */              
@@ -193,7 +192,7 @@ foreach($Linha as $col){
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //Trailer do lote ----------------------------------------------------------------------------------------------------------------------------------------
 $remessaCEF->Append("TrailerLote");
-$remessaCEF->addField("CodBancoComp_G001",104);/*03  Codigo do banco cedente */
+$remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);/*03  Codigo do banco cedente */
 $remessaCEF->addField("LoteServico_G002",0001);  /*04  */
 $remessaCEF->addField("TipoRegistro_G003",5);                 /*01  '5'= Trailer de Lote*/
 $remessaCEF->addField("FEBRABAN1_G004"," ");                  /*09  Brancos*/
@@ -215,7 +214,7 @@ $remessaCEF->post();
 
 //Trailer do arquivo--------------------------------------------------------------------------------------------------------------------------------------
 $remessaCEF->Append("TrailerArquivo");
-$remessaCEF->addField("CodBancoComp_G001",104);/*03  Codigo do banco cedente */
+$remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);/*03  Codigo do banco cedente */
 $remessaCEF->addField("LoteServico_G002",9999);               /*04  Se registro for Trailer do Arquivo='9999' */
 $remessaCEF->addField("TipoRegistro_G003",9);                 /*01  '9' = Trailer de Arquivo*/
 //$remessaCEF->addField("FEBRABAN1_G004","X",array('leng'=>'11','Dec'=>'9','type'=>'Alpha','valueReplace'=>'B','side'=>'L'));                   /*09  */
@@ -236,5 +235,10 @@ foreach (glob("remessa/*.tx3") as $filename) {//apaga arquivo com extensão tx3 
 }
 $remessaCEF->saveToFile($file);
 $remessaCEF->saveToFile("");
+
 echo "<pre>".$remessaCEF->printLineString();
+
+//foreach ($remessaCEF->printLineArray() as $key => $value) {
+//     echo $key."=".$value."<br>";
+//}
 
