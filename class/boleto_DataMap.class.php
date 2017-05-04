@@ -420,11 +420,11 @@ class dataSet extends dataMap{
             $leng = $dataField['leng']+2;
         }        
         if($leng< strlen($fieldValue)){ 
-            return false;            
+            return array("status"=>"false","datafield"=>$dataField);
         } else if($leng> strlen($fieldValue)){ 
-            return false;            
+            return array("status"=>"false","datafield"=>$dataField);
         } else {
-            return true;
+            return array("status"=>"true","datafield"=>$dataField);
         }
     }
     /*
@@ -446,12 +446,11 @@ class dataSet extends dataMap{
                 $this->Seguimento[$fieldName]['value'] = $this->formataConformeSeguimento($this->Seguimento[$fieldName],$fieldValue);
             } else {
                 $this->Seguimento[$fieldName]['value'] = $this->formataConformeParams($params,$fieldValue);
-            }                       
-            if(!$this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value'])){
-                /* @var $fieldName type */
-                if($this->Seguimento[$fieldName]['value'] === "Alpha"){
-                    $this->Seguimento[$fieldName]['value'] = 
-                }
+            }                                   
+            $dataField = $this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value']);
+            
+            if(!$dataField['status']){
+                
                 $this->logMsg($fieldName."=".$fieldValue
                         ." (Tamanho->".$this->Seguimento[$fieldName]['leng']."caracteres, "
                         . "Informado->".strlen($this->Seguimento[$fieldName]['value'])."caracteres"
