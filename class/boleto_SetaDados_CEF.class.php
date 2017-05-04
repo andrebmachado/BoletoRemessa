@@ -18,7 +18,7 @@ $remessaCEF->addField("NomeEmpresa_G013",$NomeEmpresa_G013);     /*30 */
 $remessaCEF->addField("NomeBanco_G014",$NomeBanco_G014);         /*30 */
 $remessaCEF->addField("FEBRABAN2_G004", "");                     /*10 */
 $remessaCEF->addField("CodRemRet_G015", "1");                    /*01 1-Remessa(Cliente->Banco),2-Retorno(Banco->Cliente)*/
-$remessaCEF->addField("DataGeracao_G016", $DataGeracao_G016);    /*08 DDMMAAAA */
+$remessaCEF->addField("DataGeracao_G016", date("dmY"));          /*08 DDMMAAAA */
 $remessaCEF->addField("HoraGeracao_G017", "000000");             /*06 Zeros Informar zeros ou hora no formato HHMMSS*/ 
 $remessaCEF->addField("NumSeqArquivo_G018", $NumSeqArquivo_G018);/*06 Numero sequencial de controle */
 $remessaCEF->addField("LayoutArquivo_G019","050");               /*03 Zeros  -  Conforme validador CAIXA*/      
@@ -30,14 +30,14 @@ $remessaCEF->addField("FEBRABAN3_G004"," ");                     /*25 G004 Fille
 $remessaCEF->post();
 //------------------------------------------------------------------------------HeaderDoLote----------------------------------------------------------
 $remessaCEF->Append("headerLote");
-$remessaCEF->addField("CodBancoComp_G001", $CodBancoComp_G001);   /*03 Banco do Brasil 001 */
+$remessaCEF->addField("CodBancoComp_G001", $CodBancoComp_G001);   /*03 */
 $remessaCEF->addField("LoteServico_G002", $LoteServico_G002);     /*04 */
 $remessaCEF->addField("TipoRegistro_G003", 1);                    /*01 1-Header do lote*/
 $remessaCEF->addField("TipoOperacao_G028", "R");                  /*01 R–Remessa, T–Retorno.*/
 $remessaCEF->addField("TipoServico_G025", "01");                  /*02 01-Cobranca Registrada,03-Desconto De titulos,04-Caução de titulos*/
 $remessaCEF->addField("FEBRABAN1_G004", "00");                    /*02 */
 $remessaCEF->addField("LayoutArquivo_G030", "030");               /*03 */
-$remessaCEF->addField("FEBRABAN2_G004", " ");                     /*01 Branco */
+$remessaCEF->addField("FEBRABAN2_G004", " ");                     /*01 CAIXA - Prencher com zeros */
 $remessaCEF->addField("tpPessoa_G005", $tpPessoa_G005);           /*01 1-CPF 2-CNPJ */
 $remessaCEF->addField("tpPessoaNum_G006", $tpPessoaNum_G006);     /*15 */
 $remessaCEF->addField("CodConvBanco_G007",$_NumeroConvenio);      /*06 */
@@ -51,12 +51,10 @@ $remessaCEF->addField("NomeEmpresa_G013", $NomeEmpresa_G013);     /*30 */
 $remessaCEF->addField("Mensagem1_C073", "");                      /*40 C073*/
 $remessaCEF->addField("Mensagem2_C073", "");                      /*40 C073*/
 $remessaCEF->addField("NumRemRet_G079", $NumRemRet_G079);         /*08 Numero da remessa pelo sistema*/
-$remessaCEF->addField("DataGravRemRet_G068",$DataGravRemRet_G068);/*08 */
-$remessaCEF->addField("DataCredito_C003", "");                    /*08 Brancos. Nao tratado pelo BB*/
+$remessaCEF->addField("DataGravRemRet_G068",date("dmY"));         /*08 */
+$remessaCEF->addField("DataCredito_C003", "00000000");            /*08 CAIXA informar zeros */
 $remessaCEF->addField("FEBRABAN3_G004", "");                      /*33 */
 $remessaCEF->post();//Fim do header do lote
-
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------Detalhe-------------------------------------------------------------------
 function df($d,$format){ 
@@ -64,7 +62,7 @@ function df($d,$format){
     return date_format($dt,$format);
 }
 $Linha = $SReg;
-$NumSeqRegLote_G038=0;
+//$NumSeqRegLote_G038=0;
 foreach($Linha as $col){    
     $I_BOLETO_ID    = $col->I_BOLETOSCC_ID;
     $I_NOSSONUMERO  = $col->I_NOSSONUMERO;
@@ -77,14 +75,15 @@ foreach($Linha as $col){
     $D_VENCIMENTO   = df($col->D_VENCIMENTOBOLETO,"dmY");
     
     //--------------------------------------------------------------------------SeguimentoP---------------------------------------------------------------
-    $NumSeqRegLote_G038++;    
+    //$NumSeqRegLote_G038++;    
     $remessaCEF->Append("SeguimentoP"); 
     //Controle
     $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03 */
     $remessaCEF->addField("LoteServico_G002",$LoteServico_G002);     /*04 */
     $remessaCEF->addField("TipoRegistro_G003",3);                    /*01 3-Detalhe */
     //Serviço
-    $remessaCEF->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
+    //$remessaCEF->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
+    $remessaCEF->addField("NumSeqRegLote_G038",""); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
     $remessaCEF->addField("CodSegRegDetalhe_G039","P");              /*01 */
     $remessaCEF->addField("FEBRABAN1_G004","");                      /*01 */
 /**/$remessaCEF->addField("CodMovRemessa_C004", "01");               /*02 01–Entrada de títulos,02–Pedido de baixa*/
@@ -135,7 +134,7 @@ foreach($Linha as $col){
     $remessaCEF->post();                                             
     
     //--------------------------------------------------------------------------SeguimentoQ---------------------------------------------------------------
-    $NumSeqRegLote_G038++;
+    //$NumSeqRegLote_G038++;
     $tpPessoa_G005=2;
     $tpPessoaNum_G006=preg_replace("/[^0-9]/", "", $col->V_CNPJ);
     $Nome_G013       =   $col->V_NOME;
@@ -149,15 +148,16 @@ foreach($Linha as $col){
     $remessaCEF->addField("CodBancoComp_G001",$CodBancoComp_G001);   /*03 */
     $remessaCEF->addField("LoteServico_G002",$LoteServico_G002);     /*04 */
     $remessaCEF->addField("TipoRegistro_G003",3);                    /*01 Default3 */
-    $remessaCEF->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
+    //$remessaCEF->addField("NumSeqRegLote_G038",$NumSeqRegLote_G038); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
+    $remessaCEF->addField("NumSeqRegLote_G038",""); /*05 Sequencial iniciar 00001 icrementar a cada nova linha*/
     $remessaCEF->addField("CodSegRegDetalhe_G039","Q");              /*01 */
     $remessaCEF->addField("FEBRABAN1_G004","");                      /*01 */
     $remessaCEF->addField("CodMovRemessa_C004","01");                /*02 */
     $remessaCEF->addField("tpPessoa_G005",$tpPessoa_G005);           /*01 */
     $remessaCEF->addField("tpPessoaNum_G006",$tpPessoaNum_G006);     /*15 */
     $remessaCEF->addField("Nome_G013", $Nome_G013);                  /*40 */
-    $remessaCEF->addField("Endereco_G032","Rua Nascimento Silva 107");                      /*40 */
-    $remessaCEF->addField("Bairro_G032","Jardim do Eden");                        /*15 */
+    $remessaCEF->addField("Endereco_G032","Rua Nasc Silva 107");     /*40 */
+    $remessaCEF->addField("Bairro_G032","Jardim do Eden");           /*15 */
     $remessaCEF->addField("CEP_G032","12345");                       /*05 */ 
     $remessaCEF->addField("SufixoCEP_G034","678");                   /*03 */
     $remessaCEF->addField("Cidade_G033","Cidade");                   /*15 */
@@ -199,8 +199,8 @@ $remessaCEF->addField("FEBRABAN1_G004"," ");                  /*09  Brancos*/
 //Total de registros no lote
 $remessaCEF->addField("QtdeRegistLote_G057","");              /*06  Soma quantidade de lotes do arquivo conforma o tipo 1,3,4,5*/
 //Totalizacao cobranca simples
-$remessaCEF->addField("QtdeTitCobranca1_C070","000001");      /*06  C070 Quantidade de titulos emitidos no lote*/
-$remessaCEF->addField("ValorTotTitCart1_C071","000100");      /*17  C071 Valor total dos titulos */
+$remessaCEF->addField("QtdeTitCobranca1_C070","");            /*06  C070 Quantidade de titulos emitidos no lote*/
+$remessaCEF->addField("ValorTotTitCart1_C071","");      /*17  C071 Valor total dos titulos */
 //Totalizacao cobranca caucionada
 $remessaCEF->addField("QtdeTitCobranca2_C070","0");           /*06  C070 Quantidade de titulos emitidos no lote*/
 $remessaCEF->addField("ValorTotTitCart2_C071","0");           /*17  C071 Valor total dos titulos */

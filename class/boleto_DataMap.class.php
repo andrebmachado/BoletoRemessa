@@ -277,7 +277,7 @@ class dataSet extends dataMap{
     private $lineTemp;    
     //Campos com valores especificos 
     private $QtdeRegsArquivo_G056;
-    private $QtdeRegistLote_G057;
+    private $QtdeRegistLote_G057=0;
     private $NumSeqRegLote_G038=1;
     private $QtdeTitulos=0;
     private $vlrTotTitulos=0;       
@@ -371,11 +371,12 @@ class dataSet extends dataMap{
         }
     }
     private function validaCamposEspecificos($fieldName,$fieldValue){        
+        $return=$fieldValue;        
         switch ($fieldName) {
             case 'CodSegRegDetalhe_G039'://Soma a quantidade de titulos se o CodSegRegDetalhe_G039=P 
-                if($fieldValue=="P"){$this->QtdeTitulos++;}
+                if($fieldValue=="P"){$this->QtdeTitulos++;}                
             break;
-            case 'QtdeTitCobranca1_C070'://Informa o numero de titulos para o campo QtdeTitCobranca_C070
+            case 'QtdeTitCobranca1_C070'://Informa o numero de titulos para o campo QtdeTitCobranca1_C070
                 $return = $this->QtdeTitulos;
             break;   
         
@@ -383,29 +384,37 @@ class dataSet extends dataMap{
                $this->vlrTotTitulos = $fieldValue + $this->vlrTotTitulos;
             break;
             case 'ValorTotTitCart1_C071'://Informa a soma dos titulos para o campo ValorTotTitCart1_C071
-               $return = $this->vlrTotTitulos; 
-            break;        
-        
-            case 'QtdeRegistArquivo_G056'://Soma quantidade de registros do arquivo conforme o tipo 0,1,3,5,9
-                $this->QtdeRegsArquivo_G056++;
-            break;        
-            case 'NumSeqRegLote_G038'://Numero sequencial de registros do lote (Ex: 1P, 2Q, 3P, 4Q)
-                $this->NumSeqRegLote_G038++;
+               $return = str_replace(".","",$this->vlrTotTitulos);                 
             break;        
         
             case 'TipoRegistro_G003'://
-                if($fieldValue>=1 and $fieldValue<=5){$this->QtdeRegistLote_G057++;}                
+                if($fieldValue>=0){ $this->QtdeRegsArquivo_G056++;}
+            break;
+            case 'QtdeRegistArquivo_G056'://Soma quantidade de registros do arquivo conforme o tipo 0,1,3,5,9
+                $return = $this->QtdeRegsArquivo_G056;
+            break;        
+        
+            case 'NumSeqRegLote_G038'://Numero sequencial de registros do lote (Ex: 1P, 2Q, 3P, 4Q)
+                $this->NumSeqRegLote_G038++;
+                $return = $this->NumSeqRegLote_G038;
+                //echo "<b>".$return."-</b>";
+            break;        
+        
+            case 'TipoRegistro_G003'://
+                if($fieldValue>=1 and $fieldValue<=5){ $this->QtdeRegistLote_G057++;}
             break;
             case 'QtdeRegistLote_G057'://
-                $return = $this->QtdeRegistLote_G057;
-            break;        
+                $return = $this->QtdeRegistLote_G057;//Quantidade de reg. lote (Trailer do Lote)
+            break;    
+        
             default:
                 $return = $fieldValue;
             break;
         }       
-        return $fieldValue;
+        return $return;
     }
     private function comparaTamanhoCampo($dataField,$fieldValue){
+        var_dump($dataField);
         $leng = $dataField['leng'];
         if($dataField['Dec']=="2"){
             $leng = $dataField['leng']+2;
@@ -425,13 +434,24 @@ class dataSet extends dataMap{
      */
     public function addField($fieldName,$fieldValue,$params=array()){
         if(array_key_exists($fieldName, $this->Seguimento)){                
-            $fieldValue = $this->validaCamposEspecificos($fieldName,$fieldValue);            
+            
+            //if(!empty($this->validaCamposEspecificos($fieldName,$fieldValue))){
+                $fieldValue = $this->validaCamposEspecificos($fieldName,$fieldValue);
+            //}
+//            if($fieldName=='CodSegRegDetalhe_G039'){
+//              echo $fieldValue;
+//            }
+                        
             if(empty($params)){
                 $this->Seguimento[$fieldName]['value'] = $this->formataConformeSeguimento($this->Seguimento[$fieldName],$fieldValue);
             } else {
                 $this->Seguimento[$fieldName]['value'] = $this->formataConformeParams($params,$fieldValue);
             }                       
-            if(!$this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value'])){                
+            if(!$this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value'])){
+                /* @var $fieldName type */
+                if($this->Seguimento[$fieldName]['value'] === "Alpha"){
+                    $this->Seguimento[$fieldName]['value'] = 
+                }
                 $this->logMsg($fieldName."=".$fieldValue
                         ." (Tamanho->".$this->Seguimento[$fieldName]['leng']."caracteres, "
                         . "Informado->".strlen($this->Seguimento[$fieldName]['value'])."caracteres"
@@ -439,6 +459,7 @@ class dataSet extends dataMap{
             }                
             
             $this->lineArray[$fieldName]= $this->Seguimento[$fieldName]['value'];
+            
             $this->lineString .= $this->Seguimento[$fieldName]['value'];
             //$this->lineString   .= "-".$this->Seguimento[$fieldName]['value'];
             $this->lineTemp     .= $this->Seguimento[$fieldName]['value'];                 
