@@ -347,7 +347,7 @@ class dataSet extends dataMap{
     public function formataConformeSeguimento($dataField,$fieldValue){
         //formata para decimal e remove o ponto
         if($dataField['Dec']=="2"){ 
-            $fieldValue = str_replace(".","",number_format($fieldValue, 2, '.', ' '));                       
+            $fieldValue = str_replace(".","",number_format($fieldValue, 2, '.', ''));                       
             $dataField['leng'] = $dataField['leng'] + 2;
         }
         if($dataField['type']=="Num"){                     
@@ -413,19 +413,23 @@ class dataSet extends dataMap{
         }       
         return $return;
     }
-    private function comparaTamanhoCampo($dataField,$fieldValue){
-        var_dump($dataField);
+    private function comparaTamanhoCampo($dataField,$fieldValue){        
         $leng = $dataField['leng'];
         if($dataField['Dec']=="2"){
             $leng = $dataField['leng']+2;
-        }        
-        if($leng< strlen($fieldValue)){ 
-            return array("status"=>"false","datafield"=>$dataField);
-        } else if($leng> strlen($fieldValue)){ 
-            return array("status"=>"false","datafield"=>$dataField);
-        } else {
-            return array("status"=>"true","datafield"=>$dataField);
+        }                
+        //se o campo var string corta dados do lado direito
+        if($dataField['type']=='Alpha'){ 
+            $dataField['value']=substr($fieldValue,0,$leng);
+            $fieldValue = $dataField['value'];            
         }
+        if($leng< strlen($fieldValue)){             
+            return array("status"=>false,"datafield"=>$dataField);
+        } else if($leng> strlen($fieldValue)){             
+            return array("status"=>false,"datafield"=>$dataField);
+        } else {
+            return array("status"=>true,"datafield"=>$dataField);
+        }        
     }
     /*
      * @param $fieldName="campo"
@@ -441,24 +445,26 @@ class dataSet extends dataMap{
 //            if($fieldName=='CodSegRegDetalhe_G039'){
 //              echo $fieldValue;
 //            }
-                        
             if(empty($params)){
                 $this->Seguimento[$fieldName]['value'] = $this->formataConformeSeguimento($this->Seguimento[$fieldName],$fieldValue);
             } else {
                 $this->Seguimento[$fieldName]['value'] = $this->formataConformeParams($params,$fieldValue);
             }                                   
             $dataField = $this->comparaTamanhoCampo($this->Seguimento[$fieldName],$this->Seguimento[$fieldName]['value']);
+            //var_dump($dataField);
             
-            if(!$dataField['status']){
-                
+            $this->Seguimento[$fieldName] = $dataField['datafield'];
+            
+            if(!$dataField['status']){  
+                //var_dump($this->Seguimento[$fieldName]['value']);
+                //var_dump($this->Seguimento);
                 $this->logMsg($fieldName."=".$fieldValue
                         ." (Tamanho->".$this->Seguimento[$fieldName]['leng']."caracteres, "
-                        . "Informado->".strlen($this->Seguimento[$fieldName]['value'])."caracteres"
-                        . "(Corte:".substr($this->Seguimento[$fieldName]['value'],0, $this->Seguimento[$fieldName]['leng'])."))","error");
-            }                
+                        ."Informado->".strlen($this->Seguimento[$fieldName]['value'])."caracteres"
+                        ."(Corte:".substr($this->Seguimento[$fieldName]['value'],0, $this->Seguimento[$fieldName]['leng'])."))","error");
+            }
             
-            $this->lineArray[$fieldName]= $this->Seguimento[$fieldName]['value'];
-            
+            $this->lineArray[$fieldName]= $this->Seguimento[$fieldName]['value'];            
             $this->lineString .= $this->Seguimento[$fieldName]['value'];
             //$this->lineString   .= "-".$this->Seguimento[$fieldName]['value'];
             $this->lineTemp     .= $this->Seguimento[$fieldName]['value'];                 

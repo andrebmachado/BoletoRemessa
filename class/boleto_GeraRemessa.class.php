@@ -3,6 +3,7 @@ include_once 'DBConnect.php';
 include_once 'dadosComunsCEF.php';
 
 //verifica se existe boletos para registrar V_STATUS='2'
+//$SemRegistros = $con->prepare("select * from boletoscc where I_BOLETOSCC_ID=301143");// limit 1");
 $SemRegistros = $con->prepare("select * from boletoscc");// limit 1");
 try{
     $SemRegistros->execute();
